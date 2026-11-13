@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { Route } from '../models/route.js';
 import { Bus } from '../models/bus.js';
 import { Booking } from '../models/booking.js';
@@ -45,11 +46,12 @@ export async function getbusforroute(req, res) {
   const matchedBuses = await Bus.find({ routes: route._id }).lean().exec();
   const busids = matchedBuses.map((bus) => bus._id.toString());
 
+  const objectIds = busids.map((id) => (mongoose.Types.ObjectId.isValid(id) ? new mongoose.Types.ObjectId(id) : id));
   const bookings = busids.length
     ? await Booking.find({
-        busId: { $in: busids },
+        $or: [{ busId: { $in: busids } }, { busId: { $in: objectIds } }],
         'departureDetails.date': date,
-        ...activebookingfilter(),
+        status: { $ne: 'cancelled' },
       })
         .select('busId seats')
         .lean()
@@ -61,10 +63,10 @@ export async function getbusforroute(req, res) {
     busidwithseatobj[busid] = [];
   }
   for (const booking of bookings) {
-    busidwithseatobj[booking.busId] = [
-      ...(busidwithseatobj[booking.busId] ?? []),
-      ...booking.seats,
-    ];
+    const key = String(booking.busId);
+    if (busidwithseatobj[key]) {
+      busidwithseatobj[key] = [...busidwithseatobj[key], ...booking.seats];
+    }
   }
 
   return res.json({ route, matchedBuses, busidwithseatobj });

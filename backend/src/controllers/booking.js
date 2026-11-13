@@ -44,6 +44,9 @@ export async function getbookingsbycustomer(req, res) {
     return res.status(403).json({ error: 'you can only view your own trips' });
   }
 
+  // Permanently purge any cancelled bookings from the database
+  await Booking.deleteMany({ status: 'cancelled' }).exec();
+
   const bookings = await Booking.find({ customerId: String(customerId) })
     .sort({ bookingDate: -1, createdAt: -1 })
     .lean()
@@ -99,12 +102,17 @@ export async function cancelbooking(req, res) {
     return res.status(409).json({ error: 'completed trips cannot be cancelled' });
   }
 
-  booking.refundAmount = refundquote(booking.departureDetails, booking.fare);
-  booking.cancelledAt = new Date();
-  booking.status = 'cancelled';
-  await booking.save();
+  // Delete the booking permanently from the database
+  await Booking.findByIdAndDelete(id).exec();
 
-  return res.json(booking);
+  // Also remove any other lingering cancelled bookings
+  await Booking.deleteMany({ status: 'cancelled' }).exec();
+
+  return res.json({
+    _id: id,
+    message: 'Booking cancelled and removed from database',
+    status: 'cancelled',
+  });
 }
 
 /** Cancellation quote so the UI can show the refund before confirming. */

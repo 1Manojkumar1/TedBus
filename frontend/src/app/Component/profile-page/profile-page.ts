@@ -75,35 +75,24 @@ export class ProfilePage implements OnInit {
       return;
     }
 
-    this.busbooking.getrefundquote(bookingid).subscribe({
-      next: (quote) => {
-        const confirmed = window.confirm(
-          `Cancel this trip? Refund amount: ₹${quote.refundAmount}.`
-        );
-        if (!confirmed) {
-          return;
-        }
+    const confirmed = window.confirm('Are you sure you want to cancel and delete this booking?');
+    if (!confirmed) {
+      return;
+    }
 
-        this.cancelling.set(bookingid);
-        this.actionmessage.set('');
-        this.busbooking.cancelbooking(bookingid).subscribe({
-          next: (booking) => {
-            this.cancelling.set(null);
-            this.actionmessage.set(
-              `Trip cancelled. Refund of ₹${booking?.refundAmount ?? 0} credited to your wallet.`
-            );
-            this.loadtrips();
-          },
-          error: (error) => {
-            this.cancelling.set(null);
-            this.actionmessage.set(
-              error?.error?.error ?? 'We could not cancel this trip. Please try again.'
-            );
-          },
-        });
+    this.cancelling.set(bookingid);
+    this.actionmessage.set('');
+    this.busbooking.cancelbooking(bookingid).subscribe({
+      next: () => {
+        this.cancelling.set(null);
+        this.actionmessage.set('Trip cancelled and removed from your account.');
+        this.loadtrips();
       },
-      error: () => {
-        this.actionmessage.set('We could not fetch the refund details. Please try again.');
+      error: (error) => {
+        this.cancelling.set(null);
+        this.actionmessage.set(
+          error?.error?.error ?? 'We could not cancel this trip. Please try again.'
+        );
       },
     });
   }

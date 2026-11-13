@@ -17,5 +17,6 @@ router.get('/:customerId', getbookingsbycustomer);
 router.get('/id/:id', getbookingbyid);
 router.get('/:id/refund-quote', getrefundquote);
 router.patch('/:id/cancel', cancelbooking);
+router.delete('/:id', cancelbooking);
 
 export default router;
