@@ -1,9 +1,15 @@
-// Seed the local `tedbus` database with demo routes, buses, a customer and bookings.
+// Seed demo routes, buses, a customer and bookings.
 // Run with: mongosh "mongodb://127.0.0.1:27017/tedbus" tedbus-seed.js
+//
+// The target database comes from the connection string (e.g. .../TedBusDB).
+// When the URI has no database, mongosh uses `test`, so fall back to `tedbus`.
 //
 // Re-running is safe: only demo records are removed and inserted again.
 
-const tedbus = db.getSiblingDB('tedbus');
+const connecteddb = db.getName();
+const tedbus = db.getSiblingDB(
+  connecteddb && connecteddb !== 'test' ? connecteddb : 'tedbus'
+);
 
 const CUSTOMER_ID = new ObjectId('66f1a2b3c4d5e6f7a8b9c0d1');
 
@@ -133,7 +139,7 @@ tedbus.bookings.insertMany([
   },
 ]);
 
-print('tedbus seeded');
+print('tedbus seeded into ' + tedbus.getName());
 print('  customers: ' + tedbus.customers.countDocuments({}));
 print('  bookings:  ' + tedbus.bookings.countDocuments({}));
 print('  routes:    ' + tedbus.routes.countDocuments({}));
