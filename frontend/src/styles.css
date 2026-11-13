@@ -1,7 +1,37 @@
 @import "tailwindcss";
+
+:root {
+  --tb-ink: #1f2937;
+  --tb-muted: #64748b;
+  --tb-brand: #5f4299;
+  --tb-brand-dark: #4b337e;
+  --tb-accent: #d84e55;
+  --tb-surface: #ffffff;
+  --tb-canvas: #f6f7fb;
+  --tb-border: #e2e8f0;
+  --tb-success: #15803d;
+  --tb-danger: #c2414b;
+  --tb-radius: 16px;
+  --tb-shadow: 0 10px 30px rgb(15 23 42 / 8%);
+}
+
 html, body { height: 100%; scroll-behavior: smooth; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; -webkit-font-smoothing: antialiased; }
-::-webkit-scrollbar{ background: white; width: 0; }
-::selection { background: #5F4299; color: white; }
+body {
+  margin: 0;
+  background: var(--tb-canvas);
+  color: var(--tb-ink);
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, select { font: inherit; }
+button { touch-action: manipulation; }
+button:focus-visible, a:focus-visible, input:focus-visible {
+  outline: 3px solid rgb(95 66 153 / 35%);
+  outline-offset: 2px;
+}
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+::selection { background: var(--tb-brand); color: white; }
 
 

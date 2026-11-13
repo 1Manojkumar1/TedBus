@@ -1,9 +1,6 @@
 
-<div class="main-container">
-    <ng-container *ngIf="alreadybookedseats.includes(seatno); else selectable">
-        <i class="material-icons" [style.color]="'red'">airline_seat_recline_extra</i>
-    </ng-container>
-    <ng-template #selectable> 
-        <i class="material-icons" [style.color]="getcolor(seatno)" (click)="handleseatbooking(seatno)">airline_seat_recline_extra</i>
-    </ng-template>
-</div>
+<button type="button" class="seat" [class.seat--selected]="selected" [class.seat--occupied]="occupied"
+    [disabled]="occupied" [attr.aria-label]="label" [attr.aria-pressed]="selected" (click)="handleseatbooking()">
+  <i class="material-icons" aria-hidden="true">airline_seat_recline_extra</i>
+  <span>{{ seatno }}</span>
+</button>

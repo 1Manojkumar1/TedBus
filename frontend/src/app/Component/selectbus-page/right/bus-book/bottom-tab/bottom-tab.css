@@ -1,39 +1,7 @@
-
-.mainBar {
-    width: 60%;
-    display: flex;
-    margin-left: 40%;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .mainBar > div {
-    cursor: pointer;
-    color: #3e3e52;
-  }
-  
-  .mainBar > div:hover {
-    color: red;
-  }
-  
-  .mainBar > div:last-child {
-    border: 1px solid red;
-    display: inline-block;
-    padding: 6px 16px 7px;
-    text-transform: uppercase;
-    font-size: 13px;
-    font-weight: 400;
-    overflow: hidden;
-    position: relative;
-    text-decoration: none;
-    transition: 0.1s;
-    border: none;
-    text-align: center;
-    background-color: #d84e55;
-    color: #fff;
-  }
-  
-  .displayArea {
-    width: 100%;
-    height: 100%;
-  }
+.mainBar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; border-top: 1px solid var(--tb-border); padding-top: 16px; }
+.mainBar button { border: 0; border-radius: 8px; padding: 8px 10px; background: transparent; color: var(--tb-muted); font-size: 12px; font-weight: 700; cursor: pointer; }
+.mainBar button:hover, .mainBar button[aria-selected="true"] { color: var(--tb-brand); background: #f5f3ff; }
+.mainBar button:last-child { margin-left: auto; color: white; background: var(--tb-accent); }
+.mainBar button:last-child:hover, .mainBar button:last-child[aria-selected="true"] { color: white; background: #bf3e46; }
+.displayArea { margin-top: 14px; }
+@media (max-width: 600px) { .mainBar { gap: 4px; } .mainBar button { padding: 7px; } .mainBar button:last-child { margin-left: 0; width: 100%; } }

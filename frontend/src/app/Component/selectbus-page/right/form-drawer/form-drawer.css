@@ -13,17 +13,19 @@
     transition: 0.1s;
     border: none;
     text-align: center;
-    background-color: #d84e55;
+    background-color: var(--tb-accent);
     color: #fff;
-    margin-top: 30px;
+    margin-top: 18px;
     cursor: pointer;
-    
+    border-radius: 10px;
   }
+  .proceedButton:disabled { cursor: not-allowed; opacity: .5; }
   .example-container {
-    width: 600px;
-    height: 500px;
+    width: 100%;
+    height: 0;
     background-color: transparent;
   }
   ::ng-deep .mat-drawer-container{
     background-color: transparent;
   }
+  .booking-drawer-content { width: min(600px, 100vw); min-height: 100%; }

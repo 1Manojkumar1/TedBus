@@ -1,0 +1,4 @@
+:host { display: block; }
+@media (max-width: 640px) {
+  section:first-child { min-height: 380px; }
+}

@@ -1,18 +1,14 @@
-<div class="mainBar">
-    <div (click)="handletabstate(0)">Amenities</div>
-    <div>|</div>
-    <div (click)="handletabstate(1)">Boarding and Droping Points</div>
-    <div>|</div>
-    <div (click)="handletabstate(2)">Reviews</div>
-    <div>|</div>
-    <div (click)="handletabstate(3)">Booking Policies</div>
-    <div>|</div>
-    <div (click)="handletabstate(4)">VIEW SEATS</div>
+<div class="mainBar" role="tablist" aria-label="Bus details">
+    <button type="button" role="tab" [attr.aria-selected]="tabstate[0]" (click)="handletabstate(0)">Amenities</button>
+    <button type="button" role="tab" [attr.aria-selected]="tabstate[1]" (click)="handletabstate(1)">Boarding &amp; dropping</button>
+    <button type="button" role="tab" [attr.aria-selected]="tabstate[2]" (click)="handletabstate(2)">Reviews</button>
+    <button type="button" role="tab" [attr.aria-selected]="tabstate[3]" (click)="handletabstate(3)">Policies</button>
+    <button type="button" role="tab" [attr.aria-selected]="tabstate[4]" (click)="handletabstate(4)">View seats</button>
 </div>
 
 
 <div class="displayArea" *ngIf="tabstate[0]">Amenities</div>
-<div class="displayArea" *ngIf="tabstate[1]"> Boarding and Droping Points</div>
+<div class="displayArea" *ngIf="tabstate[1]">Boarding and dropping points</div>
 <div class="displayArea" *ngIf="tabstate[2]">Reviews</div>
 <div class="displayArea" *ngIf="tabstate[3]">Booking Policies</div>
 <div class="displayArea" *ngIf="tabstate[4]">

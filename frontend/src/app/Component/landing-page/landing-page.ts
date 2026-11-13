@@ -78,6 +78,17 @@ export class LandingPage {
     this.formerror.set('');
   }
 
+  swapcities(): void {
+    const from = this.fromoption();
+    const to = this.tooption();
+    if (!from && !to) {
+      return;
+    }
+    this.fromoption.set(to);
+    this.tooption.set(from);
+    this.formerror.set('');
+  }
+
   matchDate(event: any) {
     const value: Date | null = event.value;
     this.selectedDate.set(value ?? new Date());
