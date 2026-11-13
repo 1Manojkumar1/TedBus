@@ -5,7 +5,7 @@ This project deploys as two services plus a managed database:
 | Piece | Where | URL |
 |---|---|---|
 | Angular frontend | Vercel (static build) | `https://<project>.vercel.app` |
-| Express API | Render (Node web service) | `https://tedbus-api.onrender.com` |
+| Express API | Render (Node web service) | `https://tedbus-api-klsp.onrender.com` |
 | MongoDB | MongoDB Atlas (M0 free tier) | `mongodb+srv://…` |
 
 The repository already contains the deployment config:
@@ -94,10 +94,10 @@ mongosh "mongodb+srv://…/tedbus" --quiet --eval 'db.routes.countDocuments()'
 ### 2c. Verify the API
 
 ```bash
-curl https://tedbus-api.onrender.com/api/health
+curl https://tedbus-api-klsp.onrender.com/api/health
 # {"status":"ok","database":"connected","payments":"mock","auth":"optional"}
 
-curl "https://tedbus-api.onrender.com/api/routes/Hyderabad/Bengaluru/2026-12-01" | head -c 200
+curl "https://tedbus-api-klsp.onrender.com/api/routes/Hyderabad/Bengaluru/2026-12-01" | head -c 200
 ```
 
 If health reports `"database":"disconnected"`, the Atlas URI or the IP allowlist is wrong — check the Render logs.
@@ -106,7 +106,7 @@ If health reports `"database":"disconnected"`, the Atlas URI or the IP allowlist
 
 ### 2d. Note the URL
 
-If the service name `tedbus-api` was already taken, Render appends a suffix (e.g. `tedbus-api-x1y2.onrender.com`). The frontend has the URL hardcoded at build time, so either rename the service or update `frontend/src/environments/environment.prod.ts` and redeploy the frontend.
+If the service name `tedbus-api` was already taken, Render appends a suffix (e.g. `tedbus-api-klsp.onrender.com`). The frontend has the URL hardcoded at build time, so either rename the service or update `frontend/src/environments/environment.prod.ts` and redeploy the frontend. This deployment already uses `https://tedbus-api-klsp.onrender.com`.
 
 ---
 
@@ -173,7 +173,7 @@ Skip this to stay in mock mode.
 1. Stripe Dashboard → Developers → API keys → copy the **secret** key.
 2. Render env: `STRIPE_SECRET_KEY=sk_...`, `PAYMENT_MODE=auto` (or `stripe`).
 3. Stripe → Developers → Webhooks → **Add endpoint**:
-   - URL: `https://tedbus-api.onrender.com/api/payments/webhook`
+   - URL: `https://tedbus-api-klsp.onrender.com/api/payments/webhook`
    - Event: `checkout.session.completed`
 4. Copy the **signing secret** (`whsec_...`) into Render as `STRIPE_WEBHOOK_SECRET`.
 5. Ensure `APP_URL` is the Vercel URL so Stripe redirects back to `/profile?payment=success`.
