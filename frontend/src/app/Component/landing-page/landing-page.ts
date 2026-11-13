@@ -67,7 +67,7 @@ export class LandingPage {
 
   fromEvent(city: string) {
     this.fromoption.set(city);
-    if (!this.tocities().includes(this.tooption())) {
+    if (this.tocities().length > 0 && this.tooption() && !this.tocities().includes(this.tooption())) {
       this.tooption.set('');
     }
     this.formerror.set('');

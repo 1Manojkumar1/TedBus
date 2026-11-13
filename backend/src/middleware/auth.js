@@ -42,9 +42,12 @@ export async function authenticate(req, _res, next) {
     const ticket = await client.verifyIdToken({ idToken: token, audience: clientid });
     const payload = ticket.getPayload();
     if (!payload?.email) {
-      const error = new Error('Google token did not include an email address');
-      error.status = 401;
-      return next(error);
+      if (authrequired) {
+        const error = new Error('Google token did not include an email address');
+        error.status = 401;
+        return next(error);
+      }
+      return next();
     }
 
     req.auth = {
@@ -55,9 +58,13 @@ export async function authenticate(req, _res, next) {
     };
     return next();
   } catch {
-    const error = new Error('Google token is invalid or expired');
-    error.status = 401;
-    return next(error);
+    if (authrequired) {
+      const error = new Error('Google token is invalid or expired');
+      error.status = 401;
+      return next(error);
+    }
+    // With optional auth, fall back to anonymous request instead of breaking public endpoints
+    return next();
   }
 }
 

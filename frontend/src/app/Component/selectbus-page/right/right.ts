@@ -122,8 +122,10 @@ export class Right {
         return;
       }
 
-      const today = new Date().toISOString().slice(0, 10);
-      if (date < today) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const picked = new Date(`${date}T00:00:00`);
+      if (!Number.isNaN(picked.getTime()) && picked < today) {
         this.loading.set(false);
         this.loaderror.set('Travel date cannot be in the past.');
         return;
@@ -183,10 +185,15 @@ export class Right {
   }
 
   private normalizedate(value: unknown): string {
-    const raw = (value ?? '').toString();
+    const raw = (value ?? '').toString().trim();
     if (raw.length >= 10) {
       return raw.slice(0, 10);
     }
-    return new Date().toISOString().slice(0, 10);
+    const now = new Date();
+    return [
+      now.getFullYear(),
+      String(now.getMonth() + 1).padStart(2, '0'),
+      String(now.getDate()).padStart(2, '0'),
+    ].join('-');
   }
 }

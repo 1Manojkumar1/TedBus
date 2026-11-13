@@ -14,27 +14,68 @@ import { errorhandler, notfound } from './middleware/errors.js';
 export function createapp() {
   const app = express();
 
-  const allowedorigins = (process.env.CORS_ORIGIN ?? 'http://localhost:4200')
+  const rawOrigins = process.env.CORS_ORIGIN || '';
+  const allowedorigins = rawOrigins
     .split(',')
-    .map((origin) => origin.trim())
+    .map((origin) => origin.trim().replace(/\/+$/, '').replace(/^["']|["']$/g, ''))
     .filter(Boolean);
 
-  app.use(
-    cors({
-      origin(origin, callback) {
-        if (!origin || allowedorigins.includes(origin)) {
-          return callback(null, true);
-        }
-        return callback(new Error(`origin ${origin} is not allowed by CORS`));
-      },
-    })
-  );
+  const isOriginAllowed = (origin) => {
+    if (!origin) return true;
+    const clean = origin.trim().replace(/\/+$/, '').replace(/^["']|["']$/g, '');
+
+    // Allow wildcard or explicit origin match
+    if (allowedorigins.includes('*') || allowedorigins.includes(clean)) {
+      return true;
+    }
+
+    // Always allow localhost & 127.0.0.1 on any port for local development
+    if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(clean)) {
+      return true;
+    }
+
+    // Always allow any vercel deployment (production, preview, branch deploys)
+    if (/^https:\/\/[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9_-]+)*\.vercel\.app$/.test(clean)) {
+      return true;
+    }
+
+    // Always allow onrender.com subdomains
+    if (/^https:\/\/[a-zA-Z0-9_-]+\.onrender\.com$/.test(clean)) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const corsMiddleware = cors({
+    origin(origin, callback) {
+      if (isOriginAllowed(origin)) {
+        return callback(null, true);
+      }
+      return callback(null, false);
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  });
+
+  app.use(corsMiddleware);
+  app.options('*', corsMiddleware);
 
   // Stripe signs the raw request body, so this route must stay above express.json().
   app.post('/api/payments/webhook', express.raw({ type: 'application/json' }), stripewebhook);
 
   app.use(express.json({ limit: '1mb' }));
   app.use('/api', authenticate);
+
+  app.get('/', (_req, res) => {
+    res.json({
+      name: 'Tedbus REST API',
+      status: 'running',
+      health: '/api/health',
+      routes: '/api/routes',
+    });
+  });
 
   app.get('/api/health', (_req, res) => {
     res.json({
