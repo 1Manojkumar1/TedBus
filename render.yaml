@@ -1,0 +1,40 @@
+# Render blueprint for the TedBus API.
+#
+# Deploy with: Render Dashboard -> New -> Blueprint -> select this repository.
+# Values marked `sync: false` have no secret in git and must be entered in the
+# Render dashboard during the first deploy.
+services:
+  - type: web
+    name: tedbus-api
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 22.12.0
+      - key: NODE_ENV
+        value: production
+      # MongoDB Atlas connection string, e.g.
+      # mongodb+srv://USER:PASSWORD@cluster0.xxxxx.mongodb.net/tedbus?retryWrites=true&w=majority
+      - key: MONGODB_URI
+        sync: false
+      # Exact Vercel origin(s), comma separated. No trailing slash.
+      - key: CORS_ORIGIN
+        sync: false
+      # Same as CORS_ORIGIN; used for Stripe success/cancel redirects.
+      - key: APP_URL
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: AUTH_REQUIRED
+        value: false
+      - key: PAYMENT_MODE
+        value: auto
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false

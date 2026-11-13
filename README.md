@@ -123,6 +123,16 @@ Open <http://localhost:4200>. The frontend calls `http://localhost:3000/api`, so
 | `apiUrl` | Base URL of the API |
 | `googleClientId` | OAuth **Web application** client ID |
 
+## Deployment
+
+The repository is pre-configured for **Vercel** (frontend) and **Render** (API):
+
+- `render.yaml` — Render Blueprint exposing the API with health check `/api/health` and all required env vars.
+- `frontend/vercel.json` — build command, `dist/frontend/browser` output, SPA rewrites and cache headers.
+- `frontend/src/environments/environment.prod.ts` — the production API URL, swapped in by `ng build` through `fileReplacements` in `angular.json`.
+
+Full step-by-step instructions, including MongoDB Atlas, OAuth origins, CORS wiring, verification and rollback: **[DEPLOYMENT.md](DEPLOYMENT.md)**.
+
 ## Google sign-in setup
 
 1. In Google Cloud Console create a project, then configure **Google Auth Platform → Audience** as *External* and add your Gmail under **Test users**.
