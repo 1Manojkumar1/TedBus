@@ -1,31 +1,124 @@
-
 .proceedButton {
-    width: 100%;
-    height: 40px;
-    padding: 6px 39px 7px;
-    display: inline-block;
-    text-transform: uppercase;
-    font-size: 13px;
-    font-weight: 400;
-    overflow: hidden;
-    position: relative;
-    text-decoration: none;
-    transition: 0.1s;
-    border: none;
-    text-align: center;
-    background-color: var(--tb-accent);
-    color: #fff;
-    margin-top: 18px;
-    cursor: pointer;
-    border-radius: 10px;
-  }
-  .proceedButton:disabled { cursor: not-allowed; opacity: .5; }
-  .example-container {
-    width: 100%;
-    height: 0;
-    background-color: transparent;
-  }
-  ::ng-deep .mat-drawer-container{
-    background-color: transparent;
-  }
-  .booking-drawer-content { width: min(600px, 100vw); min-height: 100%; }
+  width: 100%;
+  height: 42px;
+  padding: 8px 24px;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  position: relative;
+  text-decoration: none;
+  transition: background-color 0.15s, transform 0.15s;
+  border: none;
+  text-align: center;
+  background-color: var(--tb-accent, #d84e55);
+  color: #fff;
+  margin-top: 18px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.proceedButton:hover:not(:disabled) {
+  background-color: #bf3e46;
+  transform: translateY(-1px);
+}
+
+.proceedButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  z-index: 9998;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.2s ease-out;
+}
+
+.drawer-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(580px, 100vw);
+  background: #ffffff;
+  z-index: 9999;
+  box-shadow: -8px 0 32px rgba(15, 23, 42, 0.2);
+  display: flex;
+  flex-direction: column;
+  animation: slideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--tb-border, #e2e8f0);
+  background: #ffffff;
+  flex-shrink: 0;
+}
+
+.drawer-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.drawer-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--tb-ink, #0f172a);
+}
+
+.drawer-subtitle {
+  margin: 0;
+  font-size: 12px;
+  color: var(--tb-muted, #64748b);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.seat-badge {
+  font-weight: 700;
+  color: var(--tb-brand, #5F4299);
+}
+
+.drawer-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 30px;
+  line-height: 1;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 8px;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.drawer-close-btn:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  background: #f8fafc;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}

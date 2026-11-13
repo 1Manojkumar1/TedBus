@@ -1,12 +1,40 @@
+<button
+  class="proceedButton"
+  type="button"
+  [disabled]="!selectedseat.length"
+  (click)="opendrawer()">
+  Proceed to book
+</button>
 
-<button class="proceedButton" type="button" [disabled]="!selectedseat.length" (click)="drawer.toggle()">Proceed to book</button>
-<mat-drawer-container class="example-container">
-    <mat-drawer #drawer position='end' mode="over" class="example-sidenav">
-        <div class="booking-drawer-content">
-            <app-bus-booking-form [selectedseat]="selectedseat" [seatprice]="seatprice" [routedetails]="routedetails"
-                [busid]="busid" [busarrivaltime]="busarrivaltime" [busdeparturetime]="busdeparturetime" [operatorname]="operatorname"></app-bus-booking-form>
-        </div>
-    </mat-drawer>
-</mat-drawer-container>
-
-
+@if (isdraweropen()) {
+  <div class="drawer-backdrop" (click)="closedrawer()"></div>
+  <aside class="drawer-panel" role="dialog" aria-modal="true" aria-label="Passenger details">
+    <div class="drawer-header">
+      <div class="drawer-title-group">
+        <h3 class="drawer-title">{{ operatorname || 'Bus Booking' }}</h3>
+        <p class="drawer-subtitle">
+          {{ routedetails?.departureLocation?.name }} &rarr; {{ routedetails?.arrivalLocation?.name }}
+          &middot; Seat(s): <span class="seat-badge">{{ selectedseat.join(', ') }}</span>
+        </p>
+      </div>
+      <button
+        type="button"
+        class="drawer-close-btn"
+        (click)="closedrawer()"
+        aria-label="Close booking form">
+        &times;
+      </button>
+    </div>
+    <div class="drawer-body">
+      <app-bus-booking-form
+        [selectedseat]="selectedseat"
+        [seatprice]="seatprice"
+        [routedetails]="routedetails"
+        [busid]="busid"
+        [busarrivaltime]="busarrivaltime"
+        [busdeparturetime]="busdeparturetime"
+        [operatorname]="operatorname">
+      </app-bus-booking-form>
+    </div>
+  </aside>
+}
