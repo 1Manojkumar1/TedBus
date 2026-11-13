@@ -4,7 +4,7 @@ This project deploys as two services plus a managed database:
 
 | Piece | Where | URL |
 |---|---|---|
-| Angular frontend | Vercel (static build) | `https://<project>.vercel.app` |
+| Angular frontend | Vercel (static build) | `https://ted-bus-two.vercel.app` |
 | Express API | Render (Node web service) | `https://tedbus-api-klsp.onrender.com` |
 | MongoDB | MongoDB Atlas (M0 free tier) | `mongodb+srv://…` |
 
@@ -120,13 +120,12 @@ If the service name `tedbus-api` was already taken, Render appends a suffix (e.g
    - Output Directory: `dist/frontend/browser` (from `vercel.json`)
    - Install Command: `npm ci` (from `vercel.json`)
    - Environment variables: none needed. The API URL is compiled in from `environment.prod.ts` via `fileReplacements` in `angular.json`; `vercel.json` rewrites deep links such as `/selectbus` and `/profile` to `index.html`.
-3. **Deploy**, then open the production URL. `/`, `/selectbus`, `/profile`, `/help` and `/cancellation` must all load directly (that proves the SPA rewrite works).
-4. Copy the production domain (`https://<project>.vercel.app`, without a trailing slash).
+3. **Deploy**, then open the production URL (`https://ted-bus-two.vercel.app`). `/`, `/selectbus`, `/profile`, `/help` and `/cancellation` must all load directly (that proves the SPA rewrite works).
+4. Copy the production domain (`https://ted-bus-two.vercel.app`, without a trailing slash).
 
 ### Preview deployments
 
-Every branch/PR gets its own `*.vercel.app` URL. The API only accepts the exact origins in `CORS_ORIGIN`, so **previews will fail CORS** unless you add them. Either add the preview domain temporarily to `CORS_ORIGIN` (comma separated, e.g.
-`https://tedbus.vercel.app,https://tedbus-git-main-1manojkumar1.vercel.app`) or test against the production deployment only.
+Every branch/PR gets its own `*.vercel.app` URL. The API backend automatically accepts any `*.vercel.app` domain by default.
 
 ---
 
@@ -135,8 +134,8 @@ Every branch/PR gets its own `*.vercel.app` URL. The API only accepts the exact 
 In Render → `tedbus-api` → **Environment**:
 
 ```
-CORS_ORIGIN = https://<project>.vercel.app
-APP_URL     = https://<project>.vercel.app
+CORS_ORIGIN = https://ted-bus-two.vercel.app
+APP_URL     = https://ted-bus-two.vercel.app
 ```
 
 - No trailing slash, no wildcard, exact scheme (`https://`).
@@ -153,7 +152,7 @@ Then hard-refresh the Vercel site and run a search. If the browser console shows
 2. Under **Authorized JavaScript origins**, add:
 
 ```
-https://<project>.vercel.app
+https://ted-bus-two.vercel.app
 ```
 
 Keep `http://localhost:4200` and `http://127.0.0.1:4200` for local development.

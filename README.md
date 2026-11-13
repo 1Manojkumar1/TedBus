@@ -1,219 +1,169 @@
-# TedBus
+# 🚌 TedBus — Full-Stack Bus Ticket Booking Platform
 
-A RedBus-style bus ticket booking app: an Angular 21 single-page frontend backed by an Express + MongoDB API. Search routes, compare buses, pick seats, book and pay (mock or Stripe), then manage trips and cancellations from a profile page.
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-ted--bus--two.vercel.app-brightgreen?style=for-the-badge&logo=vercel)](https://ted-bus-two.vercel.app)
+[![API Status](https://img.shields.io/badge/API%20Status-Online-blue?style=for-the-badge&logo=render)](https://tedbus-api-klsp.onrender.com/api/health)
+[![Angular](https://img.shields.io/badge/Angular-21-DD0031?style=for-the-badge&logo=angular&logoColor=white)](https://angular.dev)
+[![Express](https://img.shields.io/badge/Express-4.21-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 
-## Features
+A modern, production-deployed online bus ticketing platform inspired by RedBus. Built with an **Angular 21** single-page frontend (signals, standalone components, Tailwind CSS) backed by an **Express + MongoDB Atlas** REST API.
 
-- **Search** routes by departure, arrival and date, with past dates rejected.
-- **Results** with live filtering (operator, bus type, departure window, amenities) and sorting by fare, departure or rating.
-- **Seat selection** with per-bus seat maps and live availability.
-- **Booking** with passenger details, contact info, insurance/business-travel toggles.
-- **Payments** through Stripe Checkout when configured, or a built-in mock gateway otherwise.
-- **Google sign-in** using Google Identity Services; ID tokens are verified server-side.
-- **Profile** with upcoming/completed trips, booking details, cancellation and refund quotes, and a wallet summary.
-- **Help/Cancellation** information pages.
+* 🌐 **Live Web App:** [https://ted-bus-two.vercel.app](https://ted-bus-two.vercel.app)
+* ⚡ **Live API Service:** [https://tedbus-api-klsp.onrender.com](https://tedbus-api-klsp.onrender.com)
+* 🩺 **API Health Endpoint:** [https://tedbus-api-klsp.onrender.com/api/health](https://tedbus-api-klsp.onrender.com/api/health)
 
-## Tech stack
+---
 
-| Layer | Technology |
-|---|---|
-| Frontend | Angular 21 (standalone components, signals), Angular Material, Tailwind CSS |
-| Backend | Node.js, Express 4, Mongoose 8 |
-| Database | MongoDB |
-| Auth | Google Identity Services + `google-auth-library` |
-| Payments | Stripe Checkout (optional) or mock mode |
-| Tests | Vitest via the Angular test builder |
+## 🏗️ Architecture Overview
 
-## Repository layout
+```mermaid
+flowchart TD
+    Client["Client Browser<br/>(Angular 21 + Tailwind)"] -->|Static Hosting| Vercel["Vercel Production<br/>ted-bus-two.vercel.app"]
+    Client -->|Google OAuth 2.0| GoogleAuth["Google Identity Services<br/>accounts.google.com"]
+    Client -->|REST API Requests & Preflight| RenderAPI["Render Web Service<br/>tedbus-api-klsp.onrender.com"]
+    RenderAPI -->|Mongoose ODM| Atlas["MongoDB Atlas (Cloud M0)<br/>Routes, Buses, Customers, Bookings"]
+    RenderAPI -->|Verify ID Token| GoogleAuth
+    RenderAPI -.->|Optional Checkout| Stripe["Stripe Gateway<br/>(Mock mode default)"]
+```
+
+---
+
+## ✨ Key Features
+
+* **Route Discovery & Search:**
+  * Dynamic city dropdowns with source & destination correlation.
+  * 1-click city swap button.
+  * Local calendar datepicker with past date protection.
+* **Live Search & Filtering:**
+  * Real-time filtering by bus type (*AC, Non-AC, Sleeper, Seater*).
+  * Departure window slot filters (*Before 6 AM, 6 AM–12 PM, 12 PM–6 PM, After 6 PM*).
+  * Sorting by fare, departure time, and customer ratings.
+* **Interactive Seat Selection & Drawer:**
+  * Interactive 40-seat deck with live disabled state for already-booked seats.
+  * Real-time fare calculation with multi-seat selection limits.
+  * Responsive, full-screen slide-in drawer for passenger details (*Name, Age, Gender* per seat).
+* **Authentication & User Management:**
+  * Google Sign-In with server-side ID token verification.
+  * Customer syncing in MongoDB with profile picture and contact information.
+* **Checkout & Payment:**
+  * Order summary breakdown with taxes, insurance, and donations.
+  * Instant mock gateway for demo transactions, with Stripe Checkout support.
+* **Trip & Inventory Management:**
+  * Profile dashboard tracking upcoming and completed trips.
+  * 1-click booking cancellation that permanently frees seat inventory in MongoDB.
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology | Purpose |
+|---|---|---|
+| **Frontend** | Angular 21 (Signals & Standalone Components) | Reactive UI, client-side routing, and state management |
+| **Styling** | Tailwind CSS + Angular Material | Modern, responsive mobile & desktop UI |
+| **Backend** | Node.js + Express 4 (ES Modules) | RESTful API, authentication middleware, and business logic |
+| **Database** | MongoDB Atlas (Mongoose 8) | Persistent document store for routes, buses, and bookings |
+| **Security** | CORS with preflight handling, Google Auth Library | Multi-origin protection and token validation |
+| **Deployment** | Vercel (Frontend) + Render (API) | Cloud serverless static frontend & managed Node backend |
+
+---
+
+## 📁 Repository Layout
 
 ```
-.
-├── backend/            Express API
+TedBus/
+├── backend/                      # Express REST API
 │   ├── src/
-│   │   ├── config/     MongoDB connection
-│   │   ├── controllers/ request handlers
-│   │   ├── middleware/ auth, errors
-│   │   ├── models/     Mongoose schemas
-│   │   ├── routes/     API routers
-│   │   ├── services/   booking and access helpers
-│   │   └── server.js   entry point
-│   └── .env.example    environment template
-├── frontend/           Angular app
-│   └── src/app/
-│       ├── Component/  pages and UI components
-│       ├── model/      domain types and fare/time helpers
-│       └── service/    API clients, auth, shared search state
-└── tedbus-seed.js      demo data seed script
+│   │   ├── config/               # MongoDB Atlas connection
+│   │   ├── controllers/          # Request handlers (booking, bus, customer, payment, route)
+│   │   ├── middleware/           # Google auth verification, error handlers
+│   │   ├── models/               # Mongoose schemas (Booking, Bus, Customer, Route)
+│   │   ├── routes/               # Express routers
+│   │   ├── services/             # Booking validation, access control
+│   │   ├── app.js                # Express app setup & CORS policy
+│   │   └── server.js             # API entrypoint
+│   └── package.json
+├── frontend/                     # Angular 21 Frontend
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── Component/        # Landing page, bus selection, seat map, payment, profile
+│   │   │   ├── model/            # TypeScript interfaces & fare calculators
+│   │   │   └── service/          # HTTP API client, AuthService, filter state
+│   │   └── environments/         # Dev and production API URLs
+│   └── vercel.json               # Vercel SPA rewrites & cache headers
+├── render.yaml                   # Render Blueprint configuration
+├── tedbus-seed.js                # Database seeder script
+├── DEPLOYMENT.md                 # Step-by-step deployment and verification guide
+└── README.md
 ```
 
-## Prerequisites
+---
 
-- Node.js 22 or newer (developed on Node 24)
-- npm
-- MongoDB running locally on `mongodb://127.0.0.1:27017`
-- `mongosh` for seeding
-- (Optional) a Google Cloud OAuth client ID for sign-in
-- (Optional) Stripe keys for real payments
+## 🚀 Local Development Setup
 
-## Quick start
+### 1. Prerequisites
+* **Node.js** `>= 22.12.0`
+* **npm**
+* **MongoDB** (local `mongodb://127.0.0.1:27017` or MongoDB Atlas URI)
+* `mongosh` CLI
 
-### 1. Start MongoDB
-
-```bash
-mongosh --quiet --eval 'db.runCommand({ping:1}).ok'   # prints 1 when reachable
-```
-
-### 2. Seed the database (first run only)
-
+### 2. Seed Database
 ```bash
 mongosh "mongodb://127.0.0.1:27017/tedbus" tedbus-seed.js
 ```
+*(Populates 12 routes, 26 buses, demo user, and initial trips).*
 
-Creates 12 routes, 26 buses, one demo customer and two demo bookings. Re-running replaces only the demo records.
-
-### 3. Start the API
-
+### 3. Start Backend API
 ```bash
 cd backend
 npm install
-cp .env.example .env      # then edit the values you need
-npm run dev               # or: npm start
+cp .env.example .env     # Update MONGODB_URI, GOOGLE_CLIENT_ID if desired
+npm run dev              # Runs on http://localhost:3000
 ```
-
-The API listens on <http://localhost:3000>. Verify:
-
+Verify with:
 ```bash
 curl http://localhost:3000/api/health
-# {"status":"ok","database":"connected","payments":"mock","auth":"optional"}
 ```
 
-### 4. Start the frontend
-
+### 4. Start Angular Frontend
 ```bash
 cd frontend
 npm install
-npm start
+npm start                # Runs on http://localhost:4200
+```
+Open **`http://localhost:4200`** in your browser.
+
+---
+
+## 📡 API Reference
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/` | API status and route directory |
+| `GET` | `/api/health` | Service health, DB connection status, payment mode |
+| `GET` | `/api/routes` | List all available travel routes |
+| `GET` | `/api/routes/:from/:to/:date` | Get matching buses & occupied seat map for a date |
+| `GET` | `/api/buses` | Get all registered buses |
+| `POST` | `/api/customers` | Upsert customer record upon Google sign-in |
+| `GET` | `/api/bookings/:customerId` | Retrieve all bookings for a user |
+| `POST` | `/api/bookings` | Create a confirmed ticket booking |
+| `PATCH` | `/api/bookings/:id/cancel` | Cancel and permanently remove a booking |
+| `POST` | `/api/payments/checkout` | Create Stripe / Mock checkout session |
+
+---
+
+## 🧪 Testing
+
+```bash
+# Run Angular test suite
+cd frontend
+npx ng test --watch=false
+
+# Test production build
+npm run build
 ```
 
-Open <http://localhost:4200>. The frontend calls `http://localhost:3000/api`, so keep the API on port 3000 or update `apiUrl` in `frontend/src/environments/environment.ts`.
+---
 
-## Configuration
+## 🚢 Deployment & Production Verification
 
-### `backend/.env`
-
-| Variable | Default | Purpose |
-|---|---|---|
-| `PORT` | `3000` | API port |
-| `MONGODB_URI` | `mongodb://127.0.0.1:27017/tedbus` | MongoDB connection string |
-| `CORS_ORIGIN` | `http://localhost:4200` | Allowed origins, comma separated |
-| `APP_URL` | `http://localhost:4200` | Frontend URL used for Stripe redirects |
-| `GOOGLE_CLIENT_ID` | empty | Enables Google ID-token verification |
-| `AUTH_REQUIRED` | `false` | `true` blocks anonymous booking/customer writes |
-| `PAYMENT_MODE` | `auto` | `auto`, `stripe` or `mock` |
-| `STRIPE_SECRET_KEY` | empty | Enables Stripe Checkout when `PAYMENT_MODE` allows it |
-| `STRIPE_WEBHOOK_SECRET` | empty | Verifies `/api/payments/webhook` signatures |
-
-`backend/.env` is gitignored. Commit only `.env.example`.
-
-### `frontend/src/environments/environment.ts`
-
-| Field | Purpose |
-|---|---|
-| `production` | Build flag |
-| `apiUrl` | Base URL of the API |
-| `googleClientId` | OAuth **Web application** client ID |
-
-## Deployment
-
-The repository is pre-configured for **Vercel** (frontend) and **Render** (API):
-
-- `render.yaml` — Render Blueprint exposing the API with health check `/api/health` and all required env vars.
-- `frontend/vercel.json` — build command, `dist/frontend/browser` output, SPA rewrites and cache headers.
-- `frontend/src/environments/environment.prod.ts` — the production API URL, swapped in by `ng build` through `fileReplacements` in `angular.json`.
-
-Full step-by-step instructions, including MongoDB Atlas, OAuth origins, CORS wiring, verification and rollback: **[DEPLOYMENT.md](DEPLOYMENT.md)**.
-
-## Google sign-in setup
-
-1. In Google Cloud Console create a project, then configure **Google Auth Platform → Audience** as *External* and add your Gmail under **Test users**.
-2. Create an OAuth client of type **Web application** with authorized JavaScript origins `http://localhost:4200` and `http://127.0.0.1:4200`. No redirect URI is needed.
-3. Put the **client ID** in both places below, using the identical value:
-   - `frontend/src/environments/environment.ts` → `googleClientId`
-   - `backend/.env` → `GOOGLE_CLIENT_ID`
-4. Restart the API (env is read at startup).
-5. Optionally set `AUTH_REQUIRED=true` to require a verified token on protected endpoints.
-
-The client **secret is not used**: the browser receives an ID token directly from Google and the API verifies its signature and audience. Never ship a client secret in the frontend.
-
-Without a client ID the app still runs: the navbar shows a "Sign in" explanation and the API treats every request as anonymous.
-
-## Payments
-
-- `PAYMENT_MODE=auto` (default) uses Stripe when `STRIPE_SECRET_KEY` is set, otherwise mock mode.
-- `PAYMENT_MODE=mock` always uses the simulated gateway: the booking is created immediately and the user is sent to the profile page.
-- `PAYMENT_MODE=stripe` requires a key; `POST /api/payments/checkout` creates a Checkout Session and the frontend redirects to it.
-- Webhook: `POST /api/payments/webhook` (mounted before `express.json()` because signatures need the raw body).
-
-## API reference
-
-| Method | Endpoint | Auth* | Description |
-|---|---|---|---|
-| GET | `/api/health` | – | Status, database and mode information |
-| GET | `/api/routes` | – | All routes |
-| POST | `/api/routes` | ✓ | Create a route |
-| GET | `/api/routes/:departure/:arrival/:date` | – | Buses for a route and date |
-| GET | `/api/buses` | – | All buses |
-| GET | `/api/buses/:id` | – | One bus |
-| POST | `/api/buses` | ✓ | Create a bus |
-| POST | `/api/customers` | ✓ | Upsert a customer by email |
-| GET | `/api/customers/:id` | – | Look up by id or email |
-| GET | `/api/bookings/:customerId` | ✓ | Bookings for a customer |
-| GET | `/api/bookings/id/:id` | ✓ | One booking |
-| POST | `/api/bookings` | ✓ | Create a booking |
-| GET | `/api/bookings/:id/refund-quote` | ✓ | Refund preview before cancelling |
-| PATCH | `/api/bookings/:id/cancel` | ✓ | Cancel and record the refund |
-| GET | `/api/payments/config` | – | Payment mode for the UI |
-| POST | `/api/payments/checkout` | – | Start a Stripe Checkout session |
-| POST | `/api/payments/webhook` | signature | Stripe webhook receiver |
-
-\* `✓` means a valid Google ID token is required **only** when `AUTH_REQUIRED=true`; tokens are always verified when one is sent.
-
-## Scripts
-
-| Location | Command | What it does |
-|---|---|---|
-| `backend/` | `npm start` | Run the API |
-| `backend/` | `npm run dev` | Run with file watching |
-| `frontend/` | `npm start` | Dev server on :4200 |
-| `frontend/` | `npm run build` | Production build into `dist/` |
-| `frontend/` | `npm test` | Unit tests (watch mode) |
-| `frontend/` | `npx ng test --watch=false` | Unit tests, single run |
-
-## Testing and build status
-
-- `npx ng test --watch=false` — 19 spec files, 26 tests passing.
-- `npm run build` — succeeds; the only warning is the default 500 kB initial-bundle budget.
-
-## Demo data
-
-- Customer: `Demo Traveller <demo@tedbus.test>` (used by the seeded bookings; sign-in is Google-only, so this record is not a login).
-- Routes include Hyderabad↔Bengaluru, Mumbai↔Pune, Delhi↔Jaipur, Chennai↔Bengaluru, Hyderabad↔Vijayawada and Mumbai↔Goa.
-- Example search: `Hyderabad` → `Bengaluru`, any date from today onward.
-
-## Troubleshooting
-
-| Symptom | Likely cause |
-|---|---|
-| API exits with "Could not connect to MongoDB" | MongoDB is not running or `MONGODB_URI` is wrong |
-| Browser console CORS errors | Page origin ≠ `CORS_ORIGIN` (note `localhost` and `127.0.0.1` differ) |
-| Google button missing | No `googleClientId` configured; a "Sign in" explanation is shown instead |
-| Sign-in popup closes, no session | Account is not listed under test users, or origin is not authorized |
-| API returns 401 on writes | `AUTH_REQUIRED=true` and no/invalid token |
-| `.env` changes ignored | The API reads env at startup — restart it |
-
-## Known limitations
-
-- The project targets local development: no Docker images, CI pipeline or production deployment config.
-- Stripe integration is implemented but has only been exercised in mock mode.
-- Fares, buses and operators are demo data from `tedbus-seed.js`.
-- There is no admin UI; routes and buses are managed through the API.
+For full instructions on configuring MongoDB Atlas, Render web services, Vercel SPA rewrites, and Google OAuth credentials, see **[DEPLOYMENT.md](DEPLOYMENT.md)**.
