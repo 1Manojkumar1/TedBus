@@ -1,0 +1,105 @@
+<article class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+  <header class="flex flex-wrap items-start justify-between gap-3 px-5 md:px-6 pt-5">
+    <div class="min-w-0">
+      <div class="flex items-center gap-2 text-base md:text-lg font-bold text-gray-800">
+        <span class="truncate">{{ booking().departureDetails?.city || '-' }}</span>
+        <mat-icon class="text-gray-300 text-[20px] w-5 h-5 leading-5">arrow_forward</mat-icon>
+        <span class="truncate">{{ booking().arrivalDetails?.city || '-' }}</span>
+      </div>
+      <p class="mt-1 text-xs text-gray-400">
+        Booked on {{ formatdate(booking().bookingDate) }}
+        @if (booking()._id) {
+          <span class="mx-1">·</span> Booking ID {{ booking()._id.slice(-6).toUpperCase() }}
+        }
+      </p>
+    </div>
+
+    <span
+      [class]="isupcoming()
+        ? 'text-xs font-semibold px-3 py-1 rounded-full bg-green-50 text-green-700'
+        : 'text-xs font-semibold px-3 py-1 rounded-full bg-gray-100 text-gray-600'">
+      {{ booking().status || 'booked' }}
+    </span>
+  </header>
+
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 px-5 md:px-6 py-5">
+    <div>
+      <p class="text-xs font-medium uppercase tracking-wide text-gray-400">Departure</p>
+      <p class="mt-1 font-semibold text-gray-800">{{ departuretime() }}</p>
+      <p class="text-sm text-gray-500">{{ formatdate(booking().departureDetails?.date) }}</p>
+    </div>
+
+    <div class="flex sm:flex-col items-center sm:justify-center gap-2 sm:gap-1 text-gray-400">
+      <mat-icon class="text-[20px] w-5 h-5 leading-5">schedule</mat-icon>
+      <p class="text-sm">{{ booking().duration || '-' }} hrs</p>
+    </div>
+
+    <div class="sm:text-right">
+      <p class="text-xs font-medium uppercase tracking-wide text-gray-400">Arrival</p>
+      <p class="mt-1 font-semibold text-gray-800">{{ arrivaltime() }}</p>
+      <p class="text-sm text-gray-500">{{ formatdate(booking().arrivalDetails?.date) }}</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 px-5 md:px-6 py-5 bg-gray-50/70 border-t border-gray-100">
+    <div>
+      <p class="text-xs font-medium uppercase tracking-wide text-gray-400">Seats & passengers</p>
+
+      @if (seats().length) {
+        <div class="flex flex-wrap gap-1.5 mt-2">
+          @for (seat of seats(); track seat) {
+            <span class="text-xs font-semibold px-2 py-1 rounded-lg bg-white border border-gray-200 text-gray-600">
+              {{ seat }}
+            </span>
+          }
+        </div>
+      }
+
+      <div class="mt-2 flex flex-wrap gap-x-4 gap-y-2">
+        @for (passenger of passengers(); track $index) {
+          <p class="text-sm text-gray-600 flex items-center gap-1.5">
+            <mat-icon class="text-gray-400 text-[16px] w-4 h-4 leading-4">person</mat-icon>
+            {{ passenger.name }}
+            @if (passenger.age) {
+              <span class="text-gray-400">· {{ passenger.age }}</span>
+            }
+            @if (passenger.gender) {
+              <span class="text-gray-400">· {{ passenger.gender }}</span>
+            }
+          </p>
+        } @empty {
+          <p class="text-sm text-gray-500">No passenger details</p>
+        }
+      </div>
+    </div>
+
+    <div>
+      <p class="text-xs font-medium uppercase tracking-wide text-gray-400">Fare & contact</p>
+      <p class="mt-1 text-lg font-bold text-gray-800">&#8377;{{ booking().fare || 0 }}</p>
+
+      <div class="mt-1 flex flex-col gap-1 text-sm text-gray-600">
+        @if (booking().email) {
+          <p class="flex items-center gap-1.5 break-all">
+            <mat-icon class="text-gray-400 text-[16px] w-4 h-4 leading-4">mail</mat-icon>
+            {{ booking().email }}
+          </p>
+        }
+        @if (booking().phoneNumber) {
+          <p class="flex items-center gap-1.5">
+            <mat-icon class="text-gray-400 text-[16px] w-4 h-4 leading-4">call</mat-icon>
+            {{ booking().phoneNumber }}
+          </p>
+        }
+      </div>
+    </div>
+  </div>
+
+  @if (isupcoming()) {
+    <div class="px-5 md:px-6 py-4 border-t border-gray-100 flex justify-end">
+      <button type="button" (click)="cancel.emit(booking()._id)"
+        class="px-4 py-2 rounded-xl border border-red-200 text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors">
+        Cancel trip
+      </button>
+    </div>
+  }
+</article>

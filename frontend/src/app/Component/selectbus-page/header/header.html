@@ -1,0 +1,18 @@
+<header class="header-container">
+  <div class="header-left">
+    <a routerLink="/" class="logo">TedBus</a>
+  </div>
+  <div class="header-right">
+    @if (trip().from || trip().to) {
+      <span class="trip-info">
+        {{ trip().from }} &rarr; {{ trip().to }}
+        @if (trip().date) {
+          &middot; {{ formatdate(trip().date) }}
+        }
+      </span>
+    } @else {
+      <span class="trip-info">Search buses</span>
+    }
+    <a routerLink="/" class="text-sm font-medium text-[#5F4299] hover:underline">Change search</a>
+  </div>
+</header>

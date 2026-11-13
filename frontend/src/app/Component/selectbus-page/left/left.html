@@ -1,0 +1,17 @@
+<div class="left-container">
+  <h3>Filters</h3>
+  <div class="filter-section">
+    <label>Bus Type</label>
+    <div><input type="checkbox" [checked]="hasBusType('ac')" (change)="toggleBusType('ac')" /> AC</div>
+    <div><input type="checkbox" [checked]="hasBusType('nonac')" (change)="toggleBusType('nonac')" /> Non-AC</div>
+    <div><input type="checkbox" [checked]="hasBusType('sleeper')" (change)="toggleBusType('sleeper')" /> Sleeper</div>
+    <div><input type="checkbox" [checked]="hasBusType('seater')" (change)="toggleBusType('seater')" /> Seater</div>
+  </div>
+  <div class="filter-section">
+    <label>Departure Time</label>
+    <div><input type="checkbox" [checked]="hasSlot('before6')" (change)="toggleSlot('before6')" /> Before 6 AM</div>
+    <div><input type="checkbox" [checked]="hasSlot('6-12')" (change)="toggleSlot('6-12')" /> 6 AM - 12 PM</div>
+    <div><input type="checkbox" [checked]="hasSlot('12-18')" (change)="toggleSlot('12-18')" /> 12 PM - 6 PM</div>
+    <div><input type="checkbox" [checked]="hasSlot('after18')" (change)="toggleSlot('after18')" /> After 6 PM</div>
+  </div>
+</div>

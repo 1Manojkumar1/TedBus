@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+
+button {
+  font-family: inherit;
+}
+
+.mat-icon {
+  flex-shrink: 0;
+}

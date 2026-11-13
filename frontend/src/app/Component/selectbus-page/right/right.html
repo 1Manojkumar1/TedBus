@@ -1,0 +1,47 @@
+<div class="right-container">
+  <div class="flex flex-wrap items-baseline gap-2 mb-4 px-1">
+    <h2 class="text-lg font-bold text-gray-800">
+      {{ search().from || 'Buses' }} &rarr; {{ search().to || '' }}
+    </h2>
+    <span class="text-sm text-gray-500">{{ formatdate(search().date) }}</span>
+    @if (!loading() && !loaderror()) {
+      <span class="text-sm text-gray-500">&middot; {{ visibleBuses().length }} of {{ buses().length }} buses</span>
+    }
+  </div>
+
+  <app-sorting-bar></app-sorting-bar>
+
+  @if (loading()) {
+    <div class="grid place-content-center py-16 text-center gap-2">
+      <span class="animate-spin inline-block w-6 h-6 border-2 border-gray-300 border-t-[#5F4299] rounded-full justify-self-center"></span>
+      <p class="text-sm text-gray-500">Searching buses...</p>
+    </div>
+  } @else if (loaderror()) {
+    <div class="py-12 text-center">
+      <p class="text-sm text-gray-600">{{ loaderror() }}</p>
+      <button (click)="retry()"
+        class="mt-4 px-4 py-2 rounded-xl bg-[#5F4299] text-white text-sm font-semibold hover:bg-[#4d357d]">
+        Try again
+      </button>
+    </div>
+  }  @else if (!visibleBuses().length) {
+    <div class="py-12 text-center">
+      <p class="text-sm text-gray-600">No buses found for this route on this date.</p>
+    </div>
+  } @else {
+    @for (bus of visibleBuses(); track bus._id) {
+      <app-bus-box
+        [operatorname]="bus.operatorName"
+        [bustype]="bus.busType"
+        [departuretime]="bus.departureTime"
+        [rating]="bus.rating"
+        [reschedulable]="bus.reschedulable"
+        [livetracking]="bus.liveTracking"
+        [filledseats]="bus.filledseats"
+        [routedetails]="routeinfo()"
+        [busid]="bus._id"
+        [totalseats]="bus.totalSeats || 40">
+      </app-bus-box>
+    }
+  }
+</div>

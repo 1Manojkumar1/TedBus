@@ -1,0 +1,9 @@
+<div class="min-h-screen bg-[#f7f7f9]">
+  <div class="max-w-3xl mx-auto px-4 py-10">
+    <a routerLink="/" class="text-sm text-[#5F4299] font-semibold">&larr; Back to home</a>
+    <h1 class="mt-4 text-3xl font-bold text-gray-800">{{ content[topic].title }}</h1>
+    @for (paragraph of content[topic].body; track $index) {
+      <p class="mt-4 text-gray-600 leading-7">{{ paragraph }}</p>
+    }
+  </div>
+</div>
