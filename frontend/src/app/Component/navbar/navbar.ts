@@ -1,17 +1,24 @@
 import { Component, ElementRef, effect, inject, signal, viewChild } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { AuthService } from '../../service/auth.service';
+import { ThemeService } from '../../service/theme.service';
+import { TranslationService, SupportedLanguage } from '../../service/translation.service';
+import { NotificationService } from '../../service/notification.service';
+import { TranslatePipe } from '../../service/translate.pipe';
 
 @Component({
   selector: 'app-navbar',
-  imports: [NgIf, MatMenuModule],
+  imports: [CommonModule, MatMenuModule, TranslatePipe],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
 export class Navbar {
   readonly auth = inject(AuthService);
+  readonly themeService = inject(ThemeService);
+  readonly i18n = inject(TranslationService);
+  readonly notificationService = inject(NotificationService);
   readonly showsetup = signal(false);
 
   private readonly router = inject(Router);
@@ -19,6 +26,20 @@ export class Navbar {
   private renderedhost?: HTMLElement;
 
   constructor() {
+    effect(() => {
+      if (this.auth.isloggedin()) {
+        const user = this.auth.user();
+        const customerId = user?._id || user?.googleId || user?.email;
+        this.notificationService
+          .getNotifications({
+            customerId,
+            email: user?.email,
+            limit: 5,
+          })
+          .subscribe({ error: () => {} });
+      }
+    });
+
     effect(() => {
       const host = this.googlecontainer()?.nativeElement;
       if (!host || this.auth.isloggedin() || !this.auth.configured) {
@@ -30,6 +51,14 @@ export class Navbar {
 
   navigate(path: string) {
     this.router.navigate([path]);
+  }
+
+  toggleTheme() {
+    this.themeService.toggleTheme();
+  }
+
+  selectLanguage(lang: SupportedLanguage) {
+    this.i18n.setLanguage(lang);
   }
 
   handlelogout() {

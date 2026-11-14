@@ -12,6 +12,7 @@ import { Booking } from '../../../model/booking.model';
 export class MyTrip {
   booking = input.required<Booking>();
   cancel = output<string>();
+  writeReview = output<Booking>();
 
   readonly passengers = computed(() => this.booking().passengerDetails ?? []);
 

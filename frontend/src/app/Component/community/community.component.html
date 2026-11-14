@@ -1,0 +1,657 @@
+<div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-200">
+
+  <!-- Header Banner -->
+  <section class="bg-gradient-to-r from-[#4b337e] via-[#5f4299] to-[#d84e55] text-white py-10 px-4 md:px-12 shadow-md">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <div>
+        <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold mb-3">
+          <i class="fa-solid fa-users"></i>
+          <span>TedBus Travel Community</span>
+        </div>
+        <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight">Explore India with Fellow Travelers</h1>
+        <p class="mt-2 text-sm md:text-base text-purple-100 max-w-xl">
+          Discover verified route tips, bus travel stories, safety advice, and hidden gems shared by daily commuters and explorers.
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+        <button (click)="openCreateModal()"
+          class="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white text-[#5f4299] hover:bg-purple-50 font-bold text-sm shadow-lg transition-transform hover:scale-105 active:scale-95 cursor-pointer">
+          <i class="fa-solid fa-feather-pointed text-base text-[#d84e55]"></i>
+          <span>Share Travel Story</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community Container -->
+  <div class="max-w-6xl mx-auto px-4 py-8">
+
+    <!-- Search & Filter Controls -->
+    <div class="flex flex-col md:flex-row gap-4 items-center justify-between mb-6">
+      <!-- Search Input -->
+      <div class="relative w-full md:w-96">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-gray-400 text-sm"></i>
+        <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()"
+          placeholder="Search routes, tips, destinations..."
+          class="w-full pl-10 pr-20 py-2.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#5f4299] text-gray-800 dark:text-gray-100 shadow-sm" />
+        <button (click)="onSearch()"
+          class="absolute right-1.5 top-1.5 px-3 py-1.5 bg-[#5f4299] text-white text-xs font-semibold rounded-lg hover:bg-[#4b337e] transition-colors">
+          Search
+        </button>
+      </div>
+
+      <!-- Sort Selection -->
+      <div class="flex items-center gap-2 self-end md:self-auto text-xs font-medium">
+        <span class="text-gray-500 dark:text-gray-400">Sort by:</span>
+        <div class="inline-flex bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl p-1 shadow-sm">
+          <button (click)="onSortChange('recent')"
+            [class.bg-[#5f4299]]="currentSort() === 'recent'"
+            [class.text-white]="currentSort() === 'recent'"
+            class="px-3 py-1.5 rounded-lg text-gray-600 dark:text-gray-300 font-semibold transition-colors">
+            Recent
+          </button>
+          <button (click)="onSortChange('trending')"
+            [class.bg-[#5f4299]]="currentSort() === 'trending'"
+            [class.text-white]="currentSort() === 'trending'"
+            class="px-3 py-1.5 rounded-lg text-gray-600 dark:text-gray-300 font-semibold transition-colors">
+            Trending
+          </button>
+          <button (click)="onSortChange('top')"
+            [class.bg-[#5f4299]]="currentSort() === 'top'"
+            [class.text-white]="currentSort() === 'top'"
+            class="px-3 py-1.5 rounded-lg text-gray-600 dark:text-gray-300 font-semibold transition-colors">
+            Most Liked
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Pills -->
+    <div class="flex gap-2 overflow-x-auto pb-3 mb-8 no-scrollbar">
+      <button *ngFor="let cat of categories" (click)="onCategorySelect(cat)"
+        [class.bg-[#5f4299]]="selectedCategory() === cat"
+        [class.text-white]="selectedCategory() === cat"
+        [class.border-[#5f4299]]="selectedCategory() === cat"
+        class="whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-700 dark:text-gray-200 hover:border-[#5f4299] transition-all cursor-pointer shadow-sm">
+        {{ cat }}
+      </button>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+      <!-- Left Column: Posts Feed (2 cols) -->
+      <div class="lg:col-span-2 space-y-5">
+
+        <!-- Loading State -->
+        <div *ngIf="isLoading()" class="py-16 text-center">
+          <div class="inline-block animate-spin w-8 h-8 border-4 border-[#5f4299] border-t-transparent rounded-full mb-3"></div>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Loading discussions...</p>
+        </div>
+
+        <!-- Error State -->
+        <div *ngIf="errorMessage()" class="p-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 rounded-xl text-red-700 dark:text-red-300 text-sm">
+          {{ errorMessage() }}
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="!isLoading() && posts().length === 0" class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-10 text-center shadow-sm">
+          <div class="w-16 h-16 bg-purple-50 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto text-[#5f4299] text-2xl mb-4">
+            <i class="fa-solid fa-comments"></i>
+          </div>
+          <h3 class="text-lg font-bold">No discussions found</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-md mx-auto">
+            Be the first traveler to share a story, review a route, or ask a question in this category!
+          </p>
+          <button (click)="openCreateModal()" class="mt-4 px-5 py-2.5 bg-[#5f4299] text-white rounded-xl text-xs font-bold hover:bg-[#4b337e] transition-colors">
+            Create First Post
+          </button>
+        </div>
+
+        <!-- Post Cards -->
+        <div *ngFor="let post of posts()"
+          (click)="openPostDetail(post)"
+          class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all cursor-pointer group">
+
+          <!-- Card Header: Author, Badge, Category, Actions -->
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <div class="flex items-center gap-3">
+              <img *ngIf="post.author.picture" [src]="post.author.picture" [alt]="post.author.name"
+                class="w-10 h-10 rounded-full object-cover border border-gray-200 dark:border-slate-700" />
+              <div *ngIf="!post.author.picture"
+                class="w-10 h-10 rounded-full bg-purple-100 dark:bg-slate-800 text-[#5f4299] font-bold flex items-center justify-center text-sm">
+                {{ post.author.name.charAt(0).toUpperCase() }}
+              </div>
+
+              <div>
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="font-bold text-sm text-gray-900 dark:text-gray-100">{{ post.author.name }}</span>
+                  <span *ngIf="post.author.badge"
+                    [class]="'text-[10px] font-bold px-2 py-0.5 rounded-full border ' + getBadgeColor(post.author.badge)">
+                    <i class="fa-solid fa-award mr-1"></i>{{ post.author.badge }}
+                  </span>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
+                  <span>{{ formatDate(post.createdAt) }}</span>
+                  <span>•</span>
+                  <span class="text-[#5f4299] font-medium">{{ post.category }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Post Menu / Owner Actions -->
+            <div class="flex items-center gap-1" (click)="$event.stopPropagation()">
+              <button *ngIf="isPostOwner(post)" (click)="openEditModal(post, $event)"
+                class="w-7 h-7 flex items-center justify-center rounded-lg text-gray-400 hover:text-[#5f4299] hover:bg-purple-50 dark:hover:bg-slate-800 transition-colors"
+                title="Edit Post">
+                <i class="fa-solid fa-pen text-xs"></i>
+              </button>
+              <button *ngIf="isPostOwner(post)" (click)="deletePost(post, $event)"
+                class="w-7 h-7 flex items-center justify-center rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-slate-800 transition-colors"
+                title="Delete Post">
+                <i class="fa-solid fa-trash text-xs"></i>
+              </button>
+              <button (click)="openReportModal('post', post._id, $event)"
+                class="w-7 h-7 flex items-center justify-center rounded-lg text-gray-400 hover:text-amber-500 hover:bg-amber-50 dark:hover:bg-slate-800 transition-colors"
+                title="Report Post">
+                <i class="fa-regular fa-flag text-xs"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Route Tag (if attached) -->
+          <div *ngIf="post.routeTag?.from && post.routeTag?.to"
+            (click)="$event.stopPropagation()"
+            class="mb-3 inline-flex items-center gap-2 bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900/60 rounded-xl px-3 py-1.5 text-xs text-purple-900 dark:text-purple-200">
+            <i class="fa-solid fa-route text-[#5f4299]"></i>
+            <span class="font-bold">{{ post.routeTag?.from }} ➔ {{ post.routeTag?.to }}</span>
+            <button (click)="searchBusesForRoute(post.routeTag!.from, post.routeTag!.to, $event)"
+              class="ml-2 px-2 py-0.5 bg-[#5f4299] text-white text-[11px] font-semibold rounded-md hover:bg-[#4b337e] transition-colors">
+              Find Buses
+            </button>
+          </div>
+
+          <!-- Post Title -->
+          <h2 class="text-base md:text-lg font-bold text-gray-900 dark:text-gray-100 group-hover:text-[#5f4299] transition-colors mb-2">
+            {{ post.title }}
+          </h2>
+
+          <!-- Post Content Excerpt -->
+          <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-3 mb-4">
+            {{ post.content }}
+          </p>
+
+          <!-- Post Image (if any) -->
+          <div *ngIf="post.images && post.images.length > 0" class="mb-4 rounded-xl overflow-hidden max-h-72">
+            <img [src]="post.images[0]" [alt]="post.title" class="w-full h-auto object-cover rounded-xl" />
+          </div>
+
+          <!-- Tags -->
+          <div *ngIf="post.tags && post.tags.length > 0" class="flex flex-wrap gap-1.5 mb-4">
+            <span *ngFor="let t of post.tags"
+              class="text-[11px] font-medium px-2 py-0.5 rounded-md bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400">
+              #{{ t }}
+            </span>
+          </div>
+
+          <!-- Engagement Footer -->
+          <div class="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-slate-800 text-xs text-gray-500 dark:text-gray-400">
+            <div class="flex items-center gap-4">
+              <!-- Like Button -->
+              <button (click)="toggleLike(post, $event)"
+                class="flex items-center gap-1.5 hover:text-red-500 transition-colors"
+                [class.text-red-500]="isLikedByUser(post)">
+                <i [class]="isLikedByUser(post) ? 'fa-solid fa-heart text-red-500' : 'fa-regular fa-heart'"></i>
+                <span class="font-semibold">{{ post.likesCount || 0 }}</span>
+              </button>
+
+              <!-- Comments Count -->
+              <span class="flex items-center gap-1.5 hover:text-[#5f4299] transition-colors">
+                <i class="fa-regular fa-comment"></i>
+                <span class="font-semibold">{{ post.commentsCount || 0 }}</span>
+              </span>
+
+              <!-- Views Count -->
+              <span class="flex items-center gap-1.5">
+                <i class="fa-regular fa-eye"></i>
+                <span>{{ post.viewsCount || 0 }}</span>
+              </span>
+            </div>
+
+            <!-- Share Button -->
+            <button (click)="openShareModal(post, $event)"
+              class="flex items-center gap-1.5 hover:text-[#5f4299] transition-colors">
+              <i class="fa-solid fa-share-nodes"></i>
+              <span class="hidden sm:inline">Share</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div *ngIf="totalPages() > 1" class="flex items-center justify-center gap-2 pt-6">
+          <button (click)="goToPage(currentPage() - 1)" [disabled]="currentPage() === 1"
+            class="px-3 py-1.5 rounded-lg border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-semibold disabled:opacity-40">
+            Previous
+          </button>
+          <span class="text-xs font-bold px-3">
+            Page {{ currentPage() }} of {{ totalPages() }}
+          </span>
+          <button (click)="goToPage(currentPage() + 1)" [disabled]="currentPage() === totalPages()"
+            class="px-3 py-1.5 rounded-lg border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-semibold disabled:opacity-40">
+            Next
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Community Sidebar (1 col) -->
+      <div class="space-y-6">
+
+        <!-- User Community Activity Card (if logged in) -->
+        <div *ngIf="auth.isloggedin()" class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
+          <div class="flex items-center gap-3 mb-4">
+            <img *ngIf="auth.user()?.picture" [src]="auth.user()?.picture" class="w-12 h-12 rounded-full object-cover border-2 border-[#5f4299]" />
+            <div>
+              <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100">{{ auth.user()?.name }}</h3>
+              <p class="text-xs text-gray-400">{{ auth.user()?.email }}</p>
+              <span *ngIf="userStats()?.badge" [class]="'mt-1 inline-block text-[10px] font-bold px-2 py-0.5 rounded-full border ' + getBadgeColor(userStats()?.badge)">
+                {{ userStats()?.badge }}
+              </span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 text-center pt-3 border-t border-gray-100 dark:border-slate-800">
+            <div class="bg-gray-50 dark:bg-slate-800/50 p-2 rounded-xl">
+              <span class="block font-bold text-sm text-[#5f4299]">{{ userStats()?.postCount || 0 }}</span>
+              <span class="text-[10px] text-gray-400 uppercase font-semibold">Posts</span>
+            </div>
+            <div class="bg-gray-50 dark:bg-slate-800/50 p-2 rounded-xl">
+              <span class="block font-bold text-sm text-emerald-600">{{ userStats()?.commentCount || 0 }}</span>
+              <span class="text-[10px] text-gray-400 uppercase font-semibold">Replies</span>
+            </div>
+            <div class="bg-gray-50 dark:bg-slate-800/50 p-2 rounded-xl">
+              <span class="block font-bold text-sm text-red-500">{{ userStats()?.totalLikesReceived || 0 }}</span>
+              <span class="text-[10px] text-gray-400 uppercase font-semibold">Likes</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Community Guidelines & Trust Card -->
+        <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
+          <h3 class="font-bold text-sm mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-shield-halved text-[#5f4299]"></i>
+            <span>Community Trust & Badges</span>
+          </h3>
+          <ul class="space-y-2.5 text-xs text-gray-600 dark:text-gray-300">
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <span><strong>Verified Traveler:</strong> Awarded to passengers who have completed bus journeys on TedBus.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 font-bold">★</span>
+              <span><strong>Top Contributor:</strong> Awarded to community members actively helping other travelers with route tips.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-purple-500 font-bold">✦</span>
+              <span><strong>Route Explorer:</strong> Awarded to members posting travel insights with mapped bus routes.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Popular Routes Discussed -->
+        <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
+          <h3 class="font-bold text-sm mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-fire text-[#d84e55]"></i>
+            <span>Trending Route Topics</span>
+          </h3>
+          <div class="space-y-2">
+            <div (click)="searchBusesForRoute('Hyderabad', 'Bangalore')"
+              class="flex items-center justify-between p-2 rounded-xl hover:bg-purple-50 dark:hover:bg-slate-800 text-xs font-semibold cursor-pointer transition-colors">
+              <span>Hyderabad ➔ Bangalore</span>
+              <span class="text-[11px] text-[#5f4299]">Check Buses →</span>
+            </div>
+            <div (click)="searchBusesForRoute('Bangalore', 'Chennai')"
+              class="flex items-center justify-between p-2 rounded-xl hover:bg-purple-50 dark:hover:bg-slate-800 text-xs font-semibold cursor-pointer transition-colors">
+              <span>Bangalore ➔ Chennai</span>
+              <span class="text-[11px] text-[#5f4299]">Check Buses →</span>
+            </div>
+            <div (click)="searchBusesForRoute('Delhi', 'Jaipur')"
+              class="flex items-center justify-between p-2 rounded-xl hover:bg-purple-50 dark:hover:bg-slate-800 text-xs font-semibold cursor-pointer transition-colors">
+              <span>Delhi ➔ Jaipur</span>
+              <span class="text-[11px] text-[#5f4299]">Check Buses →</span>
+            </div>
+            <div (click)="searchBusesForRoute('Mumbai', 'Pune')"
+              class="flex items-center justify-between p-2 rounded-xl hover:bg-purple-50 dark:hover:bg-slate-800 text-xs font-semibold cursor-pointer transition-colors">
+              <span>Mumbai ➔ Pune</span>
+              <span class="text-[11px] text-[#5f4299]">Check Buses →</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Create / Edit Post Modal -->
+  <div *ngIf="isCreateModalOpen()"
+    class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6">
+      <div class="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-slate-800">
+        <h3 class="font-extrabold text-lg text-gray-900 dark:text-gray-100">
+          {{ editingPostId() ? 'Edit Travel Story' : 'Create New Travel Post' }}
+        </h3>
+        <button (click)="closeCreateModal()" class="w-8 h-8 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-400 hover:text-gray-700">
+          ✕
+        </button>
+      </div>
+
+      <div class="space-y-4 mt-4 text-sm">
+        <!-- Title -->
+        <div>
+          <label class="block font-bold text-xs text-gray-700 dark:text-gray-300 mb-1">Post Title *</label>
+          <input type="text" [(ngModel)]="postForm.title" placeholder="e.g. Hyderabad to Goa sleeper bus experience & road review"
+            class="w-full px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#5f4299]" />
+        </div>
+
+        <!-- Category -->
+        <div>
+          <label class="block font-bold text-xs text-gray-700 dark:text-gray-300 mb-1">Category *</label>
+          <select [(ngModel)]="postForm.category"
+            class="w-full px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#5f4299]">
+            <option *ngFor="let cat of categories.slice(1)" [value]="cat">{{ cat }}</option>
+          </select>
+        </div>
+
+        <!-- Route Tags (Optional) -->
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-xs text-gray-700 dark:text-gray-300 mb-1">From City (Optional)</label>
+            <input type="text" [(ngModel)]="postForm.routeFrom" placeholder="e.g. Hyderabad"
+              class="w-full px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl" />
+          </div>
+          <div>
+            <label class="block font-bold text-xs text-gray-700 dark:text-gray-300 mb-1">To City (Optional)</label>
+            <input type="text" [(ngModel)]="postForm.routeTo" placeholder="e.g. Bangalore"
+              class="w-full px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl" />
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div>
+          <label class="block font-bold text-xs text-gray-700 dark:text-gray-300 mb-1">Travel Experience / Tips *</label>
+          <textarea [(ngModel)]="postForm.content" rows="5" placeholder="Share your insights, road conditions, recommended rest stops, bus hygiene, or travel tips..."
+            class="w-full px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#5f4299]"></textarea>
+        </div>
+
+        <!-- Image URL -->
+        <div>
+          <label class="block font-bold text-xs text-gray-700 dark:text-gray-300 mb-1">Image URL (Optional)</label>
+          <input type="url" [(ngModel)]="postForm.imageUrl" placeholder="https://example.com/bus-journey-photo.jpg"
+            class="w-full px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl" />
+        </div>
+
+        <!-- Tags -->
+        <div>
+          <label class="block font-bold text-xs text-gray-700 dark:text-gray-300 mb-1">Tags (comma separated)</label>
+          <input type="text" [(ngModel)]="postForm.tagsString" placeholder="nightbus, sleeper, highway, foodstop"
+            class="w-full px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl" />
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-gray-100 dark:border-slate-800">
+        <button (click)="closeCreateModal()" class="px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-700 text-xs font-semibold">
+          Cancel
+        </button>
+        <button (click)="submitPost()" [disabled]="isSubmittingPost()"
+          class="px-5 py-2 rounded-xl bg-[#5f4299] text-white text-xs font-bold hover:bg-[#4b337e] transition-colors disabled:opacity-50">
+          {{ isSubmittingPost() ? 'Submitting...' : (editingPostId() ? 'Save Changes' : 'Publish Story') }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Post Detail & Comments Modal -->
+  <div *ngIf="activePost()"
+    class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl max-w-2xl w-full max-h-[92vh] overflow-y-auto shadow-2xl p-6">
+      
+      <!-- Close Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-slate-800 mb-4">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-[#5f4299]">{{ activePost()?.category }}</span>
+        </div>
+        <button (click)="closePostDetail()" class="w-8 h-8 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-400 hover:text-gray-700">
+          ✕
+        </button>
+      </div>
+
+      <!-- Author Bar -->
+      <div class="flex items-center gap-3 mb-4">
+        <img *ngIf="activePost()?.author?.picture" [src]="activePost()?.author?.picture" class="w-10 h-10 rounded-full object-cover" />
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-sm">{{ activePost()?.author?.name }}</span>
+            <span *ngIf="activePost()?.author?.badge" [class]="'text-[10px] font-bold px-2 py-0.5 rounded-full border ' + getBadgeColor(activePost()?.author?.badge)">
+              {{ activePost()?.author?.badge }}
+            </span>
+          </div>
+          <span class="text-xs text-gray-400">{{ formatDate(activePost()!.createdAt) }}</span>
+        </div>
+      </div>
+
+      <!-- Title & Content -->
+      <h2 class="text-xl font-bold mb-3">{{ activePost()?.title }}</h2>
+      <p class="text-sm text-gray-700 dark:text-gray-200 leading-relaxed whitespace-pre-line mb-4">
+        {{ activePost()?.content }}
+      </p>
+
+      <!-- Attached Image -->
+      <div *ngIf="activePost()?.images?.length" class="mb-5 rounded-xl overflow-hidden">
+        <img [src]="activePost()?.images?.[0]" class="w-full h-auto object-cover rounded-xl" />
+      </div>
+
+      <!-- Route Tag CTA inside detail -->
+      <div *ngIf="activePost()?.routeTag?.from && activePost()?.routeTag?.to"
+        class="mb-6 p-3 rounded-xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900/60 flex items-center justify-between">
+        <div class="flex items-center gap-2 text-xs font-bold text-purple-900 dark:text-purple-200">
+          <i class="fa-solid fa-bus text-[#5f4299]"></i>
+          <span>Route: {{ activePost()?.routeTag?.from }} ➔ {{ activePost()?.routeTag?.to }}</span>
+        </div>
+        <button (click)="searchBusesForRoute(activePost()!.routeTag!.from, activePost()!.routeTag!.to)"
+          class="px-3 py-1 bg-[#5f4299] text-white text-xs font-semibold rounded-lg hover:bg-[#4b337e]">
+          Search Buses
+        </button>
+      </div>
+
+      <!-- Engagement Stats -->
+      <div class="flex items-center justify-between py-3 border-y border-gray-100 dark:border-slate-800 text-xs text-gray-500 mb-6">
+        <div class="flex items-center gap-4">
+          <button (click)="toggleLike(activePost()!)" class="flex items-center gap-1.5 font-bold hover:text-red-500"
+            [class.text-red-500]="isLikedByUser(activePost()!)">
+            <i [class]="isLikedByUser(activePost()!) ? 'fa-solid fa-heart text-red-500' : 'fa-regular fa-heart'"></i>
+            <span>{{ activePost()?.likesCount || 0 }} Likes</span>
+          </button>
+          <span>{{ activePost()?.commentsCount || 0 }} Comments</span>
+        </div>
+        <button (click)="openShareModal(activePost()!)" class="flex items-center gap-1.5 font-semibold text-[#5f4299]">
+          <i class="fa-solid fa-share-nodes"></i>
+          <span>Share</span>
+        </button>
+      </div>
+
+      <!-- Add Comment Form -->
+      <div class="mb-6">
+        <h4 class="font-bold text-sm mb-2">Leave a Comment</h4>
+        <div *ngIf="!auth.isloggedin()" class="p-3 bg-purple-50 dark:bg-slate-800/60 rounded-xl text-xs text-purple-800 dark:text-purple-300">
+          Please sign in using Google from the top menu to join the discussion.
+        </div>
+        <div *ngIf="auth.isloggedin()" class="space-y-2">
+          <textarea [(ngModel)]="newCommentText" rows="3" placeholder="Share your thoughts, experiences, or questions..."
+            class="w-full px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-[#5f4299]"></textarea>
+          <div class="flex justify-end">
+            <button (click)="addComment()" [disabled]="!newCommentText().trim()"
+              class="px-4 py-1.5 bg-[#5f4299] text-white text-xs font-bold rounded-lg hover:bg-[#4b337e] disabled:opacity-40">
+              Post Comment
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comments List -->
+      <div class="space-y-4">
+        <h4 class="font-bold text-sm">Discussions ({{ activeComments().length }})</h4>
+
+        <div *ngIf="isLoadingComments()" class="text-center py-4 text-xs text-gray-400">
+          Loading replies...
+        </div>
+
+        <div *ngIf="!isLoadingComments() && activeComments().length === 0" class="text-center py-6 text-xs text-gray-400">
+          No comments yet. Be the first to reply!
+        </div>
+
+        <!-- Top-Level Comments -->
+        <div *ngFor="let comment of activeComments()" class="p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50 space-y-2 text-xs">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-gray-800 dark:text-gray-200">{{ comment.author.name }}</span>
+              <span *ngIf="comment.author.badge" [class]="'text-[9px] font-bold px-1.5 py-0.2 rounded-full border ' + getBadgeColor(comment.author.badge)">
+                {{ comment.author.badge }}
+              </span>
+              <span class="text-[10px] text-gray-400">• {{ formatDate(comment.createdAt) }}</span>
+            </div>
+
+            <!-- Comment Actions -->
+            <div class="flex items-center gap-2">
+              <button (click)="openReportModal('comment', comment._id)" class="text-gray-400 hover:text-amber-500" title="Report">
+                <i class="fa-regular fa-flag text-[11px]"></i>
+              </button>
+              <button *ngIf="auth.user()?.email === comment.author.email" (click)="deleteComment(comment._id)" class="text-gray-400 hover:text-red-500" title="Delete">
+                <i class="fa-solid fa-trash text-[11px]"></i>
+              </button>
+            </div>
+          </div>
+
+          <p class="text-gray-700 dark:text-gray-300 leading-relaxed">{{ comment.content }}</p>
+
+          <div class="flex items-center gap-3 pt-1 text-[11px] text-gray-500">
+            <button (click)="toggleCommentLike(comment)" class="flex items-center gap-1 hover:text-red-500" [class.text-red-500]="isCommentLikedByUser(comment)">
+              <i [class]="isCommentLikedByUser(comment) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
+              <span>{{ comment.likesCount || 0 }}</span>
+            </button>
+            <button (click)="replyingToCommentId.set(replyingToCommentId() === comment._id ? null : comment._id)" class="font-semibold text-[#5f4299]">
+              Reply
+            </button>
+          </div>
+
+          <!-- Nested Replies -->
+          <div *ngIf="comment.replies && comment.replies.length > 0" class="ml-4 pl-3 border-l-2 border-purple-200 dark:border-slate-700 space-y-2 mt-2 pt-1">
+            <div *ngFor="let rep of comment.replies" class="p-2 rounded-lg bg-white dark:bg-slate-900 space-y-1">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-bold">{{ rep.author.name }}</span>
+                  <span class="text-[9px] text-gray-400">• {{ formatDate(rep.createdAt) }}</span>
+                </div>
+              </div>
+              <p class="text-gray-700 dark:text-gray-300">{{ rep.content }}</p>
+            </div>
+          </div>
+
+          <!-- Reply input box -->
+          <div *ngIf="replyingToCommentId() === comment._id && auth.isloggedin()" class="mt-2 pt-2 border-t border-gray-200 dark:border-slate-700 space-y-1.5">
+            <input type="text" [(ngModel)]="replyText" placeholder="Write a reply..."
+              class="w-full px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg text-xs" />
+            <div class="flex justify-end gap-2">
+              <button (click)="replyingToCommentId.set(null)" class="text-gray-400 hover:text-gray-600 text-[11px]">Cancel</button>
+              <button (click)="addComment(comment._id)" [disabled]="!replyText().trim()" class="px-3 py-1 bg-[#5f4299] text-white rounded-md text-[11px] font-bold">Reply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Share Modal -->
+  <div *ngIf="isShareModalOpen()"
+    class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl max-w-sm w-full p-5 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-slate-800">
+        <h3 class="font-bold text-sm">Share this Travel Story</h3>
+        <button (click)="closeShareModal()" class="text-gray-400 hover:text-gray-700">✕</button>
+      </div>
+
+      <p class="text-xs text-gray-500 mt-3 mb-4 truncate">{{ sharingPost()?.title }}</p>
+
+      <div class="grid grid-cols-3 gap-3 text-center text-xs font-semibold mb-4">
+        <button (click)="shareOnWhatsApp()" class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 hover:bg-emerald-100 transition-colors">
+          <i class="fa-brands fa-whatsapp text-xl mb-1 block"></i>
+          <span>WhatsApp</span>
+        </button>
+        <button (click)="shareOnTwitter()" class="p-3 rounded-xl bg-sky-50 dark:bg-sky-950/40 text-sky-600 hover:bg-sky-100 transition-colors">
+          <i class="fa-brands fa-x-twitter text-xl mb-1 block"></i>
+          <span>X / Twitter</span>
+        </button>
+        <button (click)="shareOnFacebook()" class="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 hover:bg-blue-100 transition-colors">
+          <i class="fa-brands fa-facebook text-xl mb-1 block"></i>
+          <span>Facebook</span>
+        </button>
+      </div>
+
+      <!-- Copy Link -->
+      <div class="flex items-center gap-2 pt-2 border-t border-gray-100 dark:border-slate-800">
+        <input type="text" [value]="getPostShareUrl()" readonly
+          class="w-full px-2.5 py-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-xs" />
+        <button (click)="copyLink()" class="px-3 py-1.5 bg-[#5f4299] text-white rounded-lg text-xs font-bold whitespace-nowrap">
+          {{ copySuccess() ? 'Copied!' : 'Copy' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Report Modal -->
+  <div *ngIf="isReportModalOpen()"
+    class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl max-w-sm w-full p-5 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-slate-800">
+        <h3 class="font-bold text-sm text-red-600 flex items-center gap-2">
+          <i class="fa-solid fa-flag"></i>
+          <span>Report Content</span>
+        </h3>
+        <button (click)="closeReportModal()" class="text-gray-400 hover:text-gray-700">✕</button>
+      </div>
+
+      <div *ngIf="reportSubmitted()" class="py-6 text-center text-xs text-emerald-600 font-bold">
+        <i class="fa-solid fa-circle-check text-2xl block mb-2"></i>
+        Thank you! Your report has been submitted to moderators for review.
+      </div>
+
+      <div *ngIf="!reportSubmitted()" class="space-y-3 mt-3 text-xs">
+        <div>
+          <label class="block font-bold mb-1">Reason *</label>
+          <select [(ngModel)]="reportReason" class="w-full px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl">
+            <option value="spam">Spam or Advertising</option>
+            <option value="harassment">Harassment or Abuse</option>
+            <option value="misinformation">Misleading or Inaccurate</option>
+            <option value="inappropriate">Inappropriate Content</option>
+            <option value="other">Other Violation</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold mb-1">Additional Details (Optional)</label>
+          <textarea [(ngModel)]="reportDetails" rows="3" placeholder="Describe the issue..."
+            class="w-full px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl"></textarea>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2 border-t border-gray-100 dark:border-slate-800">
+          <button (click)="closeReportModal()" class="px-3 py-1.5 border border-gray-200 dark:border-slate-700 rounded-lg">Cancel</button>
+          <button (click)="submitReport()" class="px-4 py-1.5 bg-red-600 text-white rounded-lg font-bold hover:bg-red-700">Submit Report</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

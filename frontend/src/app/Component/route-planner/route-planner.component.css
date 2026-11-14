@@ -1,0 +1,9 @@
+/* Leaflet overrides and custom pin styling */
+:host {
+  display: block;
+}
+
+.custom-map-pin {
+  background: transparent;
+  border: none;
+}

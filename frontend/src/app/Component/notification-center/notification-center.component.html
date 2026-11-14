@@ -1,0 +1,222 @@
+<div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-200">
+
+  <!-- Header Banner -->
+  <section class="bg-gradient-to-r from-[#4b337e] to-[#5f4299] text-white py-8 px-4 md:px-12 shadow-md">
+    <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-extrabold flex items-center gap-3">
+          <i class="fa-solid fa-bell text-[#d84e55]"></i>
+          <span>Notification Center</span>
+        </h1>
+        <p class="text-xs md:text-sm text-purple-100 mt-1">
+          Stay informed on ticket confirmations, seat updates, travel alerts, and community replies.
+        </p>
+      </div>
+
+      <!-- Quick Tab Switcher -->
+      <div class="flex items-center gap-2 bg-white/10 p-1 rounded-xl">
+        <button (click)="activeTab.set('notifications')"
+          [class.bg-white]="activeTab() === 'notifications'"
+          [class.text-[#5f4299]]="activeTab() === 'notifications'"
+          [class.text-white]="activeTab() !== 'notifications'"
+          class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all">
+          Notifications ({{ notificationService.unreadCount() }})
+        </button>
+        <button (click)="activeTab.set('preferences')"
+          [class.bg-white]="activeTab() === 'preferences'"
+          [class.text-[#5f4299]]="activeTab() === 'preferences'"
+          [class.text-white]="activeTab() !== 'preferences'"
+          class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all">
+          Preferences
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Container -->
+  <div class="max-w-4xl mx-auto px-4 py-8">
+
+    <!-- Not Signed In Warning -->
+    <div *ngIf="!auth.isloggedin()" class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-10 text-center shadow-sm">
+      <div class="w-16 h-16 bg-purple-50 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto text-[#5f4299] text-2xl mb-4">
+        <i class="fa-regular fa-bell"></i>
+      </div>
+      <h3 class="text-lg font-bold">Sign in to view notifications</h3>
+      <p class="text-sm text-gray-500 mt-1 max-w-md mx-auto">
+        Please sign in with Google to receive real-time updates for your bus tickets, travel alerts, and comments.
+      </p>
+    </div>
+
+    <!-- Signed In: Notifications Tab -->
+    <div *ngIf="auth.isloggedin() && activeTab() === 'notifications'" class="space-y-6">
+
+      <!-- Category Filter Pills + Mark All Read -->
+      <div class="flex flex-col sm:flex-row gap-3 items-center justify-between">
+        <div class="flex gap-1.5 overflow-x-auto w-full sm:w-auto pb-1">
+          <button *ngFor="let cat of categories" (click)="filterCategory(cat.id)"
+            [class.bg-[#5f4299]]="selectedCategory() === cat.id"
+            [class.text-white]="selectedCategory() === cat.id"
+            class="px-3 py-1.5 rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-semibold whitespace-nowrap shadow-xs hover:border-[#5f4299] transition-colors">
+            <i [class]="cat.icon + ' mr-1.5'"></i>
+            <span>{{ cat.label }}</span>
+          </button>
+        </div>
+
+        <button *ngIf="notifications().length > 0 && notificationService.unreadCount() > 0"
+          (click)="markAllAsRead()"
+          class="text-xs font-bold text-[#5f4299] hover:underline whitespace-nowrap self-end sm:self-auto">
+          Mark all as read
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="isLoading()" class="py-12 text-center text-sm text-gray-400">
+        <div class="inline-block animate-spin w-7 h-7 border-3 border-[#5f4299] border-t-transparent rounded-full mb-2"></div>
+        <p>Loading alerts...</p>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!isLoading() && notifications().length === 0"
+        class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-12 text-center shadow-xs">
+        <i class="fa-regular fa-bell text-4xl text-gray-300 dark:text-gray-600 mb-3 block"></i>
+        <h4 class="font-bold text-base">You're all caught up!</h4>
+        <p class="text-xs text-gray-400 mt-1">No notifications found in this category.</p>
+      </div>
+
+      <!-- Notifications List -->
+      <div *ngIf="!isLoading() && notifications().length > 0" class="space-y-3">
+        <div *ngFor="let item of notifications()"
+          (click)="handleNotificationClick(item)"
+          [class.border-l-4]="!item.read"
+          [class.border-l-[#5f4299]]="!item.read"
+          class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl p-4 shadow-xs hover:shadow-md transition-all cursor-pointer flex items-start gap-4">
+
+          <!-- Category Icon -->
+          <div [class]="'w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-base ' + getIconForCategory(item.category)">
+            <i [class]="item.category === 'booking' ? 'fa-solid fa-ticket' : (item.category === 'community' ? 'fa-solid fa-comments' : (item.category === 'payment' ? 'fa-solid fa-credit-card' : 'fa-solid fa-bell'))"></i>
+          </div>
+
+          <!-- Content Body -->
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between gap-2">
+              <h4 class="font-bold text-sm text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                <span>{{ item.title }}</span>
+                <span *ngIf="!item.read" class="w-2 h-2 rounded-full bg-[#d84e55] inline-block"></span>
+              </h4>
+              <span class="text-[11px] text-gray-400 shrink-0">{{ formatDate(item.createdAt) }}</span>
+            </div>
+
+            <p class="text-xs text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
+              {{ item.message }}
+            </p>
+
+            <div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-100 dark:border-slate-800/60 text-[11px]">
+              <span *ngIf="item.actionUrl" class="font-semibold text-[#5f4299] hover:underline flex items-center gap-1">
+                <span>View details</span>
+                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+              </span>
+              <span *ngIf="!item.actionUrl"></span>
+
+              <div class="flex items-center gap-2" (click)="$event.stopPropagation()">
+                <button *ngIf="!item.read" (click)="markAsRead(item, $event)"
+                  class="text-gray-400 hover:text-[#5f4299]" title="Mark as read">
+                  <i class="fa-solid fa-check"></i>
+                </button>
+                <button (click)="deleteNotification(item, $event)"
+                  class="text-gray-400 hover:text-red-500" title="Delete">
+                  <i class="fa-solid fa-trash text-[11px]"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Signed In: Preferences Tab -->
+    <div *ngIf="auth.isloggedin() && activeTab() === 'preferences'"
+      class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
+
+      <div>
+        <h3 class="font-extrabold text-base mb-1">Notification Preferences</h3>
+        <p class="text-xs text-gray-500">
+          Choose how and when TedBus sends you trip updates, promotional discounts, and community alerts.
+        </p>
+      </div>
+
+      <div *ngIf="prefSaveSuccess()" class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center gap-2">
+        <i class="fa-solid fa-circle-check"></i>
+        <span>Preferences updated successfully!</span>
+      </div>
+
+      <!-- Channel Settings -->
+      <div class="space-y-4">
+        <h4 class="font-bold text-xs uppercase tracking-wider text-gray-400">Delivery Channels</h4>
+
+        <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50">
+          <div>
+            <span class="block font-bold text-sm">In-App Notifications</span>
+            <span class="text-xs text-gray-500">Receive alerts in your notification bell center</span>
+          </div>
+          <input type="checkbox" [(ngModel)]="preferences().inAppEnabled" class="w-5 h-5 accent-[#5f4299]" />
+        </div>
+
+        <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50">
+          <div>
+            <span class="block font-bold text-sm">Email Notifications</span>
+            <span class="text-xs text-gray-500">Send confirmations and receipts to {{ auth.user()?.email }}</span>
+          </div>
+          <input type="checkbox" [(ngModel)]="preferences().emailEnabled" class="w-5 h-5 accent-[#5f4299]" />
+        </div>
+
+        <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50">
+          <div>
+            <span class="block font-bold text-sm">Push Notifications</span>
+            <span class="text-xs text-gray-500">Get instant updates on bus boarding time and delays</span>
+          </div>
+          <input type="checkbox" [(ngModel)]="preferences().pushEnabled" class="w-5 h-5 accent-[#5f4299]" />
+        </div>
+      </div>
+
+      <!-- Category Opt-ins -->
+      <div class="space-y-4 pt-4 border-t border-gray-100 dark:border-slate-800">
+        <h4 class="font-bold text-xs uppercase tracking-wider text-gray-400">Notification Types</h4>
+
+        <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50">
+          <div>
+            <span class="block font-bold text-sm">Booking & Trip Alerts</span>
+            <span class="text-xs text-gray-500">Seat confirmations, schedule changes, cancellations</span>
+          </div>
+          <input type="checkbox" [(ngModel)]="preferences().bookingUpdates" class="w-5 h-5 accent-[#5f4299]" />
+        </div>
+
+        <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50">
+          <div>
+            <span class="block font-bold text-sm">Community Activity</span>
+            <span class="text-xs text-gray-500">Replies and likes on your travel stories and advice</span>
+          </div>
+          <input type="checkbox" [(ngModel)]="preferences().communityInteractions" class="w-5 h-5 accent-[#5f4299]" />
+        </div>
+
+        <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50">
+          <div>
+            <span class="block font-bold text-sm">Offers & Deals</span>
+            <span class="text-xs text-gray-500">Festive discounts, coupons, and wallet cashbacks</span>
+          </div>
+          <input type="checkbox" [(ngModel)]="preferences().promotionalOffers" class="w-5 h-5 accent-[#5f4299]" />
+        </div>
+      </div>
+
+      <div class="flex justify-end pt-4 border-t border-gray-100 dark:border-slate-800">
+        <button (click)="savePreferences()" [disabled]="isSavingPrefs()"
+          class="px-5 py-2.5 bg-[#5f4299] text-white text-xs font-bold rounded-xl hover:bg-[#4b337e] transition-colors disabled:opacity-50">
+          {{ isSavingPrefs() ? 'Saving...' : 'Save Preferences' }}
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,8 +1,11 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
 import { BusService } from '../../service/bus.service';
 import { AuthService } from '../../service/auth.service';
+import { ReviewService } from '../../service/review.service';
 import { Booking } from '../../model/booking.model';
 import { MyTrip } from './my-trip/my-trip';
 
@@ -11,7 +14,7 @@ type ProfileView = 'trips' | 'profile' | 'wallet';
 @Component({
   selector: 'app-profile-page',
   standalone: true,
-  imports: [MatIconModule, RouterLink, MyTrip],
+  imports: [CommonModule, FormsModule, MatIconModule, RouterLink, MyTrip],
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.css',
 })
@@ -19,6 +22,20 @@ export class ProfilePage implements OnInit {
   private readonly busbooking = inject(BusService);
   private readonly router = inject(Router);
   private readonly auth = inject(AuthService);
+  private readonly reviewService = inject(ReviewService);
+
+  showReviewModal = signal(false);
+  reviewingBooking = signal<Booking | null>(null);
+  isSubmittingReview = signal(false);
+  reviewForm = {
+    rating: 5,
+    punctuality: 5,
+    cleanliness: 5,
+    comfort: 5,
+    staff: 5,
+    headline: '',
+    comment: '',
+  };
 
   selecteditem = signal<ProfileView>('trips');
   readonly currentcustomer = this.auth.user;
@@ -125,6 +142,63 @@ export class ProfilePage implements OnInit {
         );
       },
     });
+  }
+
+  openReviewModal(booking: Booking): void {
+    this.reviewingBooking.set(booking);
+    this.reviewForm = {
+      rating: 5,
+      punctuality: 5,
+      cleanliness: 5,
+      comfort: 5,
+      staff: 5,
+      headline: '',
+      comment: '',
+    };
+    this.showReviewModal.set(true);
+  }
+
+  submitReview(): void {
+    const booking = this.reviewingBooking();
+    const user = this.currentcustomer();
+    if (!booking || !user) return;
+
+    if (!this.reviewForm.comment.trim()) {
+      alert('Please write a short review sharing your experience.');
+      return;
+    }
+
+    this.isSubmittingReview.set(true);
+    this.reviewService
+      .createReview({
+        bookingId: booking._id,
+        rating: this.reviewForm.rating,
+        aspectRatings: {
+          punctuality: this.reviewForm.punctuality,
+          cleanliness: this.reviewForm.cleanliness,
+          comfort: this.reviewForm.comfort,
+          staff: this.reviewForm.staff,
+        },
+        headline: this.reviewForm.headline,
+        comment: this.reviewForm.comment,
+        author: {
+          customerId: user._id || user.googleId || user.email,
+          name: user.name || 'Verified Passenger',
+          email: user.email,
+          picture: user.picture,
+        },
+      })
+      .subscribe({
+        next: () => {
+          this.isSubmittingReview.set(false);
+          this.showReviewModal.set(false);
+          this.actionmessage.set('Thank you! Your verified passenger review has been published.');
+        },
+        error: (err) => {
+          this.isSubmittingReview.set(false);
+          alert(err?.error?.error || 'Failed to submit review.');
+        },
+      });
   }
 
   signout(): void {

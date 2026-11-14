@@ -6,6 +6,30 @@ export const routes: Routes = [
   { path: '', component: LandingPage },
   { path: 'selectbus', component: SelectbusPage },
   {
+    path: 'community',
+    loadComponent: () =>
+      import('./Component/community/community.component').then((m) => m.CommunityComponent),
+  },
+  {
+    path: 'notifications',
+    loadComponent: () =>
+      import('./Component/notification-center/notification-center.component').then(
+        (m) => m.NotificationCenterComponent
+      ),
+  },
+  {
+    path: 'route-planner',
+    loadComponent: () =>
+      import('./Component/route-planner/route-planner.component').then(
+        (m) => m.RoutePlannerComponent
+      ),
+  },
+  {
+    path: 'admin',
+    loadComponent: () =>
+      import('./Component/admin/admin.component').then((m) => m.AdminComponent),
+  },
+  {
     path: 'payment',
     loadComponent: () =>
       import('./Component/payment-page/payment-page').then((m) => m.PaymentPage),

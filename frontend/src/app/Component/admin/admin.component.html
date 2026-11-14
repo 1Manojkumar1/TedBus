@@ -1,0 +1,187 @@
+<div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-200">
+
+  <!-- Header Banner -->
+  <section class="bg-gradient-to-r from-slate-900 via-slate-800 to-[#5f4299] text-white py-8 px-4 md:px-12 shadow-md">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full text-xs font-semibold mb-2">
+          <i class="fa-solid fa-shield-halved text-amber-400"></i>
+          <span>TedBus Operations & Moderation</span>
+        </div>
+        <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight">Admin & Community Safety Console</h1>
+        <p class="text-xs md:text-sm text-slate-300 mt-1">
+          Monitor platform health, verify user content, review flagged posts, and maintain traveler trust.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2 bg-emerald-500/20 text-emerald-300 px-3 py-1.5 rounded-xl border border-emerald-500/30 text-xs font-bold">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>Systems Operational</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Container -->
+  <div class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+
+    <!-- Overview Statistics -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-5 shadow-xs">
+        <div class="flex items-center justify-between text-gray-400 mb-2">
+          <span class="text-xs uppercase font-bold">Total Bookings</span>
+          <i class="fa-solid fa-ticket text-[#5f4299] text-base"></i>
+        </div>
+        <span class="text-2xl font-extrabold text-[#5f4299]">{{ stats().totalBookings }}</span>
+        <span class="text-[11px] text-gray-400 block mt-1">Confirmed tickets</span>
+      </div>
+
+      <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-5 shadow-xs">
+        <div class="flex items-center justify-between text-gray-400 mb-2">
+          <span class="text-xs uppercase font-bold">Community Stories</span>
+          <i class="fa-solid fa-comments text-blue-500 text-base"></i>
+        </div>
+        <span class="text-2xl font-extrabold text-blue-600">{{ stats().totalPosts }}</span>
+        <span class="text-[11px] text-gray-400 block mt-1">Published posts & tips</span>
+      </div>
+
+      <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-5 shadow-xs">
+        <div class="flex items-center justify-between text-gray-400 mb-2">
+          <span class="text-xs uppercase font-bold">Verified Reviews</span>
+          <i class="fa-solid fa-star text-amber-500 text-base"></i>
+        </div>
+        <span class="text-2xl font-extrabold text-amber-500">{{ stats().totalReviews }}</span>
+        <span class="text-[11px] text-gray-400 block mt-1">Journey-backed ratings</span>
+      </div>
+
+      <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-5 shadow-xs">
+        <div class="flex items-center justify-between text-gray-400 mb-2">
+          <span class="text-xs uppercase font-bold">Pending Reports</span>
+          <i class="fa-solid fa-flag text-rose-500 text-base"></i>
+        </div>
+        <span class="text-2xl font-extrabold text-rose-500">{{ stats().pendingReports }}</span>
+        <span class="text-[11px] text-gray-400 block mt-1">Requires moderator action</span>
+      </div>
+    </div>
+
+    <!-- Moderation Queue -->
+    <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
+
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-gray-100 dark:border-slate-800">
+        <div>
+          <h3 class="font-extrabold text-lg flex items-center gap-2">
+            <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
+            <span>Content Moderation Queue</span>
+          </h3>
+          <p class="text-xs text-gray-500 mt-0.5">
+            User-reported posts and comments flagged for spam, harassment, or misinformation.
+          </p>
+        </div>
+
+        <!-- Filter Status Tabs -->
+        <div class="inline-flex bg-gray-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-semibold">
+          <button (click)="filterStatus('pending')"
+            [class.bg-white]="selectedStatus() === 'pending'"
+            [class.dark:bg-slate-900]="selectedStatus() === 'pending'"
+            [class.text-[#5f4299]]="selectedStatus() === 'pending'"
+            class="px-3 py-1.5 rounded-lg transition-colors">
+            Pending
+          </button>
+          <button (click)="filterStatus('actioned')"
+            [class.bg-white]="selectedStatus() === 'actioned'"
+            [class.dark:bg-slate-900]="selectedStatus() === 'actioned'"
+            [class.text-[#5f4299]]="selectedStatus() === 'actioned'"
+            class="px-3 py-1.5 rounded-lg transition-colors">
+            Actioned
+          </button>
+          <button (click)="filterStatus('dismissed')"
+            [class.bg-white]="selectedStatus() === 'dismissed'"
+            [class.dark:bg-slate-900]="selectedStatus() === 'dismissed'"
+            [class.text-[#5f4299]]="selectedStatus() === 'dismissed'"
+            class="px-3 py-1.5 rounded-lg transition-colors">
+            Dismissed
+          </button>
+          <button (click)="filterStatus('all')"
+            [class.bg-white]="selectedStatus() === 'all'"
+            [class.dark:bg-slate-900]="selectedStatus() === 'all'"
+            [class.text-[#5f4299]]="selectedStatus() === 'all'"
+            class="px-3 py-1.5 rounded-lg transition-colors">
+            All
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="isLoading()" class="py-12 text-center text-sm text-gray-400">
+        <div class="inline-block animate-spin w-7 h-7 border-3 border-[#5f4299] border-t-transparent rounded-full mb-2"></div>
+        <p>Loading reports queue...</p>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!isLoading() && reports().length === 0" class="py-12 text-center text-gray-400">
+        <i class="fa-solid fa-circle-check text-4xl text-emerald-500 mb-2 block"></i>
+        <h4 class="font-bold text-sm text-gray-700 dark:text-gray-300">Moderation queue is clean!</h4>
+        <p class="text-xs text-gray-400 mt-0.5">No reports in "{{ selectedStatus() }}" status.</p>
+      </div>
+
+      <!-- Reports List -->
+      <div *ngIf="!isLoading() && reports().length > 0" class="space-y-4">
+        <div *ngFor="let item of reports()"
+          class="p-4 rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/40 space-y-3">
+
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <span [class]="item.contentType === 'post' ? 'bg-purple-100 text-purple-800 dark:bg-purple-950/60 dark:text-purple-300' : 'bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300'"
+                class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
+                {{ item.contentType }}
+              </span>
+              <span class="text-xs font-bold text-rose-600 uppercase">Reason: {{ item.reason }}</span>
+              <span class="text-xs text-gray-400">• {{ formatDate(item.createdAt) }}</span>
+            </div>
+
+            <span [class]="item.status === 'pending' ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300' : (item.status === 'actioned' ? 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300' : 'bg-gray-100 text-gray-700 dark:bg-slate-700 dark:text-gray-300')"
+              class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
+              {{ item.status }}
+            </span>
+          </div>
+
+          <!-- Snippet -->
+          <div class="p-3 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-lg text-xs leading-relaxed">
+            <div class="text-gray-400 text-[10px] mb-1">Author: {{ item.contentAuthor || 'Unknown' }}</div>
+            <p class="font-medium text-gray-800 dark:text-gray-200 italic">{{ item.contentSnippet }}</p>
+          </div>
+
+          <!-- Reporter info & details -->
+          <div class="flex items-center justify-between text-xs text-gray-500">
+            <div>
+              <span>Reported by: <strong>{{ item.reportedBy.name }}</strong> ({{ item.reportedBy.email }})</span>
+              <span *ngIf="item.details" class="block text-gray-400 mt-0.5">Details: "{{ item.details }}"</span>
+              <span *ngIf="item.actionTaken" class="block text-emerald-600 dark:text-emerald-400 font-semibold mt-0.5">
+                Action: {{ item.actionTaken }}
+              </span>
+            </div>
+
+            <!-- Action Buttons for Pending Items -->
+            <div *ngIf="item.status === 'pending'" class="flex items-center gap-2">
+              <button (click)="resolveReport(item, 'dismiss')"
+                class="px-3 py-1.5 rounded-lg border border-gray-200 dark:border-slate-700 text-xs font-semibold hover:bg-gray-100 dark:hover:bg-slate-800">
+                Dismiss
+              </button>
+              <button (click)="resolveReport(item, 'hide')"
+                class="px-3 py-1.5 rounded-lg bg-amber-500 text-white text-xs font-bold hover:bg-amber-600">
+                Hide Content
+              </button>
+              <button (click)="resolveReport(item, 'delete')"
+                class="px-3 py-1.5 rounded-lg bg-rose-600 text-white text-xs font-bold hover:bg-rose-700">
+                Delete Content
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

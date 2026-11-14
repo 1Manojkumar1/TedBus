@@ -7,6 +7,7 @@ import {
   validatebooking,
 } from '../services/booking.js';
 import { ownscustomer } from '../services/access.js';
+import { sendBookingConfirmation, sendBookingCancellation } from '../services/notification.js';
 
 export async function createbooking(req, res) {
   const body = req.body ?? {};
@@ -30,6 +31,7 @@ export async function createbooking(req, res) {
   }
 
   const booking = await persistbooking(body);
+  void sendBookingConfirmation(booking);
   return res.status(201).json(booking);
 }
 
@@ -104,6 +106,9 @@ export async function cancelbooking(req, res) {
 
   // Delete the booking permanently from the database
   await Booking.findByIdAndDelete(id).exec();
+
+  // Send cancellation notification
+  void sendBookingCancellation(booking);
 
   // Also remove any other lingering cancelled bookings
   await Booking.deleteMany({ status: 'cancelled' }).exec();
