@@ -137,9 +137,9 @@ export async function getPost(req, res) {
       return res.status(404).json({ error: 'Post not found' });
     }
 
-    // Fetch comments (top-level and replies)
+    // Fetch comments (top-level and replies) using exact post._id
     const comments = await PostComment.find({
-      postId: id,
+      postId: post._id,
       status: 'published',
     })
       .sort({ createdAt: 1 })
@@ -166,6 +166,10 @@ export async function getPost(req, res) {
     for (const parent of topLevel) {
       parent.replies = replyMap.get(String(parent._id)) || [];
     }
+
+    // Guarantee that post.commentsCount strictly equals total comments
+    post.commentsCount = comments.length;
+    post.likesCount = Array.isArray(post.likes) ? post.likes.length : (post.likesCount || 0);
 
     return res.json({ post, comments: topLevel });
   } catch (err) {
@@ -487,9 +491,13 @@ export async function deleteComment(req, res) {
     comment.status = 'deleted';
     await comment.save();
 
-    // Update post comments count
+    // Update post comments count with actual published count
+    const activeComments = await PostComment.countDocuments({
+      postId: comment.postId,
+      status: 'published',
+    }).exec();
     await CommunityPost.findByIdAndUpdate(comment.postId, {
-      $inc: { commentsCount: -1 },
+      commentsCount: activeComments,
     }).exec();
 
     return res.json({ message: 'Comment deleted', id });

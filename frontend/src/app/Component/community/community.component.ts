@@ -28,7 +28,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 3,
     "viewsCount": 0,
     "status": "published",
@@ -51,7 +51,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-1"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -70,7 +70,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-2"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -89,7 +89,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -124,7 +124,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -147,7 +147,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-6"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -182,7 +182,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 2,
     "viewsCount": 0,
     "status": "published",
@@ -205,7 +205,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-9"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -224,7 +224,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-3"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -259,7 +259,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -282,7 +282,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-8"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -316,7 +316,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -339,7 +339,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -374,7 +374,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -397,7 +397,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-1"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -432,7 +432,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -455,7 +455,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-10"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -490,7 +490,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 2,
     "viewsCount": 0,
     "status": "published",
@@ -513,7 +513,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -532,7 +532,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-4"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -567,7 +567,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -590,7 +590,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-3"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -625,7 +625,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -648,7 +648,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-2"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -683,7 +683,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -706,7 +706,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-6"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -741,7 +741,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -764,7 +764,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-1"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -799,7 +799,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -822,7 +822,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -857,7 +857,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -880,7 +880,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-7"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -915,7 +915,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 2,
     "viewsCount": 0,
     "status": "published",
@@ -938,7 +938,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-2"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -957,7 +957,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-8"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -992,7 +992,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1015,7 +1015,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-3"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1050,7 +1050,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1073,7 +1073,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-9"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1108,7 +1108,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1131,7 +1131,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-7"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1166,7 +1166,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1189,7 +1189,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-4"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1224,7 +1224,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1247,7 +1247,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1282,7 +1282,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1305,7 +1305,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-1"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1337,7 +1337,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 2,
     "viewsCount": 0,
     "status": "published",
@@ -1360,7 +1360,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -1379,7 +1379,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-1"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1411,7 +1411,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1434,7 +1434,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-2"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1465,7 +1465,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1488,7 +1488,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-6"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1520,7 +1520,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1543,7 +1543,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1575,7 +1575,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1598,7 +1598,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-3"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1629,7 +1629,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1652,7 +1652,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-5"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1684,7 +1684,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1707,7 +1707,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-9"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1739,7 +1739,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 2,
     "viewsCount": 0,
     "status": "published",
@@ -1762,7 +1762,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-2"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -1781,7 +1781,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-4"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1789,8 +1789,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
   },
   {
     "_id": "seed-post-29",
-    "title": "Luggage Safety & Insurance: Is the \u20b915 Travel Protection Worth It?",
-    "content": "We recently tested the claim process when a passenger lost their laptop backpack from an interstate coach.\nThe \u20b915 protection covered emergency baggage loss and medical delays with instant OTP verification.\nFor just fifteen rupees, never uncheck this box during checkout!",
+    "title": "Luggage Safety & Insurance: Is the ₹15 Travel Protection Worth It?",
+    "content": "We recently tested the claim process when a passenger lost their laptop backpack from an interstate coach.\nThe ₹15 protection covered emergency baggage loss and medical delays with instant OTP verification.\nFor just fifteen rupees, never uncheck this box during checkout!",
     "category": "Safety and recommendations",
     "tags": [
       "LuggageSafety",
@@ -1813,7 +1813,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1832,11 +1832,11 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "badge": "Community Champion",
           "picture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150"
         },
-        "content": "Completely agree. \u20b915 is negligible for complete peace of mind on long trips.",
+        "content": "Completely agree. ₹15 is negligible for complete peace of mind on long trips.",
         "likes": [
           "user-3"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1844,8 +1844,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
   },
   {
     "_id": "seed-post-30",
-    "title": "Primo Buses vs Regular Private Operators: Is the Extra \u20b9150 Worth It?",
-    "content": "Ever wonder what the TedBus Primo badge actually guarantees?\n- Guaranteed on-time departure with refund guarantee if delayed over 30 mins.\n- Sanitized cabins with fresh sealed blankets.\n- Trained and background-verified drivers.\n- Functioning AC and working power outlets on every seat.\nHaving taken both on the Bangalore-Hyderabad route, the extra \u20b9150 is easily worth every penny.",
+    "title": "Primo Buses vs Regular Private Operators: Is the Extra ₹150 Worth It?",
+    "content": "Ever wonder what the TedBus Primo badge actually guarantees?\n- Guaranteed on-time departure with refund guarantee if delayed over 30 mins.\n- Sanitized cabins with fresh sealed blankets.\n- Trained and background-verified drivers.\n- Functioning AC and working power outlets on every seat.\nHaving taken both on the Bangalore-Hyderabad route, the extra ₹150 is easily worth every penny.",
     "category": "Safety and recommendations",
     "tags": [
       "PrimoVerified",
@@ -1867,7 +1867,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1890,7 +1890,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-6"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1921,7 +1921,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1944,7 +1944,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-1"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1975,7 +1975,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1998,7 +1998,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2029,7 +2029,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -2052,7 +2052,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-4"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2083,7 +2083,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -2106,7 +2106,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-3"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2139,7 +2139,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 2,
     "viewsCount": 0,
     "status": "published",
@@ -2162,7 +2162,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -2181,7 +2181,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-3"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2213,7 +2213,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 2,
     "viewsCount": 0,
     "status": "published",
@@ -2236,7 +2236,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-1"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -2255,7 +2255,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-4"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2286,7 +2286,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -2309,7 +2309,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-7"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2341,7 +2341,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -2364,7 +2364,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-1"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2395,7 +2395,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -2418,7 +2418,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2450,7 +2450,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -2473,7 +2473,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-3"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2504,7 +2504,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 0,
+    "likesCount": 2,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -2527,7 +2527,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-2"
         ],
-        "likesCount": 0,
+        "likesCount": 1,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2905,6 +2905,17 @@ export class CommunityComponent implements OnInit {
     this.replyingToCommentId.set(null);
   }
 
+  getTotalCommentsCount(post?: CommunityPost | null): number {
+    if (this.activeComments() && this.activeComments().length > 0) {
+      let count = 0;
+      for (const c of this.activeComments()) {
+        count += 1 + (c.replies ? c.replies.length : 0);
+      }
+      return count;
+    }
+    return post?.commentsCount || 0;
+  }
+
   addComment(parentCommentId?: string | null): void {
     const user = this.auth.user();
     if (!this.auth.isloggedin() || !user) {
@@ -2947,7 +2958,10 @@ export class CommunityComponent implements OnInit {
           }
           current.commentsCount = (current.commentsCount || 0) + 1;
           this.activePost.set({ ...current });
-          this.posts.set([...this.posts()]);
+          this.singlePost.set({ ...current });
+          this.posts.update((list) =>
+            list.map((p) => (p._id === current._id ? { ...p, commentsCount: current.commentsCount } : p))
+          );
         },
         error: (err) => console.error('Failed to add comment:', err),
       });
@@ -2989,13 +3003,22 @@ export class CommunityComponent implements OnInit {
 
     this.communityService.deleteComment(commentId, customerId).subscribe({
       next: () => {
-        this.activeComments.set(
-          this.activeComments().filter((c) => c._id !== commentId)
-        );
+        // Remove from top-level or from parent's replies
+        const updated = this.activeComments()
+          .filter((c) => c._id !== commentId)
+          .map((c) => ({
+            ...c,
+            replies: (c.replies || []).filter((r) => r._id !== commentId),
+          }));
+        this.activeComments.set(updated);
         const current = this.activePost();
         if (current && current.commentsCount > 0) {
           current.commentsCount -= 1;
           this.activePost.set({ ...current });
+          this.singlePost.set({ ...current });
+          this.posts.update((list) =>
+            list.map((p) => (p._id === current._id ? { ...p, commentsCount: current.commentsCount } : p))
+          );
         }
         this.toastService.info('Comment Deleted', 'Your comment was removed.');
       },

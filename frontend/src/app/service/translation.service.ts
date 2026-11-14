@@ -249,7 +249,7 @@ const DICTIONARIES: Record<SupportedLanguage, Record<string, string>> = {
     "FOOTER.TOP_ROUTES": "Top bus routes",
     "FOOTER.TOP_CITIES": "Top cities",
     "FOOTER.VIEW_ALL": "View All",
-    "FOOTER.ABOUT": "TedBus is India's leading online bus ticket booking platform, trusted by millions of travelers.",
+    "FOOTER.ABOUT": "TedBus is an online bus ticket booking platform connecting travelers across 180+ routes in India.",
     "FOOTER.RIGHTS": "All rights reserved.",
     "COMMON.BACK": "Back",
     "COMMON.CLOSE": "Close",

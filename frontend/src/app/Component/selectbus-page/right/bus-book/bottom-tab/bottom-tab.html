@@ -133,32 +133,37 @@
         </span>
       </div>
 
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2" *ngIf="(reviewsData()?.summary?.totalReviews || 0) > 0; else noRatingsBadge">
         <span class="text-xs font-extrabold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-lg border border-emerald-500/20">
-          ★ {{ reviewsData()?.summary?.averageRating || 4.6 }} / 5.0
+          ★ {{ reviewsData()?.summary?.averageRating }} / 5.0
         </span>
         <span class="text-xs text-gray-500">
-          ({{ reviewsData()?.summary?.totalReviews || 12 }} verified ratings)
+          ({{ reviewsData()?.summary?.totalReviews }} verified {{ reviewsData()?.summary?.totalReviews === 1 ? 'rating' : 'ratings' }})
         </span>
       </div>
+      <ng-template #noRatingsBadge>
+        <span class="text-xs text-gray-400 font-medium italic">
+          No ratings yet (0 reviews)
+        </span>
+      </ng-template>
     </div>
 
-    <!-- Aspect Averages Grid -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs font-semibold">
+    <!-- Aspect Averages Grid (Only shown when verified ratings exist) -->
+    <div *ngIf="(reviewsData()?.summary?.totalReviews || 0) > 0" class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs font-semibold">
       <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800">
-        <span class="block text-emerald-600 font-extrabold text-sm">{{ reviewsData()?.summary?.aspectAverages?.punctuality || 4.8 }}</span>
+        <span class="block text-emerald-600 font-extrabold text-sm">{{ reviewsData()?.summary?.aspectAverages?.punctuality }}</span>
         <span class="text-[10px] text-gray-400 uppercase">Punctuality</span>
       </div>
       <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800">
-        <span class="block text-emerald-600 font-extrabold text-sm">{{ reviewsData()?.summary?.aspectAverages?.cleanliness || 4.6 }}</span>
+        <span class="block text-emerald-600 font-extrabold text-sm">{{ reviewsData()?.summary?.aspectAverages?.cleanliness }}</span>
         <span class="text-[10px] text-gray-400 uppercase">Cleanliness</span>
       </div>
       <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800">
-        <span class="block text-emerald-600 font-extrabold text-sm">{{ reviewsData()?.summary?.aspectAverages?.comfort || 4.7 }}</span>
+        <span class="block text-emerald-600 font-extrabold text-sm">{{ reviewsData()?.summary?.aspectAverages?.comfort }}</span>
         <span class="text-[10px] text-gray-400 uppercase">Bus Comfort</span>
       </div>
       <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800">
-        <span class="block text-emerald-600 font-extrabold text-sm">{{ reviewsData()?.summary?.aspectAverages?.staff || 4.5 }}</span>
+        <span class="block text-emerald-600 font-extrabold text-sm">{{ reviewsData()?.summary?.aspectAverages?.staff }}</span>
         <span class="text-[10px] text-gray-400 uppercase">Staff Behaviour</span>
       </div>
     </div>
