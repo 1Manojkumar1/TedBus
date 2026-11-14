@@ -62,23 +62,63 @@ export async function lookupBookingByPnr(req, res) {
   try {
     const { pnr } = req.params;
     if (!pnr) {
-      return res.status(400).json({ error: 'PNR / Booking ID is required' });
+      return res.status(400).json({ error: 'Please enter a Mobile Number, Email, or Ticket PNR.' });
     }
 
-    const cleanPnr = pnr.trim();
-    let query = {};
-    if (mongoose.isValidObjectId(cleanPnr)) {
-      query._id = cleanPnr;
-    } else {
-      query.$or = [
-        { 'payment.reference': cleanPnr },
-        { phoneNumber: cleanPnr },
-      ];
+    const clean = pnr.trim();
+    const normalized = clean.replace(/^TB-/i, '');
+    const digitsOnly = clean.replace(/\D/g, '');
+
+    const orConditions = [];
+
+    // 1. Direct MongoDB ObjectId match
+    if (mongoose.isValidObjectId(clean)) {
+      orConditions.push({ _id: clean });
+    }
+    if (mongoose.isValidObjectId(normalized)) {
+      orConditions.push({ _id: normalized });
     }
 
-    const booking = await Booking.findOne(query).lean().exec();
+    // 2. Mobile number lookup (last 10 digits or exact match)
+    if (digitsOnly.length >= 10) {
+      const tenDigits = digitsOnly.slice(-10);
+      orConditions.push({ phoneNumber: new RegExp(tenDigits + '$') });
+    } else if (digitsOnly.length >= 6) {
+      orConditions.push({ phoneNumber: new RegExp(digitsOnly) });
+    }
+
+    // 3. Email lookup
+    if (clean.includes('@')) {
+      orConditions.push({
+        email: new RegExp('^' + clean.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$', 'i'),
+      });
+    }
+
+    // 4. Payment reference match
+    orConditions.push({ 'payment.reference': new RegExp(clean, 'i') });
+
+    // 5. Partial string match on _id using $expr
+    if (normalized.length >= 4) {
+      orConditions.push({
+        $expr: {
+          $regexMatch: {
+            input: { $toString: '$_id' },
+            regex: normalized,
+            options: 'i',
+          },
+        },
+      });
+    }
+
+    const booking = await Booking.findOne({ $or: orConditions })
+      .sort({ createdAt: -1 })
+      .lean()
+      .exec();
+
     if (!booking) {
-      return res.status(404).json({ error: `No booking found matching PNR "${cleanPnr}". Please check the number on your ticket or sign in.` });
+      return res.status(404).json({
+        error: `No booking found for "${clean}". Please verify your 10-digit mobile number, email, or Ticket ID.`,
+      });
     }
 
     let busName = 'TedBus Primo Express';
@@ -92,6 +132,7 @@ export async function lookupBookingByPnr(req, res) {
     return res.json({
       found: true,
       pnr: String(booking._id),
+      displayPnr: `TB-${String(booking._id).slice(-6).toUpperCase()}`,
       route: `${booking.departureDetails?.city || 'Origin'} ➔ ${booking.arrivalDetails?.city || 'Destination'}`,
       from: booking.departureDetails?.city,
       to: booking.arrivalDetails?.city,
@@ -100,8 +141,16 @@ export async function lookupBookingByPnr(req, res) {
       boardingPoint: booking.boardingPoint || booking.departureDetails?.location || 'Main Boarding Terminal',
       droppingPoint: booking.droppingPoint || booking.arrivalDetails?.location || 'Main Drop Terminal',
       seats: booking.seats?.map((s) => `Seat ${s}`) || [],
+      passengerNames: booking.passengerDetails?.map((p) => p.name) || [],
+      passengerPhone: booking.phoneNumber,
+      passengerEmail: booking.email,
       fare: booking.fare,
-      status: booking.status === 'upcoming' ? 'Confirmed & Scheduled' : booking.status === 'cancelled' ? 'Cancelled & Refunded' : 'Completed Journey',
+      status:
+        booking.status === 'upcoming'
+          ? 'Confirmed & Scheduled'
+          : booking.status === 'cancelled'
+          ? 'Cancelled & Refunded'
+          : 'Completed Journey',
       operator: busName,
     });
   } catch (err) {

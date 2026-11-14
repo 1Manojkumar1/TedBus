@@ -296,25 +296,87 @@ export class InfoPageComponent {
     },
   ];
 
+  readonly popularSearches = [
+    'How to cancel',
+    'Live bus tracking',
+    'Refund timeline',
+    'Luggage rules',
+    'Boarding point change',
+    'Women safety',
+    'RTC buses',
+  ];
+
+  isSearching = computed(() => this.searchQuery().trim().length > 0);
+
   filteredArticles = computed(() => {
     const q = this.searchQuery().trim().toLowerCase();
     const cat = this.selectedCategory();
 
-    return this.articles.filter((art) => {
-      const matchCat = cat === 'all' || art.category === cat;
-      if (!matchCat) return false;
+    if (!q) {
+      return this.articles.filter((art) => cat === 'all' || art.category === cat);
+    }
 
-      if (!q) return true;
+    // Global search across ALL categories when search query is present
+    const terms = q.split(/\s+/).filter(Boolean);
 
-      const titleMatch = art.title.toLowerCase().includes(q);
-      const contentMatch = art.content.toLowerCase().includes(q);
-      const tipsMatch = art.tips?.toLowerCase().includes(q) ?? false;
-      return titleMatch || contentMatch || tipsMatch;
+    const scored = this.articles.map((art) => {
+      let score = 0;
+      const titleLower = art.title.toLowerCase();
+      const contentLower = art.content.toLowerCase();
+      const tipsLower = art.tips?.toLowerCase() || '';
+      const stepsLower = art.steps?.join(' ').toLowerCase() || '';
+
+      // Check full phrase match
+      if (titleLower.includes(q)) score += 20;
+      if (contentLower.includes(q)) score += 8;
+      if (tipsLower.includes(q)) score += 6;
+      if (stepsLower.includes(q)) score += 6;
+
+      // Check individual terms
+      for (const t of terms) {
+        if (titleLower.includes(t)) score += 5;
+        if (contentLower.includes(t)) score += 2;
+        if (tipsLower.includes(t)) score += 1;
+        if (stepsLower.includes(t)) score += 1;
+      }
+
+      return { art, score };
     });
+
+    return scored
+      .filter((s) => s.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map((s) => s.art);
   });
 
   setCategory(cat: string): void {
     this.selectedCategory.set(cat);
+  }
+
+  applySearchChip(term: string): void {
+    this.searchQuery.set(term);
+    if (typeof window !== 'undefined') {
+      const el = document.getElementById('articles-section');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }
+
+  highlight(text: string): string {
+    const q = this.searchQuery().trim();
+    if (!q || !text) return text;
+    const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escaped})`, 'gi');
+    return text.replace(
+      regex,
+      '<mark class="bg-amber-200 dark:bg-amber-800 text-gray-900 dark:text-gray-100 font-bold px-1 rounded">$1</mark>'
+    );
+  }
+
+  fillAndCheckPnr(val: string): void {
+    this.pnrInput.set(val);
+    this.checkPnrStatus();
   }
 
   // Real PNR Lookup via Backend Database

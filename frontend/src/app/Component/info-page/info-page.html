@@ -34,10 +34,23 @@
           <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-gray-400 text-base"></i>
           <input type="text" [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)"
             placeholder="Search e.g. cancel ticket, refund timeline, live tracking, luggage allowance..."
-            class="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white text-gray-900 shadow-xl text-sm md:text-base focus:outline-none focus:ring-4 focus:ring-purple-300 transition-all font-medium" />
+            class="w-full pl-12 pr-10 py-3.5 rounded-2xl bg-white text-gray-900 shadow-xl text-sm md:text-base focus:outline-none focus:ring-4 focus:ring-purple-300 transition-all font-medium" />
           <button *ngIf="searchQuery()" (click)="searchQuery.set('')"
-            class="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 text-sm p-1">
-            <i class="fa-solid fa-xmark"></i>
+            class="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 text-sm p-1 cursor-pointer"
+            title="Clear Search">
+            <i class="fa-solid fa-circle-xmark text-base"></i>
+          </button>
+        </div>
+
+        <!-- Popular Search Terms (Instant 1-Click Search) -->
+        <div class="mt-4 flex items-center gap-2 flex-wrap text-xs text-purple-100">
+          <span class="font-bold flex items-center gap-1 opacity-90">
+            <i class="fa-solid fa-bolt text-amber-300 text-[11px]"></i>
+            <span>Popular:</span>
+          </span>
+          <button *ngFor="let term of popularSearches" (click)="applySearchChip(term)"
+            class="px-2.5 py-1 rounded-full bg-white/15 hover:bg-white/25 backdrop-blur-xs text-white text-[11px] font-semibold transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-xs">
+            {{ term }}
           </button>
         </div>
       </div>
@@ -114,26 +127,47 @@
         <div class="max-w-xl">
           <span class="text-xs font-bold uppercase tracking-wider text-[#5f4299] dark:text-purple-300 flex items-center gap-1.5">
             <i class="fa-solid fa-receipt"></i>
-            <span>Quick Ticket Resolution</span>
+            <span>Instant Ticket Finder</span>
           </span>
           <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 dark:text-gray-100 mt-1">
-            Check Booking Status or Track Live Bus
+            Find Booking by Mobile, Email, or Ticket ID
           </h2>
           <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-1.5 leading-relaxed">
-            Enter your TedBus Ticket ID / PNR number to check your confirmation, view boarding location, or verify refund processing.
+            No need to remember complicated database IDs! Simply enter your <strong>10-digit mobile number</strong>, registered <strong>email</strong>, or <strong>Ticket PNR</strong> to view live booking status, seat details, and bus tracking.
           </p>
+
+          <!-- Quick Fill Chips for easy testing / signed-in convenience -->
+          <div class="flex items-center gap-2 flex-wrap text-xs text-gray-500 dark:text-gray-400 mt-3">
+            <span class="font-bold text-[#5f4299] dark:text-purple-300">Quick Try:</span>
+            <button (click)="fillAndCheckPnr('7993149379')"
+              class="px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:border-[#5f4299] text-[11px] font-semibold cursor-pointer transition-all shadow-2xs">
+              📱 Mobile: 7993149379
+            </button>
+            <button (click)="fillAndCheckPnr('24eg105p52@gmail.com')"
+              class="px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:border-[#5f4299] text-[11px] font-semibold cursor-pointer transition-all shadow-2xs">
+              📧 Email: 24eg105p52@...
+            </button>
+            <button (click)="fillAndCheckPnr('TB-A6725C')"
+              class="px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:border-[#5f4299] text-[11px] font-semibold cursor-pointer transition-all shadow-2xs">
+              🎫 PNR: TB-A6725C
+            </button>
+            <button *ngIf="auth.user()?.email" (click)="fillAndCheckPnr(auth.user()!.email)"
+              class="px-2.5 py-1 rounded-lg bg-purple-50 dark:bg-purple-950 text-[#5f4299] dark:text-purple-300 border border-purple-200 dark:border-purple-800 text-[11px] font-bold cursor-pointer transition-all shadow-2xs">
+              ✨ My Email ({{ auth.user()?.email }})
+            </button>
+          </div>
         </div>
 
         <div class="w-full lg:w-auto flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
-          <div class="relative flex-1 sm:w-64">
+          <div class="relative flex-1 sm:w-72">
             <input type="text" [ngModel]="pnrInput()" (ngModelChange)="pnrInput.set($event)"
-              placeholder="e.g. 6af5e284297f..."
+              placeholder="Mobile, Email, or Ticket PNR..."
               class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs md:text-sm font-semibold tracking-wider focus:outline-none focus:ring-2 focus:ring-[#5f4299]" />
           </div>
           <button (click)="checkPnrStatus()" [disabled]="isCheckingPnr()"
-            class="px-5 py-2.5 bg-[#5f4299] text-white rounded-xl text-xs md:text-sm font-bold hover:bg-[#4b337e] transition-colors cursor-pointer shadow-sm inline-flex items-center justify-center gap-1.5 disabled:opacity-60">
+            class="px-5 py-2.5 bg-[#5f4299] text-white rounded-xl text-xs md:text-sm font-bold hover:bg-[#4b337e] transition-colors cursor-pointer shadow-sm inline-flex items-center justify-center gap-1.5 disabled:opacity-60 shrink-0">
             <i *ngIf="isCheckingPnr()" class="fa-solid fa-spinner animate-spin"></i>
-            <span>{{ isCheckingPnr() ? 'Checking...' : 'Check Status' }}</span>
+            <span>{{ isCheckingPnr() ? 'Searching...' : 'Find Ticket' }}</span>
           </button>
         </div>
       </div>
@@ -243,9 +277,9 @@
       </div>
     </div>
 
-    <!-- 4. Interactive Category Filter Chips -->
-    <div>
-      <div class="flex items-center justify-between mb-4">
+    <!-- 4. Interactive Category Filter Chips & Knowledge Base -->
+    <div id="articles-section">
+      <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
         <h3 class="text-xl font-extrabold text-gray-900 dark:text-gray-100">
           Knowledge Base & FAQ Topics
         </h3>
@@ -254,7 +288,21 @@
         </span>
       </div>
 
-      <div class="flex items-center gap-2.5 overflow-x-auto pb-3 no-scrollbar">
+      <!-- Active Search Alert Bar (Shows when user is searching) -->
+      <div *ngIf="isSearching()"
+        class="p-3.5 mb-4 rounded-xl bg-purple-50 dark:bg-purple-950/60 border border-purple-200 dark:border-purple-800 flex items-center justify-between text-xs font-semibold text-purple-900 dark:text-purple-200 shadow-2xs">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-magnifying-glass text-[#5f4299] dark:text-purple-300"></i>
+          <span>Found <strong>{{ filteredArticles().length }}</strong> guides matching "<strong>{{ searchQuery() }}</strong>" across all categories (auto-expanded below)</span>
+        </div>
+        <button (click)="searchQuery.set('')"
+          class="px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-slate-700 hover:border-[#5f4299] text-xs font-bold cursor-pointer transition-colors">
+          Clear Search ✕
+        </button>
+      </div>
+
+      <!-- Category Filter Pills (Hidden during active global search to avoid conflicting filters) -->
+      <div *ngIf="!isSearching()" class="flex items-center gap-2.5 overflow-x-auto pb-3 no-scrollbar">
         <button *ngFor="let cat of categories" (click)="setCategory(cat.id)"
           [class]="selectedCategory() === cat.id
             ? 'whitespace-nowrap px-4 py-2 rounded-xl text-xs font-bold bg-[#5f4299] text-white shadow-sm transition-all cursor-pointer'
@@ -265,28 +313,29 @@
       </div>
     </div>
 
-    <!-- 5. Knowledge Base Articles (Accordion Details) -->
+    <!-- 5. Knowledge Base Articles (Accordion Details with Auto-Expand & Highlighting) -->
     <div class="space-y-4">
       
-      <div *ngIf="filteredArticles().length === 0" class="p-12 text-center bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800">
+      <div *ngIf="filteredArticles().length === 0" class="p-12 text-center bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800 shadow-xs">
         <i class="fa-solid fa-magnifying-glass text-3xl text-gray-400 mb-3"></i>
         <h4 class="font-bold text-base text-gray-800 dark:text-gray-200">No matching articles found</h4>
         <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 max-w-sm mx-auto">
-          We couldn't find any help guide for "{{ searchQuery() }}". Try different keywords or contact support below.
+          We couldn't find any help guide for "{{ searchQuery() }}". Try one of our popular quick searches or submit a support ticket below.
         </p>
         <button (click)="searchQuery.set(''); setCategory('all')"
-          class="mt-4 px-4 py-2 bg-gray-100 dark:bg-slate-800 text-xs font-bold rounded-xl hover:bg-gray-200 transition-colors">
+          class="mt-4 px-4 py-2 bg-gray-100 dark:bg-slate-800 text-xs font-bold rounded-xl hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors cursor-pointer">
           Reset Search
         </button>
       </div>
 
       <details *ngFor="let art of filteredArticles()"
+        [open]="isSearching()"
         class="p-5 md:p-6 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group transition-all">
         
         <!-- Summary Header -->
         <summary class="flex items-start md:items-center justify-between gap-4 font-bold text-gray-900 dark:text-gray-100 list-none text-sm md:text-base">
           <div class="flex items-center gap-2.5 flex-wrap">
-            <span>{{ art.title }}</span>
+            <span [innerHTML]="highlight(art.title)"></span>
             <span *ngIf="art.badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-50 dark:bg-purple-950/60 text-[#5f4299] dark:text-purple-300 border border-purple-200 dark:border-purple-800/40">
               {{ art.badge }}
             </span>
@@ -296,20 +345,20 @@
 
         <!-- Article Content -->
         <div class="mt-4 pt-4 border-t border-gray-100 dark:border-slate-800 text-xs md:text-sm text-gray-600 dark:text-gray-300 leading-relaxed space-y-4">
-          <p class="whitespace-pre-line">{{ art.content }}</p>
+          <p class="whitespace-pre-line" [innerHTML]="highlight(art.content)"></p>
 
           <!-- Step-by-step instructions if available -->
           <div *ngIf="art.steps?.length" class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800 space-y-2">
             <h5 class="font-bold text-xs text-gray-800 dark:text-gray-200 uppercase tracking-wider">Step-by-step instructions:</h5>
             <ol class="list-decimal list-inside space-y-1.5 text-xs text-gray-700 dark:text-gray-300 font-medium">
-              <li *ngFor="let s of art.steps">{{ s }}</li>
+              <li *ngFor="let s of art.steps" [innerHTML]="highlight(s)"></li>
             </ol>
           </div>
 
           <!-- Helpful Pro-Tip Box -->
           <div *ngIf="art.tips" class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-900/40 flex items-start gap-2.5 text-amber-900 dark:text-amber-200 text-xs">
             <i class="fa-solid fa-lightbulb text-amber-500 mt-0.5"></i>
-            <span><strong>Helpful Tip:</strong> {{ art.tips }}</span>
+            <span><strong>Helpful Tip:</strong> <span [innerHTML]="highlight(art.tips)"></span></span>
           </div>
         </div>
 
