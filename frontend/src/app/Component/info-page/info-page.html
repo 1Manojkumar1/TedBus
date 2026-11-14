@@ -1,9 +1,398 @@
-<div class="min-h-screen bg-[#f7f7f9]">
-  <div class="max-w-3xl mx-auto px-4 py-10">
-    <a routerLink="/" class="text-sm text-[#5F4299] font-semibold">&larr; Back to home</a>
-    <h1 class="mt-4 text-3xl font-bold text-gray-800">{{ content[topic].title }}</h1>
-    @for (paragraph of content[topic].body; track $index) {
-      <p class="mt-4 text-gray-600 leading-7">{{ paragraph }}</p>
-    }
+<div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-200">
+
+  <!-- ======================================================== -->
+  <!-- HERO BANNER & SEARCH                                     -->
+  <!-- ======================================================== -->
+  <section class="bg-gradient-to-r from-[#4b337e] via-[#5f4299] to-[#d84e55] text-white py-12 px-4 md:px-12 shadow-md relative overflow-hidden">
+    <div class="max-w-6xl mx-auto relative z-10">
+      
+      <!-- Breadcrumb / Back Link -->
+      <a routerLink="/" class="inline-flex items-center gap-2 text-purple-200 hover:text-white text-xs md:text-sm font-semibold transition-colors mb-6 cursor-pointer">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Back to Home</span>
+      </a>
+
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3.5 py-1 rounded-full text-xs font-bold mb-3">
+          <i class="fa-solid fa-headset"></i>
+          <span>24/7 Dedicated Customer Care</span>
+        </div>
+
+        <h1 *ngIf="topic() === 'help'" class="text-3xl md:text-5xl font-extrabold tracking-tight">
+          How can we help you today?
+        </h1>
+        <h1 *ngIf="topic() === 'cancellation'" class="text-3xl md:text-5xl font-extrabold tracking-tight">
+          Cancellations & Instant Refunds
+        </h1>
+
+        <p class="mt-3 text-sm md:text-base text-purple-100 leading-relaxed max-w-2xl">
+          Search help guides, check live ticket PNR status, view refund policies, or connect directly with our 24x7 travel assistance desk.
+        </p>
+
+        <!-- Live Search Input -->
+        <div class="mt-6 relative max-w-2xl">
+          <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-gray-400 text-base"></i>
+          <input type="text" [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)"
+            placeholder="Search e.g. cancel ticket, refund timeline, live tracking, luggage allowance..."
+            class="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white text-gray-900 shadow-xl text-sm md:text-base focus:outline-none focus:ring-4 focus:ring-purple-300 transition-all font-medium" />
+          <button *ngIf="searchQuery()" (click)="searchQuery.set('')"
+            class="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 text-sm p-1">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Decorative background elements -->
+    <div class="absolute -right-10 -bottom-10 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -left-10 -top-10 w-80 h-80 bg-purple-900/30 rounded-full blur-2xl pointer-events-none"></div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- MAIN CONTAINER                                           -->
+  <!-- ======================================================== -->
+  <div class="max-w-6xl mx-auto px-4 py-10 space-y-12">
+
+    <!-- 1. Quick Support Channels Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      
+      <!-- Phone Support -->
+      <div class="p-5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-xs hover:shadow-md transition-all group">
+        <div class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-950/50 text-[#5f4299] dark:text-purple-300 flex items-center justify-center text-xl mb-3 group-hover:scale-105 transition-transform">
+          <i class="fa-solid fa-phone"></i>
+        </div>
+        <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100">24/7 Helpline</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Average wait time &lt; 2 mins</p>
+        <a href="tel:18001028888" class="inline-block mt-3 text-xs font-bold text-[#5f4299] dark:text-purple-400 hover:underline">
+          1800 102 8888 (Toll-Free) →
+        </a>
+      </div>
+
+      <!-- WhatsApp Assistance -->
+      <div class="p-5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-xs hover:shadow-md transition-all group">
+        <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl mb-3 group-hover:scale-105 transition-transform">
+          <i class="fa-brands fa-whatsapp"></i>
+        </div>
+        <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100">WhatsApp Help</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Get M-Ticket & PNR updates</p>
+        <a href="https://api.whatsapp.com/send?phone=919988776655&text=Hi%20TedBus%20Support" target="_blank"
+          class="inline-block mt-3 text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline">
+          Chat on WhatsApp →
+        </a>
+      </div>
+
+      <!-- Email Desk -->
+      <div class="p-5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-xs hover:shadow-md transition-all group">
+        <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl mb-3 group-hover:scale-105 transition-transform">
+          <i class="fa-solid fa-envelope"></i>
+        </div>
+        <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100">Email Support</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Guaranteed reply within 4 hrs</p>
+        <a href="mailto:support@tedbus.in" class="inline-block mt-3 text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline">
+          support&#64;tedbus.in →
+        </a>
+      </div>
+
+      <!-- Emergency SOS & Live Bus -->
+      <div class="p-5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-xs hover:shadow-md transition-all group">
+        <div class="w-12 h-12 rounded-xl bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center text-xl mb-3 group-hover:scale-105 transition-transform">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100">Transit SOS & Delay</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Live bus conductor escalation</p>
+        <span class="inline-block mt-3 text-xs font-bold text-red-600 dark:text-red-400">
+          Priority Incident Team →
+        </span>
+      </div>
+
+    </div>
+
+    <!-- 2. Interactive PNR / Ticket Status Checker Tool -->
+    <div class="bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-slate-900 dark:to-slate-800/80 border border-purple-200/60 dark:border-slate-800 rounded-3xl p-6 md:p-8 shadow-sm">
+      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <div class="max-w-xl">
+          <span class="text-xs font-bold uppercase tracking-wider text-[#5f4299] dark:text-purple-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-receipt"></i>
+            <span>Quick Ticket Resolution</span>
+          </span>
+          <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 dark:text-gray-100 mt-1">
+            Check Booking Status or Track Live Bus
+          </h2>
+          <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-1.5 leading-relaxed">
+            Enter your TedBus Ticket ID / PNR number to check your confirmation, view boarding location, or verify refund processing.
+          </p>
+        </div>
+
+        <div class="w-full lg:w-auto flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+          <div class="relative flex-1 sm:w-64">
+            <input type="text" [ngModel]="pnrInput()" (ngModelChange)="pnrInput.set($event)"
+              placeholder="e.g. TB-892144"
+              class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs md:text-sm font-semibold uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-[#5f4299]" />
+          </div>
+          <button (click)="checkPnrStatus()"
+            class="px-5 py-2.5 bg-[#5f4299] text-white rounded-xl text-xs md:text-sm font-bold hover:bg-[#4b337e] transition-colors cursor-pointer shadow-sm">
+            Check Status
+          </button>
+        </div>
+      </div>
+
+      <!-- PNR Result Display Card -->
+      <div *ngIf="pnrResult()" class="mt-6 pt-6 border-t border-purple-200/50 dark:border-slate-800">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-purple-200 dark:border-slate-700 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-xs font-bold uppercase px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-950 text-[#5f4299] dark:text-purple-300">
+                PNR: {{ pnrResult()?.pnr }}
+              </span>
+              <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-md flex items-center gap-1">
+                <i class="fa-solid fa-circle-check text-[10px]"></i>
+                {{ pnrResult()?.status }}
+              </span>
+            </div>
+            <h4 class="font-extrabold text-base text-gray-900 dark:text-gray-100 mt-2">
+              {{ pnrResult()?.route }}
+            </h4>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+              Operator: <strong>{{ pnrResult()?.operator }}</strong> • Timing: {{ pnrResult()?.departure }}
+            </p>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <a routerLink="/route-planner"
+              class="px-3.5 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950 text-[#5f4299] dark:text-purple-300 text-xs font-bold hover:bg-[#5f4299] hover:text-white transition-colors cursor-pointer">
+              <i class="fa-solid fa-map-location-dot mr-1"></i>Track On Map
+            </a>
+            <button (click)="clearPnrResult()" class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+              Clear
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Cancellation Policy Slab Matrix (Highlighted if on /cancellation) -->
+    <div *ngIf="topic() === 'cancellation'" class="space-y-6">
+      <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-6 md:p-8 shadow-sm">
+        <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
+          <div>
+            <h3 class="text-xl font-extrabold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+              <i class="fa-solid fa-scale-balanced text-[#5f4299]"></i>
+              <span>Official Cancellation Refund Slabs</span>
+            </h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              Standard refund percentages calculated based on cancellation notice prior to departure time.
+            </p>
+          </div>
+
+          <a routerLink="/profile"
+            class="px-5 py-2.5 bg-[#d84e55] hover:bg-[#b8383f] text-white rounded-xl text-xs font-bold transition-colors shadow-sm inline-flex items-center gap-1.5">
+            <i class="fa-solid fa-ticket"></i>
+            <span>Cancel Active Ticket in Profile →</span>
+          </a>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs md:text-sm">
+            <thead>
+              <tr class="border-b border-gray-200 dark:border-slate-800 text-gray-400 uppercase text-[11px] font-bold">
+                <th class="pb-3">Time Window Before Departure</th>
+                <th class="pb-3">Standard Bus Refund</th>
+                <th class="pb-3">With Free Cancellation Guarantee</th>
+                <th class="pb-3">Refund Credit SLA</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-slate-800 font-medium">
+              <tr>
+                <td class="py-3.5 font-bold text-gray-800 dark:text-gray-200">More than 24 hours prior</td>
+                <td class="py-3.5 text-emerald-600 dark:text-emerald-400 font-bold">100% Full Refund</td>
+                <td class="py-3.5 text-emerald-600 dark:text-emerald-400 font-bold">100% Full Refund</td>
+                <td class="py-3.5 text-gray-500">15 mins (UPI) / 2 days</td>
+              </tr>
+              <tr>
+                <td class="py-3.5 font-bold text-gray-800 dark:text-gray-200">Between 12 to 24 hours prior</td>
+                <td class="py-3.5 text-blue-600 dark:text-blue-400 font-bold">75% Refund</td>
+                <td class="py-3.5 text-emerald-600 dark:text-emerald-400 font-bold">100% Full Refund</td>
+                <td class="py-3.5 text-gray-500">15 mins (UPI) / 2 days</td>
+              </tr>
+              <tr>
+                <td class="py-3.5 font-bold text-gray-800 dark:text-gray-200">Between 4 to 12 hours prior</td>
+                <td class="py-3.5 text-amber-600 dark:text-amber-400 font-bold">50% Refund</td>
+                <td class="py-3.5 text-emerald-600 dark:text-emerald-400 font-bold">100% Full Refund</td>
+                <td class="py-3.5 text-gray-500">15 mins (UPI) / 2 days</td>
+              </tr>
+              <tr>
+                <td class="py-3.5 font-bold text-gray-800 dark:text-gray-200">Within 4 hours of departure</td>
+                <td class="py-3.5 text-red-500 font-bold">0% (Non-refundable)</td>
+                <td class="py-3.5 text-red-500 font-bold">0% (Non-refundable)</td>
+                <td class="py-3.5 text-gray-500">N/A</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Interactive Category Filter Chips -->
+    <div>
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-xl font-extrabold text-gray-900 dark:text-gray-100">
+          Knowledge Base & FAQ Topics
+        </h3>
+        <span class="text-xs font-semibold text-gray-400">
+          Showing {{ filteredArticles().length }} articles
+        </span>
+      </div>
+
+      <div class="flex items-center gap-2.5 overflow-x-auto pb-3 no-scrollbar">
+        <button *ngFor="let cat of categories" (click)="setCategory(cat.id)"
+          [class]="selectedCategory() === cat.id
+            ? 'whitespace-nowrap px-4 py-2 rounded-xl text-xs font-bold bg-[#5f4299] text-white shadow-sm transition-all cursor-pointer'
+            : 'whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 text-gray-700 dark:text-gray-300 hover:border-[#5f4299] transition-all cursor-pointer'">
+          <i [class]="cat.icon + ' mr-1.5'"></i>
+          <span>{{ cat.label }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 5. Knowledge Base Articles (Accordion Details) -->
+    <div class="space-y-4">
+      
+      <div *ngIf="filteredArticles().length === 0" class="p-12 text-center bg-white dark:bg-slate-900 rounded-3xl border border-gray-200 dark:border-slate-800">
+        <i class="fa-solid fa-magnifying-glass text-3xl text-gray-400 mb-3"></i>
+        <h4 class="font-bold text-base text-gray-800 dark:text-gray-200">No matching articles found</h4>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 max-w-sm mx-auto">
+          We couldn't find any help guide for "{{ searchQuery() }}". Try different keywords or contact support below.
+        </p>
+        <button (click)="searchQuery.set(''); setCategory('all')"
+          class="mt-4 px-4 py-2 bg-gray-100 dark:bg-slate-800 text-xs font-bold rounded-xl hover:bg-gray-200 transition-colors">
+          Reset Search
+        </button>
+      </div>
+
+      <details *ngFor="let art of filteredArticles()"
+        class="p-5 md:p-6 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group transition-all">
+        
+        <!-- Summary Header -->
+        <summary class="flex items-start md:items-center justify-between gap-4 font-bold text-gray-900 dark:text-gray-100 list-none text-sm md:text-base">
+          <div class="flex items-center gap-2.5 flex-wrap">
+            <span>{{ art.title }}</span>
+            <span *ngIf="art.badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-50 dark:bg-purple-950/60 text-[#5f4299] dark:text-purple-300 border border-purple-200 dark:border-purple-800/40">
+              {{ art.badge }}
+            </span>
+          </div>
+          <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform shrink-0 mt-1 md:mt-0"></i>
+        </summary>
+
+        <!-- Article Content -->
+        <div class="mt-4 pt-4 border-t border-gray-100 dark:border-slate-800 text-xs md:text-sm text-gray-600 dark:text-gray-300 leading-relaxed space-y-4">
+          <p class="whitespace-pre-line">{{ art.content }}</p>
+
+          <!-- Step-by-step instructions if available -->
+          <div *ngIf="art.steps?.length" class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800 space-y-2">
+            <h5 class="font-bold text-xs text-gray-800 dark:text-gray-200 uppercase tracking-wider">Step-by-step instructions:</h5>
+            <ol class="list-decimal list-inside space-y-1.5 text-xs text-gray-700 dark:text-gray-300 font-medium">
+              <li *ngFor="let s of art.steps">{{ s }}</li>
+            </ol>
+          </div>
+
+          <!-- Helpful Pro-Tip Box -->
+          <div *ngIf="art.tips" class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-900/40 flex items-start gap-2.5 text-amber-900 dark:text-amber-200 text-xs">
+            <i class="fa-solid fa-lightbulb text-amber-500 mt-0.5"></i>
+            <span><strong>Helpful Tip:</strong> {{ art.tips }}</span>
+          </div>
+        </div>
+
+      </details>
+
+    </div>
+
+    <!-- 6. Raise a Support Ticket / Contact Us Form -->
+    <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-6 md:p-10 shadow-sm">
+      <div class="max-w-2xl">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#5f4299] dark:text-purple-300 flex items-center gap-1.5">
+          <i class="fa-solid fa-headset"></i>
+          <span>Direct Contact Desk</span>
+        </span>
+        <h3 class="text-2xl font-extrabold text-gray-900 dark:text-gray-100 mt-1">
+          Still need help? Lodge a Support Ticket
+        </h3>
+        <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+          Our dedicated transit support representatives review tickets 24/7. Average resolution time is under 2 hours.
+        </p>
+
+        <!-- Submitted Confirmation State -->
+        <div *ngIf="ticketSubmittedId()" class="mt-6 p-6 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-center space-y-3">
+          <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900 text-emerald-600 dark:text-emerald-300 rounded-full flex items-center justify-center mx-auto text-xl">
+            <i class="fa-solid fa-check"></i>
+          </div>
+          <h4 class="font-extrabold text-base text-emerald-900 dark:text-emerald-200">
+            Ticket #{{ ticketSubmittedId() }} Created Successfully!
+          </h4>
+          <p class="text-xs text-emerald-800 dark:text-emerald-300 max-w-md mx-auto">
+            We have dispatched an acknowledgement to your email. A senior customer support officer has been assigned to your ticket.
+          </p>
+          <button (click)="resetTicketForm()"
+            class="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 transition-colors cursor-pointer">
+            Submit Another Request
+          </button>
+        </div>
+
+        <!-- Form -->
+        <form *ngIf="!ticketSubmittedId()" (ngSubmit)="submitSupportTicket()" class="mt-6 space-y-4">
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">Issue Category</label>
+              <select [(ngModel)]="ticketForm.category" name="category"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#5f4299]">
+                <option value="Booking Issue">Booking & Seat Selection</option>
+                <option value="Refund Status">Cancellation & Refund Status</option>
+                <option value="Payment Deducted">Payment Deducted / Gateway Error</option>
+                <option value="Bus Delay">Bus Delay & Conductor Contact</option>
+                <option value="Luggage Problem">Luggage & Baggage Inquiry</option>
+                <option value="Other">Other Query</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">Booking PNR / Ticket ID (Optional)</label>
+              <input type="text" [(ngModel)]="ticketForm.pnr" name="pnr" placeholder="e.g. TB-994120"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#5f4299]" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">Your Name *</label>
+              <input type="text" [(ngModel)]="ticketForm.name" name="name" required placeholder="John Doe"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#5f4299]" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">Email Address *</label>
+              <input type="email" [(ngModel)]="ticketForm.email" name="email" required placeholder="john@example.com"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#5f4299]" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">How can we assist you? Describe your issue *</label>
+            <textarea [(ngModel)]="ticketForm.message" name="message" required rows="4"
+              placeholder="Please provide details about what went wrong, including bus operator name, journey date, or banking reference number if applicable..."
+              class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#5f4299]"></textarea>
+          </div>
+
+          <button type="submit" [disabled]="isSubmittingTicket()"
+            class="px-6 py-3 bg-[#5f4299] text-white rounded-xl text-xs md:text-sm font-bold hover:bg-[#4b337e] transition-colors disabled:opacity-50 cursor-pointer shadow-md inline-flex items-center gap-2">
+            <i *ngIf="isSubmittingTicket()" class="fa-solid fa-spinner animate-spin"></i>
+            <span>{{ isSubmittingTicket() ? 'LODGING TICKET...' : 'SUBMIT SUPPORT TICKET' }}</span>
+          </button>
+
+        </form>
+      </div>
+    </div>
+
   </div>
+
 </div>
