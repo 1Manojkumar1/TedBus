@@ -1,19 +1,7 @@
-.header-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 24px;
-  background: #3e3e52;
-  color: white;
-}
-
-.logo {
-  color: white;
-  text-decoration: none;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.trip-info {
-  font-size: 14px;
+.route-banner-container {
+  background: var(--tb-surface);
+  border-bottom: 1px solid var(--tb-border);
+  color: var(--tb-ink);
+  transition: background-color 0.2s, border-color 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }

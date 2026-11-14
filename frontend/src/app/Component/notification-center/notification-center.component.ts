@@ -14,7 +14,7 @@ import { TranslatePipe } from '../../service/translate.pipe';
 @Component({
   selector: 'app-notification-center',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslatePipe],
+  imports: [CommonModule, FormsModule],
   templateUrl: './notification-center.component.html',
   styleUrls: ['./notification-center.component.css'],
 })

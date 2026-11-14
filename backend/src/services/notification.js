@@ -53,8 +53,8 @@ export async function sendNotification({
 export async function sendBookingConfirmation(booking) {
   const recipientId = booking.customerId || booking.email;
   const recipientEmail = booking.email;
-  const from = booking.departureDetails?.city || 'Origin';
-  const to = booking.arrivalDetails?.city || 'Destination';
+  const from = booking.boardingPoint ? `${booking.departureDetails?.city || 'Origin'} (${booking.boardingPoint})` : (booking.departureDetails?.city || 'Origin');
+  const to = booking.droppingPoint ? `${booking.arrivalDetails?.city || 'Destination'} (${booking.droppingPoint})` : (booking.arrivalDetails?.city || 'Destination');
   const seats = booking.seats?.join(', ') || 'N/A';
 
   return sendNotification({
@@ -71,8 +71,8 @@ export async function sendBookingConfirmation(booking) {
 export async function sendBookingCancellation(booking) {
   const recipientId = booking.customerId || booking.email;
   const recipientEmail = booking.email;
-  const from = booking.departureDetails?.city || 'Origin';
-  const to = booking.arrivalDetails?.city || 'Destination';
+  const from = booking.boardingPoint ? `${booking.departureDetails?.city || 'Origin'} (${booking.boardingPoint})` : (booking.departureDetails?.city || 'Origin');
+  const to = booking.droppingPoint ? `${booking.arrivalDetails?.city || 'Destination'} (${booking.droppingPoint})` : (booking.arrivalDetails?.city || 'Destination');
 
   return sendNotification({
     recipientId,

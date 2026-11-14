@@ -28,3 +28,6 @@ pnpm-debug.log*
 *.swp
 .DS_Store
 Thumbs.db
+
+# Documentation plans
+docs/plan.md

@@ -89,6 +89,8 @@ export async function persistbooking(body, overrides = {}) {
     seats: body.seats.map(Number),
     departureDetails: body.departureDetails,
     arrivalDetails: body.arrivalDetails,
+    boardingPoint: body.boardingPoint || body.departureDetails?.location || '',
+    droppingPoint: body.droppingPoint || body.arrivalDetails?.location || '',
     duration: String(body.duration),
     isBusinessTravel: Boolean(body.isBusinessTravel),
     businessDetails: body.businessDetails,

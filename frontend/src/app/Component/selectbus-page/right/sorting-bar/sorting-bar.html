@@ -1,17 +1,40 @@
-<div class="security-container">
-  <mat-icon style="font-size: 20px; padding-bottom: 10px;">security</mat-icon>
-  <div>All bus ratings include safety as a major factor</div>
-</div>
-<mat-divider></mat-divider>
-<div class="main-container">
-  <div class="main-container1">
-    <div>BUSES LIST</div>
-    <div>SORT BY :</div>
+<div class="sorting-wrapper">
+  <div class="security-badge">
+    <i class="fa-solid fa-shield-halved text-[#5f4299]"></i>
+    <span>All TedBus operators undergo safety & hygiene verification</span>
   </div>
-  <div class="main-container2" [class.active]="isActive('departure')" (click)="sort('departure')">Departure {{ direction('departure') }}</div>
-  <div class="main-container3" [class.active]="isActive('duration')" (click)="sort('duration')">Duration {{ direction('duration') }}</div>
-  <div class="main-container4" [class.active]="isActive('arrival')" (click)="sort('arrival')">Arrivals {{ direction('arrival') }}</div>
-  <div class="main-container5" [class.active]="isActive('rating')" (click)="sort('rating')">Ratings {{ direction('rating') }}</div>
-  <div class="main-container6" [class.active]="isActive('fare')" (click)="sort('fare')">Fare {{ direction('fare') }}</div>
-  <div class="main-container7" [class.active]="isActive('seats')" (click)="sort('seats')">Seats Available {{ direction('seats') }}</div>
+
+  <div class="sorting-bar">
+    <div class="sort-label-group">
+      <span class="sort-title">BUSES</span>
+      <span class="sort-by">SORT BY:</span>
+    </div>
+
+    <div class="sort-chips">
+      <button type="button" class="sort-chip" [class.active]="isActive('departure')" (click)="sort('departure')">
+        <span>Departure</span>
+        <span class="dir-icon">{{ direction('departure') }}</span>
+      </button>
+      <button type="button" class="sort-chip" [class.active]="isActive('duration')" (click)="sort('duration')">
+        <span>Duration</span>
+        <span class="dir-icon">{{ direction('duration') }}</span>
+      </button>
+      <button type="button" class="sort-chip" [class.active]="isActive('arrival')" (click)="sort('arrival')">
+        <span>Arrival</span>
+        <span class="dir-icon">{{ direction('arrival') }}</span>
+      </button>
+      <button type="button" class="sort-chip" [class.active]="isActive('rating')" (click)="sort('rating')">
+        <span>Ratings</span>
+        <span class="dir-icon">{{ direction('rating') }}</span>
+      </button>
+      <button type="button" class="sort-chip" [class.active]="isActive('fare')" (click)="sort('fare')">
+        <span>Fare</span>
+        <span class="dir-icon">{{ direction('fare') }}</span>
+      </button>
+      <button type="button" class="sort-chip" [class.active]="isActive('seats')" (click)="sort('seats')">
+        <span>Seats</span>
+        <span class="dir-icon">{{ direction('seats') }}</span>
+      </button>
+    </div>
+  </div>
 </div>

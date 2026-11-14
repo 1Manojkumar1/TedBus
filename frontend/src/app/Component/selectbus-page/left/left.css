@@ -1,45 +1,171 @@
 .left-container {
-  width: 264px;
+  width: 270px;
   flex-shrink: 0;
-  padding: 22px;
+  padding: 20px;
   background: var(--tb-surface);
   border: 1px solid var(--tb-border);
   border-radius: var(--tb-radius);
-  box-shadow: var(--tb-shadow);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  position: sticky;
+  top: 76px;
+  max-height: calc(100vh - 96px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--tb-border) transparent;
+  transition: background-color 0.2s, border-color 0.2s;
 }
 
-.left-container h3 {
-  margin: 0 0 18px;
+.left-container::-webkit-scrollbar {
+  width: 5px;
+}
+
+.left-container::-webkit-scrollbar-thumb {
+  background: var(--tb-border);
+  border-radius: 999px;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--tb-border);
+}
+
+.filter-title {
+  margin: 0;
   color: var(--tb-ink);
-  font-size: 1.05rem;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.filter-reset-btn {
+  background: transparent;
+  border: none;
+  color: var(--tb-accent, #d84e55);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: background-color 0.15s;
+}
+
+.filter-reset-btn:hover {
+  background-color: rgba(216, 78, 85, 0.08);
 }
 
 .filter-section {
-  padding: 18px 0;
-  margin: 0;
-  border-top: 1px solid var(--tb-border);
+  padding: 16px 0;
+  border-bottom: 1px solid var(--tb-border);
 }
 
-.filter-section label {
-  font-weight: 600;
-  display: block;
-  margin-bottom: 10px;
-  color: var(--tb-ink);
+.filter-section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
-.filter-section div {
+.filter-section-title {
   display: flex;
   align-items: center;
-  gap: 9px;
-  padding: 7px 0;
-  font-size: 14px;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: var(--tb-muted);
+  margin-bottom: 12px;
 }
-.filter-section input { accent-color: var(--tb-brand); width: 16px; height: 16px; }
+
+.filter-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.filter-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--tb-border);
+  border-radius: 10px;
+  background: var(--tb-surface-alt, #f8fafc);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--tb-ink);
+  transition: all 0.15s ease;
+}
+
+.filter-checkbox-item:hover {
+  border-color: var(--tb-brand);
+}
+
+.filter-checkbox-item.active {
+  border-color: var(--tb-brand);
+  background: var(--tb-brand-light, #f0edf7);
+  color: var(--tb-brand);
+}
+
+.filter-checkbox-item input {
+  accent-color: var(--tb-brand);
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.filter-time-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-time-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--tb-ink);
+  transition: background-color 0.15s;
+}
+
+.filter-time-item:hover {
+  background-color: var(--tb-surface-alt, #f8fafc);
+}
+
+.filter-time-item.active {
+  background-color: var(--tb-brand-light, #f0edf7);
+  color: var(--tb-brand);
+  font-weight: 700;
+}
+
+.filter-time-item input {
+  accent-color: var(--tb-brand);
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.time-item-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 @media (max-width: 800px) {
-  .left-container { width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; }
-  .left-container h3 { grid-column: 1 / -1; }
-}
-@media (max-width: 440px) {
-  .left-container { display: block; }
+  .left-container {
+    width: 100%;
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+  }
 }

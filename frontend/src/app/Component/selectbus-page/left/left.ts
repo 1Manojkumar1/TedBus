@@ -28,4 +28,12 @@ export class Left {
   hasSlot(value: string): boolean {
     return this.filters.departureSlots().has(value);
   }
+
+  hasActiveFilters(): boolean {
+    return this.filters.busTypes().size > 0 || this.filters.departureSlots().size > 0;
+  }
+
+  clearAll(): void {
+    this.filters.reset();
+  }
 }

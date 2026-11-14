@@ -17,6 +17,10 @@ export class FormDrawerComponent implements OnDestroy {
   @Input() busarrivaltime: number = 0;
   @Input() busdeparturetime: number = 0;
   @Input() operatorname: string = '';
+  @Input() boardingpoint: string = '';
+  @Input() droppingpoint: string = '';
+  @Input() boardingtime: string = '';
+  @Input() droppingtime: string = '';
 
   readonly isdraweropen = signal(false);
 

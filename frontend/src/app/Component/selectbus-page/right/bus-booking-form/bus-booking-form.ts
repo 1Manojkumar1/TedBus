@@ -20,6 +20,10 @@ export class BusBookingFormComponent implements OnInit {
   @Input() busarrivaltime: number = 0;
   @Input() busdeparturetime: number = 0;
   @Input() operatorname: string = '';
+  @Input() boardingpoint: string = '';
+  @Input() droppingpoint: string = '';
+  @Input() boardingtime: string = '';
+  @Input() droppingtime: string = '';
 
   private readonly router = inject(Router);
   private readonly dataservice = inject(DataserviceService);
@@ -107,7 +111,9 @@ export class BusBookingFormComponent implements OnInit {
       seatprice: this.seatprice,
       busid: this.busid,
       busarrivaltime: this.busarrivaltime,
-      busdeparturetime: this.busdeparturetime
+      busdeparturetime: this.busdeparturetime,
+      boardingpoint: this.boardingpoint || this.routedetails?.departureLocation?.name || '',
+      droppingpoint: this.droppingpoint || this.routedetails?.arrivalLocation?.name || ''
     };
 
     this.dataservice.passobj(passengers);

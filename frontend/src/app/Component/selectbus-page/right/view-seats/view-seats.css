@@ -1,17 +1,339 @@
-.mainContainer { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr); gap: 24px; padding: 28px; background: #f8fafc; border-top: 1px solid var(--tb-border); }
-.mainContainer1, .mainContainer2 { border: 1px solid var(--tb-border); border-radius: var(--tb-radius); background: var(--tb-surface); box-shadow: 0 5px 16px rgb(15 23 42 / 5%); }
-.mainContainer1 { min-height: 280px; display: flex; overflow: hidden; }
-.mainContainer1Left { width: 62px; border-right: 1px solid var(--tb-border); display: grid; place-items: start center; padding-top: 22px; color: var(--tb-brand); }
-.mainContainer1Right { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding: 22px; }
-.mainContainer1Right > div { display: flex; flex-direction: column; gap: 10px; align-items: center; }
-.mainContainer2 { padding: 22px; height: fit-content; }
-.mainContainer21, .mainContainer22, .mainContainer23, .mainContainer24, .mainContainer26 { display: flex; justify-content: space-between; gap: 16px; }
-.mainContainer21 { margin-bottom: 18px; font-weight: 700; color: var(--tb-ink); }
-.mainContainer21 > div:last-child { color: var(--tb-brand); font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
-.mainContainer22, .mainContainer23 { padding: 13px 0; align-items: center; }
-.mainContainer24 { align-items: center; padding: 16px 0; font-weight: 600; }
-.mainContainer25 { margin: 16px 0 10px; color: var(--tb-ink); font-weight: 700; }
-.mainContainer26 { padding: 0 0 12px; color: var(--tb-muted); }
-.mainContainer26 > div:last-child { color: var(--tb-ink); font-size: 18px; font-weight: 800; }
-.mainContainer27 { border-top: 1px solid var(--tb-border); margin-top: 14px; }
-@media (max-width: 760px) { .mainContainer { grid-template-columns: 1fr; padding: 16px; gap: 16px; } .mainContainer1Right { padding: 16px 10px; gap: 8px; } .mainContainer1Left { width: 44px; } .mainContainer2 { padding: 18px; } }
+.view-seats-container {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.95fr);
+  gap: 24px;
+  padding: 24px;
+  background: var(--tb-surface-alt, #f8fafc);
+  border-top: 1px solid var(--tb-border, #e2e8f0);
+}
+
+.seats-layout-card,
+.booking-summary-card {
+  border: 1px solid var(--tb-border, #e2e8f0);
+  border-radius: var(--tb-radius, 14px);
+  background: var(--tb-surface, #ffffff);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+/* Bus Interior Layout */
+.seats-layout-card {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bus-interior {
+  display: flex;
+  min-height: 260px;
+  border: 1px dashed var(--tb-border, #cbd5e1);
+  border-radius: 12px;
+  padding: 14px;
+  background: var(--tb-surface-alt, #f8fafc);
+}
+
+.driver-cabin {
+  width: 54px;
+  border-right: 1px dashed var(--tb-border, #cbd5e1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 16px;
+  gap: 6px;
+  color: var(--tb-brand, #5f4299);
+}
+
+.driver-icon {
+  font-size: 26px;
+}
+
+.driver-label {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--tb-muted, #64748b);
+}
+
+.seats-deck {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  padding: 8px 14px;
+}
+
+.seat-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Seat Legend */
+.seat-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding-top: 6px;
+  font-size: 12px;
+  color: var(--tb-muted, #64748b);
+  font-weight: 600;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+}
+
+.swatch-available {
+  background: var(--tb-surface, #ffffff);
+  border: 1px solid var(--tb-border, #cbd5e1);
+}
+
+.swatch-selected {
+  background: var(--tb-brand, #5f4299);
+}
+
+.swatch-occupied {
+  background: var(--tb-surface-alt, #f1f5f9);
+  border: 1px solid var(--tb-border, #e2e8f0);
+  opacity: 0.6;
+}
+
+.seat-limit-warning {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(216, 78, 85, 0.08);
+  border: 1px solid rgba(216, 78, 85, 0.2);
+  border-radius: 8px;
+  color: var(--tb-danger, #d84e55);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Booking Summary Card */
+.booking-summary-card {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: fit-content;
+}
+
+.summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.summary-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--tb-ink, #0f172a);
+}
+
+.change-points-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--tb-border, #cbd5e1);
+  background: var(--tb-surface, #ffffff);
+  color: var(--tb-brand, #5f4299);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.change-points-btn:hover {
+  background: var(--tb-surface-alt, #f5f3ff);
+  border-color: var(--tb-brand, #5f4299);
+}
+
+/* Boarding & Dropping Points Display */
+.point-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--tb-surface-alt, #f8fafc);
+  border: 1px solid var(--tb-border, #e2e8f0);
+  transition: all 0.15s ease-in-out;
+}
+
+.point-row.highlighted {
+  border-color: var(--tb-brand, #5f4299);
+}
+
+.point-info {
+  display: flex;
+  align-items: center;
+}
+
+.point-city {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.point-icon {
+  font-size: 20px;
+}
+
+.point-name {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--tb-ink, #0f172a);
+}
+
+.point-sub {
+  display: block;
+  font-size: 11px;
+  color: var(--tb-muted, #64748b);
+  margin-top: 2px;
+}
+
+.point-time {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--tb-ink, #0f172a);
+  font-family: monospace;
+}
+
+/* In-place Point Selector */
+.point-selector-box {
+  padding: 10px;
+  background: var(--tb-surface, #ffffff);
+  border: 1px dashed var(--tb-border, #cbd5e1);
+  border-radius: 10px;
+  margin-top: -6px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.selector-heading {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--tb-muted, #64748b);
+  margin-bottom: 8px;
+}
+
+.selector-options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.selector-chip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--tb-border, #e2e8f0);
+  background: var(--tb-surface-alt, #f8fafc);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.12s ease-in-out;
+}
+
+.selector-chip:hover {
+  border-color: var(--tb-brand, #5f4299);
+}
+
+.selector-chip.chip-active {
+  border-color: var(--tb-brand, #5f4299);
+  background: rgba(95, 66, 153, 0.08);
+  font-weight: 700;
+}
+
+.chip-name {
+  font-size: 12px;
+  color: var(--tb-ink, #0f172a);
+}
+
+.chip-time {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--tb-brand, #5f4299);
+  font-family: monospace;
+}
+
+/* Fare & Seat Summary */
+.fare-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.fare-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tb-muted, #64748b);
+}
+
+.fare-value {
+  font-size: 14px;
+  color: var(--tb-brand, #5f4299);
+}
+
+.fare-section {
+  padding-top: 4px;
+}
+
+.fare-title {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--tb-ink, #0f172a);
+}
+
+.fare-caption {
+  display: block;
+  font-size: 11px;
+  color: var(--tb-muted, #64748b);
+  margin-top: 2px;
+}
+
+.fare-amount {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--tb-ink, #0f172a);
+}
+
+.proceed-wrapper {
+  margin-top: 8px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .view-seats-container {
+    grid-template-columns: 1fr;
+    padding: 16px;
+    gap: 16px;
+  }
+}

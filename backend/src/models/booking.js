@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const tripdetailsSchema = new mongoose.Schema(
   {
     city: { type: String, required: true },
+    location: { type: String },
     time: { type: mongoose.Schema.Types.Mixed, required: true },
     date: { type: String, required: true },
   },
@@ -34,6 +35,8 @@ const bookingSchema = new mongoose.Schema(
     seats: { type: [Number], required: true },
     departureDetails: { type: tripdetailsSchema, required: true },
     arrivalDetails: { type: tripdetailsSchema, required: true },
+    boardingPoint: { type: String },
+    droppingPoint: { type: String },
     duration: { type: String, required: true },
     isBusinessTravel: { type: Boolean, default: false },
     businessDetails: {

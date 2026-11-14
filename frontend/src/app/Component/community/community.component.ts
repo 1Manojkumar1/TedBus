@@ -15,7 +15,7 @@ import { TranslatePipe } from '../../service/translate.pipe';
 @Component({
   selector: 'app-community',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslatePipe],
+  imports: [CommonModule, FormsModule],
   templateUrl: './community.component.html',
   styleUrls: ['./community.component.css'],
 })

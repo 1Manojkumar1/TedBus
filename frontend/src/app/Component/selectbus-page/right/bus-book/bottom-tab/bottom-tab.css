@@ -1,7 +1,69 @@
-.mainBar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; border-top: 1px solid var(--tb-border); padding-top: 16px; }
-.mainBar button { border: 0; border-radius: 8px; padding: 8px 10px; background: transparent; color: var(--tb-muted); font-size: 12px; font-weight: 700; cursor: pointer; }
-.mainBar button:hover, .mainBar button[aria-selected="true"] { color: var(--tb-brand); background: #f5f3ff; }
-.mainBar button:last-child { margin-left: auto; color: white; background: var(--tb-accent); }
-.mainBar button:last-child:hover, .mainBar button:last-child[aria-selected="true"] { color: white; background: #bf3e46; }
-.displayArea { margin-top: 14px; }
-@media (max-width: 600px) { .mainBar { gap: 4px; } .mainBar button { padding: 7px; } .mainBar button:last-child { margin-left: 0; width: 100%; } }
+.mainBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0 0;
+}
+
+.tab-btn {
+  border: 1px solid var(--tb-border);
+  border-radius: 8px;
+  padding: 6px 12px;
+  background: var(--tb-surface-alt, #f8fafc);
+  color: var(--tb-muted);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tab-btn:hover,
+.tab-btn[aria-selected="true"] {
+  color: var(--tb-brand);
+  background: var(--tb-brand-light, #f0edf7);
+  border-color: var(--tb-brand);
+}
+
+.view-seats-tab-btn {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 10px;
+  border: none;
+  background: var(--tb-accent, #d84e55);
+  color: white;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(216, 78, 85, 0.25);
+}
+
+.view-seats-tab-btn:hover {
+  background: #bf3e46;
+  box-shadow: 0 4px 12px rgba(216, 78, 85, 0.35);
+}
+
+.displayArea {
+  margin-top: 14px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 640px) {
+  .view-seats-tab-btn {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+    margin-top: 6px;
+  }
+}

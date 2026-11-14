@@ -1,14 +1,124 @@
-.bus-booking-form { background: #f8fafc; border: 0 !important; min-height: 100%; padding: 24px 0; }
-.passenger-main-title { margin: 0 20px 18px; color: var(--tb-ink); font-size: 20px; text-align: left; }
-.content-block { margin: 14px 20px; padding: 22px; border: 1px solid var(--tb-border); border-radius: 14px; background: white; box-shadow: 0 3px 10px rgb(15 23 42 / 4%); }
-.passanger-info-title { display: flex; align-items: center; padding: 0; margin-bottom: 12px; color: var(--tb-ink); font-weight: 700; }
-.form-label { display: block; margin-top: 15px; color: var(--tb-ink); font-size: 13px; font-weight: 600; }
-.form-input { box-sizing: border-box; width: 100%; margin-top: 7px; padding: 11px 12px; color: var(--tb-ink) !important; border: 1px solid #cbd5e1; border-radius: 9px; outline: none; background: #fff; }
-.form-input:focus { border-color: var(--tb-brand); box-shadow: 0 0 0 3px rgb(95 66 153 / 12%); }
-.form-radio-label { padding: 0 8px 0 3px; font-size: 14px; color: var(--tb-muted); }
-.radio-button { accent-color: var(--tb-brand); width: 17px; height: 17px; }
-.passenger-contact-msg { display: inline-block; margin-bottom: 6px; padding: 7px 10px; border-radius: 8px; background: #fffbeb; color: #92400e; font-size: 12px; }
-.insure_title { margin: 22px 0 0; padding: 12px; border-radius: 10px; background: #eff6ff; color: #1e40af; font-size: 12px; font-weight: 600; }
-.proceed_to_button { width: 100%; border: 0; border-radius: 10px; padding: 13px 16px; background: var(--tb-accent) !important; color: white; font-size: 14px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; cursor: pointer; transition: transform .15s, background .15s; }
-.proceed_to_button:hover { background: #bf3e46 !important; transform: translateY(-1px); }
-@media (max-width: 640px) { .content-block { margin: 12px; padding: 16px; } .passenger-main-title { margin: 0 12px 12px; } }
+.bus-booking-form {
+  background: var(--tb-surface-alt, #f8fafc);
+  border: 0 !important;
+  min-height: 100%;
+  padding: 24px 0;
+}
+
+.passenger-main-title {
+  margin: 0 20px 18px;
+  color: var(--tb-ink, #0f172a);
+  font-size: 20px;
+  font-weight: 800;
+  text-align: left;
+}
+
+.content-block {
+  margin: 14px 20px;
+  padding: 22px;
+  border: 1px solid var(--tb-border, #e2e8f0);
+  border-radius: var(--tb-radius, 14px);
+  background: var(--tb-surface, #ffffff);
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
+}
+
+.passanger-info-title {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin-bottom: 12px;
+  color: var(--tb-ink, #0f172a);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.form-label {
+  display: block;
+  margin-top: 15px;
+  color: var(--tb-ink, #0f172a);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.form-input {
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 7px;
+  padding: 11px 14px;
+  color: var(--tb-ink, #0f172a) !important;
+  border: 1px solid var(--tb-border, #cbd5e1);
+  border-radius: 9px;
+  outline: none;
+  background: var(--tb-surface, #ffffff);
+  font-size: 14px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-input:focus {
+  border-color: var(--tb-brand, #5f4299);
+  box-shadow: 0 0 0 3px rgba(95, 66, 153, 0.15);
+}
+
+.form-radio-label {
+  padding: 0 8px 0 3px;
+  font-size: 14px;
+  color: var(--tb-muted, #64748b);
+}
+
+.radio-button {
+  accent-color: var(--tb-brand, #5f4299);
+  width: 17px;
+  height: 17px;
+}
+
+.passenger-contact-msg {
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  background: rgba(245, 158, 11, 0.12);
+  color: #b45309;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.insure_title {
+  margin: 22px 0 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(59, 130, 246, 0.12);
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.proceed_to_button {
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: var(--tb-accent, #d84e55) !important;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.15s, background-color 0.15s, box-shadow 0.15s;
+}
+
+.proceed_to_button:hover {
+  background: #bf3e46 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(216, 78, 85, 0.3);
+}
+
+@media (max-width: 640px) {
+  .content-block {
+    margin: 12px;
+    padding: 16px;
+  }
+  .passenger-main-title {
+    margin: 0 12px 12px;
+  }
+}

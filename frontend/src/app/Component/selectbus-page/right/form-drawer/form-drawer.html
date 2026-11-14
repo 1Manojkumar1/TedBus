@@ -13,7 +13,11 @@
       <div class="drawer-title-group">
         <h3 class="drawer-title">{{ operatorname || 'Bus Booking' }}</h3>
         <p class="drawer-subtitle">
-          {{ routedetails?.departureLocation?.name }} &rarr; {{ routedetails?.arrivalLocation?.name }}
+          <span>{{ routedetails?.departureLocation?.name }}</span>
+          <span *ngIf="boardingpoint" class="text-xs opacity-75">({{ boardingpoint }})</span>
+          &rarr;
+          <span>{{ routedetails?.arrivalLocation?.name }}</span>
+          <span *ngIf="droppingpoint" class="text-xs opacity-75">({{ droppingpoint }})</span>
           &middot; Seat(s): <span class="seat-badge">{{ selectedseat.join(', ') }}</span>
         </p>
       </div>
@@ -33,7 +37,11 @@
         [busid]="busid"
         [busarrivaltime]="busarrivaltime"
         [busdeparturetime]="busdeparturetime"
-        [operatorname]="operatorname">
+        [operatorname]="operatorname"
+        [boardingpoint]="boardingpoint"
+        [droppingpoint]="droppingpoint"
+        [boardingtime]="boardingtime"
+        [droppingtime]="droppingtime">
       </app-bus-booking-form>
     </div>
   </aside>

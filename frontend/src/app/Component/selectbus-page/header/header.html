@@ -1,18 +1,24 @@
-<header class="header-container">
-  <div class="header-left">
-    <a routerLink="/" class="logo">TedBus</a>
+<div class="route-banner-container">
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
+    <div class="flex items-center gap-3 flex-wrap">
+      <div class="flex items-center gap-2 text-sm md:text-base font-extrabold tracking-tight">
+        <span class="text-[#5f4299] dark:text-[#8b68d6]">{{ trip().from || 'Origin' }}</span>
+        <i class="fa-solid fa-arrow-right text-xs text-gray-400"></i>
+        <span class="text-[#5f4299] dark:text-[#8b68d6]">{{ trip().to || 'Destination' }}</span>
+      </div>
+      @if (trip().date) {
+        <span class="h-4 w-px bg-gray-300 dark:bg-slate-700 hidden sm:inline-block"></span>
+        <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 flex items-center gap-1.5 bg-gray-100 dark:bg-slate-800/80 px-2.5 py-1 rounded-lg">
+          <i class="fa-regular fa-calendar text-[11px] text-[#5f4299]"></i>
+          <span>{{ formatdate(trip().date) }}</span>
+        </span>
+      }
+    </div>
+
+    <a routerLink="/"
+      class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-slate-700 hover:border-[#5f4299] bg-white dark:bg-slate-800 text-[#5f4299] dark:text-purple-300 text-xs font-bold transition-all shadow-xs hover:shadow-sm">
+      <i class="fa-solid fa-pen-to-square text-[11px]"></i>
+      <span>Change Search</span>
+    </a>
   </div>
-  <div class="header-right">
-    @if (trip().from || trip().to) {
-      <span class="trip-info">
-        {{ trip().from }} &rarr; {{ trip().to }}
-        @if (trip().date) {
-          &middot; {{ formatdate(trip().date) }}
-        }
-      </span>
-    } @else {
-      <span class="trip-info">Search buses</span>
-    }
-    <a routerLink="/" class="text-sm font-medium text-[#5F4299] hover:underline">Change search</a>
-  </div>
-</header>
+</div>

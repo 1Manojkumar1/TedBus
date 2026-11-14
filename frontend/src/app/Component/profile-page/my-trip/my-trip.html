@@ -1,9 +1,9 @@
-<article class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+<article class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
   <header class="flex flex-wrap items-start justify-between gap-3 px-5 md:px-6 pt-5">
     <div class="min-w-0">
-      <div class="flex items-center gap-2 text-base md:text-lg font-bold text-gray-800">
+      <div class="flex items-center gap-2 text-base md:text-lg font-bold text-gray-800 dark:text-gray-100">
         <span class="truncate">{{ booking().departureDetails?.city || '-' }}</span>
-        <mat-icon class="text-gray-300 text-[20px] w-5 h-5 leading-5">arrow_forward</mat-icon>
+        <mat-icon class="text-gray-300 dark:text-gray-600 text-[20px] w-5 h-5 leading-5">arrow_forward</mat-icon>
         <span class="truncate">{{ booking().arrivalDetails?.city || '-' }}</span>
       </div>
       <p class="mt-1 text-xs text-gray-400">
@@ -16,8 +16,8 @@
 
     <span
       [class]="isupcoming()
-        ? 'text-xs font-semibold px-3 py-1 rounded-full bg-green-50 text-green-700'
-        : 'text-xs font-semibold px-3 py-1 rounded-full bg-gray-100 text-gray-600'">
+        ? 'text-xs font-semibold px-3 py-1 rounded-full bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-300'
+        : 'text-xs font-semibold px-3 py-1 rounded-full bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300'">
       {{ booking().status || 'booked' }}
     </span>
   </header>
@@ -25,8 +25,14 @@
   <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 px-5 md:px-6 py-5">
     <div>
       <p class="text-xs font-medium uppercase tracking-wide text-gray-400">Departure</p>
-      <p class="mt-1 font-semibold text-gray-800">{{ departuretime() }}</p>
-      <p class="text-sm text-gray-500">{{ formatdate(booking().departureDetails?.date) }}</p>
+      <p class="mt-1 font-semibold text-gray-800 dark:text-gray-100">{{ departuretime() }}</p>
+      <p class="text-sm text-gray-500 dark:text-gray-400">{{ formatdate(booking().departureDetails?.date) }}</p>
+      @if (booking().boardingPoint || booking().departureDetails?.location) {
+        <p class="mt-1 text-xs font-medium text-[#5f4299] dark:text-purple-300 flex items-center gap-1">
+          <mat-icon class="text-[14px] w-3.5 h-3.5 leading-3.5">place</mat-icon>
+          <span>{{ booking().boardingPoint || booking().departureDetails?.location }}</span>
+        </p>
+      }
     </div>
 
     <div class="flex sm:flex-col items-center sm:justify-center gap-2 sm:gap-1 text-gray-400">
@@ -36,19 +42,25 @@
 
     <div class="sm:text-right">
       <p class="text-xs font-medium uppercase tracking-wide text-gray-400">Arrival</p>
-      <p class="mt-1 font-semibold text-gray-800">{{ arrivaltime() }}</p>
-      <p class="text-sm text-gray-500">{{ formatdate(booking().arrivalDetails?.date) }}</p>
+      <p class="mt-1 font-semibold text-gray-800 dark:text-gray-100">{{ arrivaltime() }}</p>
+      <p class="text-sm text-gray-500 dark:text-gray-400">{{ formatdate(booking().arrivalDetails?.date) }}</p>
+      @if (booking().droppingPoint || booking().arrivalDetails?.location) {
+        <p class="mt-1 text-xs font-medium text-[#5f4299] dark:text-purple-300 flex items-center gap-1 sm:justify-end">
+          <mat-icon class="text-[14px] w-3.5 h-3.5 leading-3.5">place</mat-icon>
+          <span>{{ booking().droppingPoint || booking().arrivalDetails?.location }}</span>
+        </p>
+      }
     </div>
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 px-5 md:px-6 py-5 bg-gray-50/70 border-t border-gray-100">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 px-5 md:px-6 py-5 bg-gray-50/70 dark:bg-slate-800/50 border-t border-gray-100 dark:border-slate-800">
     <div>
       <p class="text-xs font-medium uppercase tracking-wide text-gray-400">Seats & passengers</p>
 
       @if (seats().length) {
         <div class="flex flex-wrap gap-1.5 mt-2">
           @for (seat of seats(); track seat) {
-            <span class="text-xs font-semibold px-2 py-1 rounded-lg bg-white border border-gray-200 text-gray-600">
+            <span class="text-xs font-semibold px-2 py-1 rounded-lg bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-gray-200">
               {{ seat }}
             </span>
           }
@@ -57,7 +69,7 @@
 
       <div class="mt-2 flex flex-wrap gap-x-4 gap-y-2">
         @for (passenger of passengers(); track $index) {
-          <p class="text-sm text-gray-600 flex items-center gap-1.5">
+          <p class="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-1.5">
             <mat-icon class="text-gray-400 text-[16px] w-4 h-4 leading-4">person</mat-icon>
             {{ passenger.name }}
             @if (passenger.age) {
@@ -75,9 +87,9 @@
 
     <div>
       <p class="text-xs font-medium uppercase tracking-wide text-gray-400">Fare & contact</p>
-      <p class="mt-1 text-lg font-bold text-gray-800">&#8377;{{ booking().fare || 0 }}</p>
+      <p class="mt-1 text-lg font-bold text-gray-800 dark:text-gray-100">&#8377;{{ booking().fare || 0 }}</p>
 
-      <div class="mt-1 flex flex-col gap-1 text-sm text-gray-600">
+      <div class="mt-1 flex flex-col gap-1 text-sm text-gray-600 dark:text-gray-300">
         @if (booking().email) {
           <p class="flex items-center gap-1.5 break-all">
             <mat-icon class="text-gray-400 text-[16px] w-4 h-4 leading-4">mail</mat-icon>

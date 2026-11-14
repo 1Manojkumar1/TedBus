@@ -34,6 +34,8 @@ export class PaymentPage implements OnInit {
   isinsurance: boolean = false;
   iscoviddonated: boolean = false;
   traveldate: string = new Date().toISOString().slice(0, 10);
+  boardingpoint: string = '';
+  droppingpoint: string = '';
 
   readonly errormessage = signal('');
   readonly posting = signal(false);
@@ -62,6 +64,8 @@ export class PaymentPage implements OnInit {
       this.busid = params['busid'] ?? '';
       this.busarrivaltime = Number(params['busarrivaltime']) || 0;
       this.busdepauturetime = Number(params['busdeparturetime']) || 0;
+      this.boardingpoint = params['boardingpoint'] ?? '';
+      this.droppingpoint = params['droppingpoint'] ?? '';
 
       if (!this.passseatarray.length) {
         this.errormessage.set('No seats were selected. Please search again and pick your seats.');
@@ -158,14 +162,18 @@ export class PaymentPage implements OnInit {
       seats: this.passseatarray,
       departureDetails: {
         city: this.routedetails.departureLocation.name,
+        location: this.boardingpoint || this.routedetails.departureLocation.name,
         time: this.busdepauturetime,
         date: this.traveldate,
       },
       arrivalDetails: {
         city: this.routedetails.arrivalLocation.name,
+        location: this.droppingpoint || this.routedetails.arrivalLocation.name,
         time: this.busarrivaltime,
         date: this.traveldate,
       },
+      boardingPoint: this.boardingpoint || this.routedetails.departureLocation.name,
+      droppingPoint: this.droppingpoint || this.routedetails.arrivalLocation.name,
       duration: String(this.routedetails.duration),
       isBusinessTravel: this.isbuisnesstravel,
       isInsurance: this.isinsurance,

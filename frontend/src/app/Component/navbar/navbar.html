@@ -59,13 +59,34 @@
             </button>
         </mat-menu>
 
-        <!-- Theme Toggle (Light / Dark) -->
-        <button (click)="toggleTheme()"
-            class="flex items-center justify-center w-9 h-9 rounded-lg border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-slate-200 transition-colors"
+        <!-- Modern Interactive Theme Toggle Switch -->
+        <button type="button" (click)="toggleTheme()"
+            role="switch" [attr.aria-checked]="themeService.theme() === 'dark'"
             [title]="themeService.theme() === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
-            aria-label="Toggle Theme">
-            <i *ngIf="themeService.theme() === 'dark'" class="fa-solid fa-sun text-amber-400 text-sm"></i>
-            <i *ngIf="themeService.theme() === 'light'" class="fa-solid fa-moon text-slate-600 text-sm"></i>
+            class="relative inline-flex items-center h-8 w-14 rounded-full p-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#5f4299]/40 cursor-pointer shadow-inner"
+            [ngClass]="themeService.theme() === 'dark'
+                ? 'bg-gradient-to-r from-slate-800 via-indigo-950 to-purple-950 border border-purple-500/30'
+                : 'bg-gradient-to-r from-amber-100 via-orange-100 to-amber-200 border border-amber-300/80'">
+            <!-- Track Icons -->
+            <span class="absolute left-1.5 flex items-center justify-center text-[10px] text-amber-500 transition-opacity"
+                [class.opacity-100]="themeService.theme() === 'light'"
+                [class.opacity-20]="themeService.theme() === 'dark'">
+                <i class="fa-solid fa-sun"></i>
+            </span>
+            <span class="absolute right-1.5 flex items-center justify-center text-[10px] text-indigo-300 transition-opacity"
+                [class.opacity-100]="themeService.theme() === 'dark'"
+                [class.opacity-20]="themeService.theme() === 'light'">
+                <i class="fa-solid fa-moon"></i>
+            </span>
+
+            <!-- Sliding Glowing Thumb -->
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full shadow-md transform transition-all duration-300 z-10"
+                [ngClass]="themeService.theme() === 'dark'
+                    ? 'translate-x-6 bg-gradient-to-tr from-indigo-500 to-purple-600 text-white shadow-purple-500/30'
+                    : 'translate-x-0 bg-white text-amber-500 shadow-amber-500/20'">
+                <i *ngIf="themeService.theme() === 'dark'" class="fa-solid fa-moon text-[10px]"></i>
+                <i *ngIf="themeService.theme() === 'light'" class="fa-solid fa-sun text-[11px] text-amber-500"></i>
+            </span>
         </button>
 
         <!-- Notifications Bell -->

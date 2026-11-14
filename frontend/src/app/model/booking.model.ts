@@ -10,8 +10,10 @@ export interface Booking {
   busId: string;
   bookingDate: string;
   seats: number[];
-  departureDetails?: { city: string; time: number | string; date: string };
-  arrivalDetails?: { city: string; time: number | string; date: string };
+  departureDetails?: { city: string; location?: string; time: number | string; date: string };
+  arrivalDetails?: { city: string; location?: string; time: number | string; date: string };
+  boardingPoint?: string;
+  droppingPoint?: string;
   duration: number | string;
   isBusinessTravel: boolean;
   isInsurance: boolean;

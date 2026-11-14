@@ -7,7 +7,7 @@ import { ViewSeatsComponent } from '../../view-seats/view-seats';
   standalone: true,
   imports: [CommonModule, ViewSeatsComponent],
   templateUrl: './bottom-tab.html',
-  styleUrl: './bottom-tab.css'
+  styleUrl: './bottom-tab.css',
 })
 export class BottomTabComponent {
   @Input() filledseats: number[] = [];
@@ -25,5 +25,47 @@ export class BottomTabComponent {
     for (let i = 0; i < this.tabstate.length; i++) {
       this.tabstate[i] = i === value && !this.tabstate[i];
     }
+  }
+
+  get boardingPoints(): { name: string; time: string }[] {
+    const subs = this.routedetails?.departureLocation?.subLocations;
+    const baseTime = Number(this.busdeparturetime) || 20;
+    const defaultPoints = [
+      `${this.routedetails?.departureLocation?.name || 'City'} Central Bus Terminal`,
+      'Highway Junction Toll Plaza',
+      'Main Ring Road Pickup Point',
+      'City Metro Station Gateway',
+    ];
+    const points = Array.isArray(subs) && subs.length ? subs : defaultPoints;
+    return points.map((name: string, idx: number) => {
+      const timeOffset = (baseTime + idx * 0.25) % 24;
+      const h = Math.floor(timeOffset);
+      const m = Math.round((timeOffset - h) * 60);
+      return {
+        name,
+        time: `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`,
+      };
+    });
+  }
+
+  get droppingPoints(): { name: string; time: string }[] {
+    const subs = this.routedetails?.arrivalLocation?.subLocations;
+    const baseTime = Number(this.busarrivaltime) || 6;
+    const defaultPoints = [
+      `${this.routedetails?.arrivalLocation?.name || 'City'} Central Drop Point`,
+      'Airport Bypass Circle',
+      'Tech Corridor Junction',
+      'Interstate Bus Terminal Platform',
+    ];
+    const points = Array.isArray(subs) && subs.length ? subs : defaultPoints;
+    return points.map((name: string, idx: number) => {
+      const timeOffset = (baseTime + idx * 0.25) % 24;
+      const h = Math.floor(timeOffset);
+      const m = Math.round((timeOffset - h) * 60);
+      return {
+        name,
+        time: `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`,
+      };
+    });
   }
 }
