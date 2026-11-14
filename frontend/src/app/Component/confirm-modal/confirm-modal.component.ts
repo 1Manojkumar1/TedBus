@@ -1,0 +1,20 @@
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ConfirmDialogService } from '../../service/confirm-dialog.service';
+
+@Component({
+  selector: 'app-confirm-modal',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './confirm-modal.component.html',
+  styleUrl: './confirm-modal.component.css',
+})
+export class ConfirmModalComponent {
+  readonly dialogService = inject(ConfirmDialogService);
+
+  onBackdropClick(event: MouseEvent): void {
+    if ((event.target as HTMLElement).classList.contains('confirm-backdrop')) {
+      this.dialogService.handleCancel();
+    }
+  }
+}

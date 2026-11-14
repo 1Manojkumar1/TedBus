@@ -9,6 +9,38 @@ function escaperegex(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+const CITY_ALIASES = {
+  bangalore: ['bangalore', 'bengaluru'],
+  bengaluru: ['bangalore', 'bengaluru'],
+  mumbai: ['mumbai', 'bombay'],
+  bombay: ['mumbai', 'bombay'],
+  chennai: ['chennai', 'madras'],
+  madras: ['chennai', 'madras'],
+  kolkata: ['kolkata', 'calcutta'],
+  calcutta: ['kolkata', 'calcutta'],
+  kochi: ['kochi', 'cochin', 'ernakulam'],
+  cochin: ['kochi', 'cochin', 'ernakulam'],
+  ernakulam: ['kochi', 'cochin', 'ernakulam'],
+  trivandrum: ['trivandrum', 'thiruvananthapuram'],
+  thiruvananthapuram: ['trivandrum', 'thiruvananthapuram'],
+  goa: ['goa', 'panaji', 'panjim', 'margao', 'madgaon'],
+  panaji: ['goa', 'panaji', 'panjim'],
+  visakhapatnam: ['visakhapatnam', 'vizag'],
+  vizag: ['visakhapatnam', 'vizag'],
+  vijayawada: ['vijayawada', 'bezawada'],
+  pondicherry: ['pondicherry', 'puducherry'],
+  puducherry: ['pondicherry', 'puducherry'],
+};
+
+function cityPattern(cityName) {
+  const norm = String(cityName ?? '').trim().toLowerCase();
+  const aliases = CITY_ALIASES[norm];
+  if (aliases && aliases.length > 0) {
+    return new RegExp(`^(${aliases.map(escaperegex).join('|')})$`, 'i');
+  }
+  return new RegExp(`^${escaperegex(String(cityName ?? '').trim())}$`, 'i');
+}
+
 export async function listroutes(req, res) {
   const { page, limit, skip, requested } = parsepagination(req.query);
   const query = Route.find().sort({ 'departureLocation.name': 1, 'arrivalLocation.name': 1 });
@@ -33,8 +65,8 @@ export async function getbusforroute(req, res) {
   }
 
   const route = await Route.findOne({
-    'departureLocation.name': new RegExp(`^${escaperegex(departure.trim())}$`, 'i'),
-    'arrivalLocation.name': new RegExp(`^${escaperegex(arrival.trim())}$`, 'i'),
+    'departureLocation.name': cityPattern(departure),
+    'arrivalLocation.name': cityPattern(arrival),
   })
     .lean()
     .exec();

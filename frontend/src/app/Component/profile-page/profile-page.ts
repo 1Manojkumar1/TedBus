@@ -7,6 +7,7 @@ import { BusService } from '../../service/bus.service';
 import { AuthService } from '../../service/auth.service';
 import { ReviewService, JourneyReview } from '../../service/review.service';
 import { ToastService } from '../../service/toast.service';
+import { ConfirmDialogService } from '../../service/confirm-dialog.service';
 import { Booking } from '../../model/booking.model';
 import { MyTrip } from './my-trip/my-trip';
 
@@ -25,6 +26,7 @@ export class ProfilePage implements OnInit {
   private readonly auth = inject(AuthService);
   private readonly reviewService = inject(ReviewService);
   private readonly toastService = inject(ToastService);
+  private readonly confirmDialog = inject(ConfirmDialogService);
 
   showReviewModal = signal(false);
   reviewingBooking = signal<Booking | null>(null);
@@ -93,12 +95,20 @@ export class ProfilePage implements OnInit {
     }
   }
 
-  canceltrip(bookingid: string): void {
+  async canceltrip(bookingid: string): Promise<void> {
     if (this.cancelling()) {
       return;
     }
 
-    const confirmed = window.confirm('Are you sure you want to cancel and delete this booking?');
+    const confirmed = await this.confirmDialog.confirm({
+      title: 'Cancel Booking',
+      message: 'Are you sure you want to cancel this booking? This will release your seat and credit any eligible refund to your wallet.',
+      confirmText: 'Yes, Cancel Trip',
+      cancelText: 'Keep Ticket',
+      type: 'danger',
+      icon: 'fa-solid fa-ticket',
+    });
+
     if (!confirmed) {
       return;
     }
@@ -109,13 +119,14 @@ export class ProfilePage implements OnInit {
       next: () => {
         this.cancelling.set(null);
         this.actionmessage.set('Trip cancelled and removed from your account.');
+        this.toastService.info('Booking Cancelled', 'Your ticket was cancelled and refund credited.');
         this.loadtrips();
       },
       error: (error) => {
         this.cancelling.set(null);
-        this.actionmessage.set(
-          error?.error?.error ?? 'We could not cancel this trip. Please try again.'
-        );
+        const errText = error?.error?.error ?? 'We could not cancel this trip. Please try again.';
+        this.actionmessage.set(errText);
+        this.toastService.error('Cancellation Failed', errText);
       },
     });
   }
@@ -204,7 +215,7 @@ export class ProfilePage implements OnInit {
     if (!booking || !user) return;
 
     if (!this.reviewForm.comment.trim()) {
-      alert('Please write a short review sharing your experience.');
+      this.toastService.warning('Feedback Required', 'Please write a short review sharing your experience.');
       return;
     }
 
@@ -237,7 +248,7 @@ export class ProfilePage implements OnInit {
           },
           error: (err) => {
             this.isSubmittingReview.set(false);
-            alert(err?.error?.error || 'Failed to update review.');
+            this.toastService.error('Review Update Failed', err?.error?.error || 'Failed to update review.');
           },
         });
     } else {
@@ -273,7 +284,7 @@ export class ProfilePage implements OnInit {
           },
           error: (err) => {
             this.isSubmittingReview.set(false);
-            alert(err?.error?.error || 'Failed to submit review.');
+            this.toastService.error('Review Submission Failed', err?.error?.error || 'Failed to submit review.');
           },
         });
     }

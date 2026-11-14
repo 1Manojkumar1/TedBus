@@ -20,6 +20,8 @@ import {
 } from '../../service/route-planner.service';
 import { AuthService } from '../../service/auth.service';
 import { TranslationService } from '../../service/translation.service';
+import { ToastService } from '../../service/toast.service';
+import { ConfirmDialogService } from '../../service/confirm-dialog.service';
 import { TranslatePipe } from '../../service/translate.pipe';
 
 @Component({
@@ -34,6 +36,8 @@ export class RoutePlannerComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly auth = inject(AuthService);
   readonly i18n = inject(TranslationService);
   private readonly router = inject(Router);
+  private readonly toastService = inject(ToastService);
+  private readonly confirmDialog = inject(ConfirmDialogService);
 
   private readonly mapContainer = viewChild<ElementRef<HTMLDivElement>>('mapRef');
   private map?: L.Map;
@@ -105,7 +109,7 @@ export class RoutePlannerComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!fromLoc || !toLoc) return;
 
     if (this.selectedFrom() === this.selectedTo()) {
-      alert('Origin and destination cannot be the same city.');
+      this.toastService.warning('Duplicate Cities', 'Origin and destination cannot be the same city.');
       return;
     }
 
@@ -195,7 +199,7 @@ export class RoutePlannerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   addWaypoint(): void {
     if (this.waypoints().length >= 3) {
-      alert('You can add up to 3 intermediate waypoints.');
+      this.toastService.info('Waypoint Limit', 'You can add up to 3 intermediate waypoints.');
       return;
     }
     const unused = this.cities.find(
@@ -242,7 +246,7 @@ export class RoutePlannerComponent implements OnInit, AfterViewInit, OnDestroy {
   // Save Route
   openSaveDialog(): void {
     if (!this.auth.isloggedin()) {
-      alert('Please sign in to save your favorite routes.');
+      this.toastService.warning('Sign In Required', 'Please sign in to save your favorite routes.');
       return;
     }
     this.saveTitle.set(`${this.selectedFrom()} to ${this.selectedTo()}`);
@@ -283,7 +287,7 @@ export class RoutePlannerComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         error: (err) => {
           console.error('Failed to save route:', err);
-          alert('Failed to save route.');
+          this.toastService.error('Save Failed', 'Could not save this route. Please try again.');
           this.isSavingRoute.set(false);
         },
       });
@@ -304,15 +308,29 @@ export class RoutePlannerComponent implements OnInit, AfterViewInit, OnDestroy {
     this.calculateRoute();
   }
 
-  deleteSavedRoute(item: SavedRouteItem, event?: MouseEvent): void {
+  async deleteSavedRoute(item: SavedRouteItem, event?: MouseEvent): Promise<void> {
     event?.stopPropagation();
-    if (!confirm(`Delete saved route "${item.title}"?`)) return;
+
+    const confirmed = await this.confirmDialog.confirm({
+      title: 'Delete Saved Route',
+      message: `Are you sure you want to remove "${item.title}" from your saved routes?`,
+      confirmText: 'Yes, Delete',
+      cancelText: 'Cancel',
+      type: 'danger',
+      icon: 'fa-solid fa-route',
+    });
+
+    if (!confirmed) return;
 
     this.routeService.deleteSavedRoute(item._id, this.userIdentifier).subscribe({
       next: () => {
         this.savedRoutes.set(this.savedRoutes().filter((r) => r._id !== item._id));
+        this.toastService.info('Route Removed', `Deleted "${item.title}" from your saved routes.`);
       },
-      error: (err) => console.error('Failed to delete route:', err),
+      error: (err) => {
+        console.error('Failed to delete route:', err);
+        this.toastService.error('Delete Failed', 'Failed to remove saved route.');
+      },
     });
   }
 }

@@ -39,6 +39,7 @@ export interface SavedRouteItem {
 export const MAJOR_INDIAN_CITIES: Record<string, RouteLocation> = {
   Hyderabad: { name: 'Hyderabad', lat: 17.385, lng: 78.4867 },
   Bangalore: { name: 'Bangalore', lat: 12.9716, lng: 77.5946 },
+  Bengaluru: { name: 'Bengaluru', lat: 12.9716, lng: 77.5946 },
   Chennai: { name: 'Chennai', lat: 13.0827, lng: 80.2707 },
   Mumbai: { name: 'Mumbai', lat: 19.076, lng: 72.8777 },
   Pune: { name: 'Pune', lat: 18.5204, lng: 73.8567 },
@@ -57,6 +58,19 @@ export const MAJOR_INDIAN_CITIES: Record<string, RouteLocation> = {
   Nagpur: { name: 'Nagpur', lat: 21.1458, lng: 79.0882 },
   Surat: { name: 'Surat', lat: 21.1702, lng: 72.8311 },
   Lucknow: { name: 'Lucknow', lat: 26.8467, lng: 80.9462 },
+  Agra: { name: 'Agra', lat: 27.1767, lng: 78.0081 },
+  Chandigarh: { name: 'Chandigarh', lat: 30.7333, lng: 76.7794 },
+  Dehradun: { name: 'Dehradun', lat: 30.3165, lng: 78.0322 },
+  Varanasi: { name: 'Varanasi', lat: 25.3176, lng: 82.9739 },
+  Mangalore: { name: 'Mangalore', lat: 12.9141, lng: 74.856 },
+  Trivandrum: { name: 'Trivandrum', lat: 8.5241, lng: 76.9366 },
+  Pondicherry: { name: 'Pondicherry', lat: 11.9416, lng: 79.8083 },
+  Bhubaneswar: { name: 'Bhubaneswar', lat: 20.2961, lng: 85.8245 },
+  Bhopal: { name: 'Bhopal', lat: 23.2599, lng: 77.4126 },
+  Indore: { name: 'Indore', lat: 22.7196, lng: 75.8577 },
+  Amritsar: { name: 'Amritsar', lat: 31.634, lng: 74.8723 },
+  Udaipur: { name: 'Udaipur', lat: 24.5854, lng: 73.7125 },
+  Patna: { name: 'Patna', lat: 25.5941, lng: 85.1376 },
 };
 
 @Injectable({

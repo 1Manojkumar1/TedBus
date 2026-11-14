@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../service/auth.service';
 import { TranslationService } from '../../service/translation.service';
+import { ToastService } from '../../service/toast.service';
 import { TranslatePipe } from '../../service/translate.pipe';
 
 export interface AdminStats {
@@ -40,6 +41,7 @@ export class AdminComponent implements OnInit {
   private readonly http = inject(HttpClient);
   readonly auth = inject(AuthService);
   readonly i18n = inject(TranslationService);
+  private readonly toastService = inject(ToastService);
 
   private readonly baseUrl = `${environment.apiUrl}/admin`;
 
@@ -102,7 +104,7 @@ export class AdminComponent implements OnInit {
         },
         error: (err) => {
           console.error('Failed to resolve report:', err);
-          alert('Failed to resolve report.');
+          this.toastService.error('Report Action Failed', 'Could not update report status. Please try again.');
         },
       });
   }

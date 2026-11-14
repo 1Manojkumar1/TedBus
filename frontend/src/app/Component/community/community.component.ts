@@ -10,7 +10,8 @@ import {
 } from '../../service/community.service';
 import { AuthService } from '../../service/auth.service';
 import { TranslationService } from '../../service/translation.service';
-import { TranslatePipe } from '../../service/translate.pipe';
+import { ToastService } from '../../service/toast.service';
+import { ConfirmDialogService } from '../../service/confirm-dialog.service';
 
 @Component({
   selector: 'app-community',
@@ -24,6 +25,8 @@ export class CommunityComponent implements OnInit {
   readonly auth = inject(AuthService);
   readonly i18n = inject(TranslationService);
   private readonly router = inject(Router);
+  private readonly toastService = inject(ToastService);
+  private readonly confirmDialog = inject(ConfirmDialogService);
 
   readonly categories = [
     'All',
@@ -161,7 +164,7 @@ export class CommunityComponent implements OnInit {
     event?.stopPropagation();
     const user = this.auth.user();
     if (!this.auth.isloggedin() || !user) {
-      alert('Please sign in to like posts and engage with the community!');
+      this.toastService.warning('Sign In Required', 'Please sign in to like posts and engage with the community!');
       return;
     }
 
@@ -219,7 +222,7 @@ export class CommunityComponent implements OnInit {
   addComment(parentCommentId?: string | null): void {
     const user = this.auth.user();
     if (!this.auth.isloggedin() || !user) {
-      alert('Please sign in to comment.');
+      this.toastService.warning('Sign In Required', 'Please sign in to comment.');
       return;
     }
 
@@ -267,7 +270,7 @@ export class CommunityComponent implements OnInit {
   toggleCommentLike(comment: PostComment): void {
     const user = this.auth.user();
     if (!this.auth.isloggedin() || !user) {
-      alert('Please sign in to like comments.');
+      this.toastService.warning('Sign In Required', 'Please sign in to like comments.');
       return;
     }
 
@@ -282,8 +285,18 @@ export class CommunityComponent implements OnInit {
     });
   }
 
-  deleteComment(commentId: string): void {
-    if (!confirm('Are you sure you want to delete this comment?')) return;
+  async deleteComment(commentId: string): Promise<void> {
+    const confirmed = await this.confirmDialog.confirm({
+      title: 'Delete Comment',
+      message: 'Are you sure you want to permanently delete this comment?',
+      confirmText: 'Yes, Delete',
+      cancelText: 'Cancel',
+      type: 'danger',
+      icon: 'fa-solid fa-trash',
+    });
+
+    if (!confirmed) return;
+
     const user = this.auth.user();
     const customerId = user?._id || user?.googleId || user?.email;
     if (!customerId) return;
@@ -298,15 +311,19 @@ export class CommunityComponent implements OnInit {
           current.commentsCount -= 1;
           this.activePost.set({ ...current });
         }
+        this.toastService.info('Comment Deleted', 'Your comment was removed.');
       },
-      error: (err) => console.error('Failed to delete comment:', err),
+      error: (err) => {
+        console.error('Failed to delete comment:', err);
+        this.toastService.error('Delete Failed', 'Failed to remove comment.');
+      },
     });
   }
 
   // Create / Edit Post
   openCreateModal(): void {
     if (!this.auth.isloggedin()) {
-      alert('Please sign in to create a travel post!');
+      this.toastService.warning('Sign In Required', 'Please sign in to create a travel post!');
       return;
     }
     this.editingPostId.set(null);
@@ -344,7 +361,7 @@ export class CommunityComponent implements OnInit {
 
   submitPost(): void {
     if (!this.postForm.title.trim() || !this.postForm.content.trim()) {
-      alert('Please enter both a title and content for your post.');
+      this.toastService.warning('Missing Fields', 'Please enter both a title and content for your post.');
       return;
     }
 
@@ -388,10 +405,11 @@ export class CommunityComponent implements OnInit {
             this.isSubmittingPost.set(false);
             this.closeCreateModal();
             this.fetchPosts();
+            this.toastService.success('Post Updated! 📝', 'Your edits were saved successfully.');
           },
           error: (err) => {
             console.error('Update post failed:', err);
-            alert(err?.error?.error || 'Failed to update post.');
+            this.toastService.error('Update Failed', err?.error?.error || 'Failed to update post.');
             this.isSubmittingPost.set(false);
           },
         });
@@ -412,19 +430,30 @@ export class CommunityComponent implements OnInit {
             this.closeCreateModal();
             this.fetchPosts();
             this.fetchUserStats();
+            this.toastService.success('Story Published! ✈️', 'Your travel discussion is now live.');
           },
           error: (err) => {
             console.error('Create post failed:', err);
-            alert(err?.error?.error || 'Failed to create post. Please try again.');
+            this.toastService.error('Post Failed', err?.error?.error || 'Failed to create post. Please try again.');
             this.isSubmittingPost.set(false);
           },
         });
     }
   }
 
-  deletePost(post: CommunityPost, event?: MouseEvent): void {
+  async deletePost(post: CommunityPost, event?: MouseEvent): Promise<void> {
     event?.stopPropagation();
-    if (!confirm('Are you sure you want to delete this post?')) return;
+
+    const confirmed = await this.confirmDialog.confirm({
+      title: 'Delete Travel Story',
+      message: `Are you sure you want to delete "${post.title}"? This cannot be undone.`,
+      confirmText: 'Yes, Delete Post',
+      cancelText: 'Keep Post',
+      type: 'danger',
+      icon: 'fa-solid fa-trash',
+    });
+
+    if (!confirmed) return;
 
     const user = this.auth.user();
     const customerId = user?._id || user?.googleId || user?.email;
@@ -437,10 +466,11 @@ export class CommunityComponent implements OnInit {
           this.closePostDetail();
         }
         this.fetchUserStats();
+        this.toastService.info('Post Deleted', 'Your travel discussion was removed.');
       },
       error: (err) => {
         console.error('Delete post error:', err);
-        alert(err?.error?.error || 'Failed to delete post.');
+        this.toastService.error('Delete Failed', err?.error?.error || 'Failed to delete post.');
       },
     });
   }
@@ -544,10 +574,11 @@ export class CommunityComponent implements OnInit {
       .subscribe({
         next: () => {
           this.reportSubmitted.set(true);
+          this.toastService.info('Report Submitted', 'Our moderation team will review this content.');
           setTimeout(() => this.closeReportModal(), 1800);
         },
         error: (err) => {
-          alert(err?.error?.error || 'Failed to submit report.');
+          this.toastService.error('Report Failed', err?.error?.error || 'Failed to submit report.');
         },
       });
   }

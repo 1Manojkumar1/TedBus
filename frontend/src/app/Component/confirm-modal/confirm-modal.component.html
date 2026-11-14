@@ -1,0 +1,52 @@
+@if (dialogService.isOpen()) {
+  <div
+    class="confirm-backdrop fixed inset-0 z-[999999] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fadeIn"
+    (click)="onBackdropClick($event)"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="dialogService.options().title">
+
+    <div class="confirm-card bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 animate-scaleUp">
+      
+      <!-- Icon + Title header -->
+      <div class="flex items-start gap-4">
+        <div [class]="dialogService.options().type === 'danger'
+          ? 'w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xl shrink-0'
+          : (dialogService.options().type === 'info'
+            ? 'w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl shrink-0'
+            : 'w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl shrink-0')">
+          <i [class]="dialogService.options().icon || (dialogService.options().type === 'danger' ? 'fa-solid fa-triangle-exclamation' : (dialogService.options().type === 'info' ? 'fa-solid fa-circle-info' : 'fa-solid fa-circle-question'))"></i>
+        </div>
+
+        <div class="flex-1 min-w-0 pt-0.5">
+          <h3 class="font-extrabold text-lg text-gray-900 dark:text-gray-100">
+            {{ dialogService.options().title }}
+          </h3>
+          <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+            {{ dialogService.options().message }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="flex items-center justify-end gap-2.5 pt-3 border-t border-gray-100 dark:border-slate-800">
+        <button
+          type="button"
+          (click)="dialogService.handleCancel()"
+          class="px-4 py-2.5 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs md:text-sm font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700/60 transition-colors">
+          {{ dialogService.options().cancelText || 'Cancel' }}
+        </button>
+
+        <button
+          type="button"
+          (click)="dialogService.handleConfirm()"
+          [class]="dialogService.options().type === 'danger'
+            ? 'px-5 py-2.5 rounded-xl bg-[#d84e55] hover:bg-[#c2414b] text-white text-xs md:text-sm font-bold shadow-md shadow-rose-900/20 transition-all'
+            : 'px-5 py-2.5 rounded-xl bg-[#5f4299] hover:bg-[#4b337e] text-white text-xs md:text-sm font-bold shadow-md shadow-purple-900/20 transition-all'">
+          {{ dialogService.options().confirmText || 'Confirm' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+}
