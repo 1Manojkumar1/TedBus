@@ -3,7 +3,7 @@
   type="button"
   [disabled]="!selectedseat.length"
   (click)="opendrawer()">
-  Proceed to book
+  {{ 'SEATS.PROCEED_TO_BOOK' | translate }}
 </button>
 
 @if (isdraweropen()) {

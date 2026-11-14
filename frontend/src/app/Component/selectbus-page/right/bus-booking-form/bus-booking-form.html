@@ -1,20 +1,20 @@
 <section class="bus-booking-form" aria-label="Passenger details">
-  <h2 class="passenger-main-title">Passenger details</h2>
+  <h2 class="passenger-main-title">{{ 'FORM.TITLE' | translate }}</h2>
 
   <!-- Journey Stops Summary -->
   <div class="content-block" *ngIf="boardingpoint || droppingpoint">
     <div class="passanger-info-title">
       <i class="material-icons" aria-hidden="true" style="color: #10b981">directions_bus</i>
-      <span style="margin-left: 10px">Selected Route & Stops</span>
+      <span style="margin-left: 10px">{{ 'BUS.BOARDING_DROPPING' | translate }}</span>
     </div>
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
       <div style="padding: 10px 12px; border-radius: 10px; background: var(--tb-surface-alt); border: 1px solid var(--tb-border)">
-        <span style="font-size: 11px; text-transform: uppercase; font-weight: 800; color: #10b981; display: block; margin-bottom: 2px;">Boarding Point</span>
+        <span style="font-size: 11px; text-transform: uppercase; font-weight: 800; color: #10b981; display: block; margin-bottom: 2px;">{{ 'BUS.BOARDING_POINT' | translate }}</span>
         <strong style="color: var(--tb-ink); display: block; font-size: 13px;">{{ boardingpoint || routedetails?.departureLocation?.name }}</strong>
         <span style="color: var(--tb-muted); font-size: 11px;">{{ routedetails?.departureLocation?.name }} &bull; {{ boardingtime }}</span>
       </div>
       <div style="padding: 10px 12px; border-radius: 10px; background: var(--tb-surface-alt); border: 1px solid var(--tb-border)">
-        <span style="font-size: 11px; text-transform: uppercase; font-weight: 800; color: #ef4444; display: block; margin-bottom: 2px;">Dropping Point</span>
+        <span style="font-size: 11px; text-transform: uppercase; font-weight: 800; color: #ef4444; display: block; margin-bottom: 2px;">{{ 'BUS.DROPPING_POINT' | translate }}</span>
         <strong style="color: var(--tb-ink); display: block; font-size: 13px;">{{ droppingpoint || routedetails?.arrivalLocation?.name }}</strong>
         <span style="color: var(--tb-muted); font-size: 11px;">{{ routedetails?.arrivalLocation?.name }} &bull; {{ droppingtime }}</span>
       </div>
@@ -24,30 +24,30 @@
   <div class="content-block">
     <div class="passanger-info-title">
       <i class="material-icons" aria-hidden="true" style="color: var(--tb-brand)">group</i>
-      <span style="margin-left: 10px">Who's travelling?</span>
+      <span style="margin-left: 10px">{{ 'FORM.WHOS_TRAVELLING' | translate }}</span>
     </div>
 
     <ng-container *ngFor="let seat of selectedseat; let index = index">
       <div style="padding: 16px 0; border-top: 1px solid var(--tb-border)">
         <div style="display:flex; justify-content:space-between; align-items:center; gap:12px">
-          <strong style="color:var(--tb-ink)">Passenger {{ index + 1 }}</strong>
+          <strong style="color:var(--tb-ink)">{{ 'FORM.PASSENGER' | translate }} {{ index + 1 }}</strong>
           <span style="font-size:12px; font-weight:700; color:var(--tb-brand); background:#f5f3ff; padding:5px 8px; border-radius:999px">Seat {{ seat }}</span>
         </div>
 
-        <label class="form-label" [attr.for]="'passenger-name-' + index">Full name</label>
-        <input class="form-input" [id]="'passenger-name-' + index" type="text" autocomplete="name" placeholder="Enter passenger name" (input)="handlePassName($event, index)" />
+        <label class="form-label" [attr.for]="'passenger-name-' + index">{{ 'FORM.FULL_NAME' | translate }}</label>
+        <input class="form-input" [id]="'passenger-name-' + index" type="text" autocomplete="name" [placeholder]="'FORM.NAME_PLACEHOLDER' | translate" (input)="handlePassName($event, index)" />
 
         <div style="display:grid; grid-template-columns: 1fr 120px; gap:14px">
           <fieldset style="border:0; padding:0; margin:0">
-            <legend class="form-label">Gender</legend>
+            <legend class="form-label">{{ 'FORM.GENDER' | translate }}</legend>
             <div style="display:flex; gap:14px; margin-top:10px">
-              <label style="display:flex; align-items:center; gap:5px"><input class="radio-button" type="radio" [name]="'gender-' + index" value="Male" (change)="handlePassGender($event, index)" /> Male</label>
-              <label style="display:flex; align-items:center; gap:5px"><input class="radio-button" type="radio" [name]="'gender-' + index" value="Female" (change)="handlePassGender($event, index)" /> Female</label>
+              <label style="display:flex; align-items:center; gap:5px"><input class="radio-button" type="radio" [name]="'gender-' + index" value="Male" (change)="handlePassGender($event, index)" /> {{ 'FORM.MALE' | translate }}</label>
+              <label style="display:flex; align-items:center; gap:5px"><input class="radio-button" type="radio" [name]="'gender-' + index" value="Female" (change)="handlePassGender($event, index)" /> {{ 'FORM.FEMALE' | translate }}</label>
             </div>
           </fieldset>
           <div>
-            <label class="form-label" [attr.for]="'passenger-age-' + index">Age</label>
-            <input class="form-input" [id]="'passenger-age-' + index" type="number" min="1" max="120" inputmode="numeric" placeholder="Age" (input)="handlePassAge($event, index)" />
+            <label class="form-label" [attr.for]="'passenger-age-' + index">{{ 'FORM.AGE' | translate }}</label>
+            <input class="form-input" [id]="'passenger-age-' + index" type="number" min="1" max="120" inputmode="numeric" [placeholder]="'FORM.AGE' | translate" (input)="handlePassAge($event, index)" />
           </div>
         </div>
       </div>
@@ -55,11 +55,11 @@
   </div>
 
   <div class="content-block">
-    <div class="passanger-info-title"><i class="material-icons" aria-hidden="true" style="color:#f1af43">mail</i><span style="margin-left:10px">Contact details</span></div>
-    <p class="passenger-contact-msg">Your ticket will be sent to these details.</p>
-    <label class="form-label" for="booking-email">Email address</label>
+    <div class="passanger-info-title"><i class="material-icons" aria-hidden="true" style="color:#f1af43">mail</i><span style="margin-left:10px">{{ 'FORM.CONTACT_DETAILS' | translate }}</span></div>
+    <p class="passenger-contact-msg">{{ 'FORM.CONTACT_MSG' | translate }}</p>
+    <label class="form-label" for="booking-email">{{ 'FORM.EMAIL' | translate }}</label>
     <input class="form-input" id="booking-email" type="email" autocomplete="email" placeholder="you@example.com" [(ngModel)]="passemail" />
-    <label class="form-label" for="booking-phone">Mobile number</label>
+    <label class="form-label" for="booking-phone">{{ 'FORM.MOBILE' | translate }}</label>
     <input class="form-input" id="booking-phone" type="tel" autocomplete="tel" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number" [(ngModel)]="passphn" />
 
     <label style="display:flex; align-items:flex-start; gap:10px; margin-top:20px; color:var(--tb-muted); font-size:14px"><input type="checkbox" [(ngModel)]="passisbuisness" style="accent-color:var(--tb-brand); margin-top:2px" /> I am booking tickets for business travel.</label>
@@ -74,6 +74,6 @@
 
   <div class="content-block">
     <p style="margin:0 0 16px; color:var(--tb-muted); font-size:12px; line-height:1.5">By continuing, you agree to the Terms and Conditions and Privacy Policy.</p>
-    <button class="proceed_to_button" type="button" (click)="handleproceedtopay()">Proceed to payment</button>
+    <button class="proceed_to_button" type="button" (click)="handleproceedtopay()">{{ 'FORM.PROCEED_PAYMENT' | translate }}</button>
   </div>
 </section>

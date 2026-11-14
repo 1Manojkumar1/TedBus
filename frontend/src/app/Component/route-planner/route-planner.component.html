@@ -8,9 +8,9 @@
           <i class="fa-solid fa-map-location-dot"></i>
           <span>TedBus Smart Journey Planner</span>
         </div>
-        <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight">Interactive Bus Route & Transit Planner</h1>
+        <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight">{{ 'PLANNER.TITLE' | translate }}</h1>
         <p class="text-xs md:text-sm text-purple-100 mt-1">
-          Explore intercity road networks, calculate distances, compare highway routes, and find available TedBuses.
+          {{ 'PLANNER.SUBTITLE' | translate }}
         </p>
       </div>
 
@@ -21,14 +21,14 @@
           [class.text-[#5f4299]]="activeTab() === 'plan'"
           [class.text-white]="activeTab() !== 'plan'"
           class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all">
-          <i class="fa-solid fa-route mr-1.5"></i>Plan Route
+          <i class="fa-solid fa-route mr-1.5"></i>{{ 'PLANNER.PLAN_TAB' | translate }}
         </button>
         <button (click)="activeTab.set('saved')"
           [class.bg-white]="activeTab() === 'saved'"
           [class.text-[#5f4299]]="activeTab() === 'saved'"
           [class.text-white]="activeTab() !== 'saved'"
           class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all">
-          <i class="fa-solid fa-bookmark mr-1.5"></i>Saved Routes ({{ savedRoutes().length }})
+          <i class="fa-solid fa-bookmark mr-1.5"></i>{{ 'PLANNER.SAVED_TAB' | translate }} ({{ savedRoutes().length }})
         </button>
       </div>
     </div>

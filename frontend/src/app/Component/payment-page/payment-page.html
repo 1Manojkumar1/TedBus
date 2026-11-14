@@ -1,13 +1,12 @@
 <div class="payment__fullContainer">
   <!-- left Container -->
   <div class="payment__fullContainer_leftContainer">
-    <input class="payment__fullContainer_rightContainer_inputOfferCOde" placeholder="ENTER OFFER CODE" />
+    <input class="payment__fullContainer_rightContainer_inputOfferCOde" [placeholder]="'PAYMENT.ENTER_OFFER_CODE' | translate" />
     <div class="payment__fullContainer_rightContainer_infobar">
       <div class="banner_chip">
         <img src="https://s3.rdbuz.com/Images/webplatform/Common/Payment/safe-payments.svg" alt="CC" />
         <div class="banner_text">
-          <div>Safe and Secure</div>
-          <div>Online Payments</div>
+          <div>{{ 'PAYMENT.SAFE_SECURE' | translate }}</div>
         </div>
       </div>
       <div class="banner_chip">
@@ -158,15 +157,15 @@
     </div>
     <div class="payment__fullContainer_rightContainer_fair_container">
       <div style="display: flex; justify-content: space-between;">
-        <div class="travel_title">FARE BREAKUP</div>
+        <div class="travel_title">{{ 'PAYMENT.FARE_BREAKDOWN' | translate }}</div>
       </div>
       <div style="display: flex; justify-content: space-between; margin-top: 10px;"></div>
       <div style="display: flex; justify-content: space-between; margin-top: 10px;">
-        <div class="travel_specification">Seats ({{ passseatarray.length }} x Rs. {{ seatprice }})</div>
+        <div class="travel_specification">{{ 'BUS.SEATS' | translate }} ({{ passseatarray.length }} x Rs. {{ seatprice }})</div>
         <div class="travel_specification">Rs. {{ totalfare }}</div>
       </div>
       <div style="display: flex; justify-content: space-between; margin-top: 10px;">
-        <div class="travel_specification" style="font-weight: bold;">Total Payable</div>
+        <div class="travel_specification" style="font-weight: bold;">{{ 'PAYMENT.TOTAL_AMOUNT' | translate }}</div>
         <div class="travel_specification" style="font-weight: bold;">Rs. {{ totalfare }}</div>
       </div>
     </div>

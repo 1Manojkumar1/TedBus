@@ -8,6 +8,7 @@ import { AuthService } from '../../service/auth.service';
 import { ReviewService, JourneyReview } from '../../service/review.service';
 import { ToastService } from '../../service/toast.service';
 import { ConfirmDialogService } from '../../service/confirm-dialog.service';
+import { TranslatePipe } from '../../service/translate.pipe';
 import { Booking } from '../../model/booking.model';
 import { MyTrip } from './my-trip/my-trip';
 
@@ -16,7 +17,7 @@ type ProfileView = 'trips' | 'profile' | 'wallet';
 @Component({
   selector: 'app-profile-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIconModule, RouterLink, MyTrip],
+  imports: [CommonModule, FormsModule, MatIconModule, RouterLink, MyTrip, TranslatePipe],
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.css',
 })

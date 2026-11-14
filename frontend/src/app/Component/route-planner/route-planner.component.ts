@@ -27,7 +27,7 @@ import { TranslatePipe } from '../../service/translate.pipe';
 @Component({
   selector: 'app-route-planner',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './route-planner.component.html',
   styleUrls: ['./route-planner.component.css'],
 })

@@ -6,11 +6,11 @@
       <div>
         <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold mb-3">
           <i class="fa-solid fa-users"></i>
-          <span>TedBus Travel Community</span>
+          <span>{{ 'COMMUNITY.TITLE' | translate }}</span>
         </div>
-        <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight">Explore India with Fellow Travelers</h1>
+        <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight">{{ 'COMMUNITY.TITLE' | translate }}</h1>
         <p class="mt-2 text-sm md:text-base text-purple-100 max-w-xl">
-          Discover verified route tips, bus travel stories, safety advice, and hidden gems shared by daily commuters and explorers.
+          {{ 'COMMUNITY.SUBTITLE' | translate }}
         </p>
       </div>
 
@@ -18,7 +18,7 @@
         <button (click)="openCreateModal()"
           class="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white text-[#5f4299] hover:bg-purple-50 font-bold text-sm shadow-lg transition-transform hover:scale-105 active:scale-95 cursor-pointer">
           <i class="fa-solid fa-feather-pointed text-base text-[#d84e55]"></i>
-          <span>Share Travel Story</span>
+          <span>{{ 'COMMUNITY.CREATE_POST' | translate }}</span>
         </button>
       </div>
     </div>
@@ -33,35 +33,35 @@
       <div class="relative w-full md:w-96">
         <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-gray-400 text-sm"></i>
         <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()"
-          placeholder="Search routes, tips, destinations..."
+          [placeholder]="'COMMUNITY.SEARCH_PLACEHOLDER' | translate"
           class="w-full pl-10 pr-20 py-2.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#5f4299] text-gray-800 dark:text-gray-100 shadow-sm" />
         <button (click)="onSearch()"
           class="absolute right-1.5 top-1.5 px-3 py-1.5 bg-[#5f4299] text-white text-xs font-semibold rounded-lg hover:bg-[#4b337e] transition-colors">
-          Search
+          {{ 'COMMON.SEARCH' | translate }}
         </button>
       </div>
 
       <!-- Sort Selection -->
       <div class="flex items-center gap-2 self-end md:self-auto text-xs font-medium">
-        <span class="text-gray-500 dark:text-gray-400">Sort by:</span>
+        <span class="text-gray-500 dark:text-gray-400">{{ 'COMMUNITY.SORT_BY' | translate }}</span>
         <div class="inline-flex bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl p-1 shadow-sm">
           <button (click)="onSortChange('recent')"
             [class.bg-[#5f4299]]="currentSort() === 'recent'"
             [class.text-white]="currentSort() === 'recent'"
             class="px-3 py-1.5 rounded-lg text-gray-600 dark:text-gray-300 font-semibold transition-colors">
-            Recent
+            {{ 'COMMUNITY.RECENT' | translate }}
           </button>
           <button (click)="onSortChange('trending')"
             [class.bg-[#5f4299]]="currentSort() === 'trending'"
             [class.text-white]="currentSort() === 'trending'"
             class="px-3 py-1.5 rounded-lg text-gray-600 dark:text-gray-300 font-semibold transition-colors">
-            Trending
+            {{ 'COMMUNITY.TRENDING' | translate }}
           </button>
           <button (click)="onSortChange('top')"
             [class.bg-[#5f4299]]="currentSort() === 'top'"
             [class.text-white]="currentSort() === 'top'"
             class="px-3 py-1.5 rounded-lg text-gray-600 dark:text-gray-300 font-semibold transition-colors">
-            Most Liked
+            {{ 'COMMUNITY.TOP' | translate }}
           </button>
         </div>
       </div>
@@ -74,7 +74,7 @@
         [class.text-white]="selectedCategory() === cat"
         [class.border-[#5f4299]]="selectedCategory() === cat"
         class="whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-700 dark:text-gray-200 hover:border-[#5f4299] transition-all cursor-pointer shadow-sm">
-        {{ cat }}
+        {{ getCategoryLabelKey(cat) | translate }}
       </button>
     </div>
 

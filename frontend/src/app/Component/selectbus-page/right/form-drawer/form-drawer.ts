@@ -1,11 +1,12 @@
 import { Component, Input, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BusBookingFormComponent } from '../bus-booking-form/bus-booking-form';
+import { TranslatePipe } from '../../../../service/translate.pipe';
 
 @Component({
   selector: 'app-form-drawer',
   standalone: true,
-  imports: [CommonModule, BusBookingFormComponent],
+  imports: [CommonModule, BusBookingFormComponent, TranslatePipe],
   templateUrl: './form-drawer.html',
   styleUrl: './form-drawer.css',
 })

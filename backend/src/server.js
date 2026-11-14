@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { createapp } from './app.js';
 import { connectdatabase, disconnectdatabase } from './config/db.js';
+import { autoSeedDatabase } from './seedData.js';
 
 const PORT = Number(process.env.PORT ?? 3000);
 const MONGODB_URI = process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017/tedbus';
@@ -8,6 +9,8 @@ const MONGODB_URI = process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017/tedbus
 async function main() {
   try {
     await connectdatabase(MONGODB_URI);
+    // Automatically ensure nationwide routes and community discussions are present
+    await autoSeedDatabase();
   } catch (error) {
     console.error('Could not connect to MongoDB:', error.message);
     console.error(`Make sure MongoDB is running and reachable at ${MONGODB_URI}`);

@@ -6,33 +6,33 @@
 
   <div class="sorting-bar">
     <div class="sort-label-group">
-      <span class="sort-title">BUSES</span>
-      <span class="sort-by">SORT BY:</span>
+      <span class="sort-title">{{ 'NAV.BUS_TICKETS' | translate }}</span>
+      <span class="sort-by">{{ 'BUS.SORT_BY' | translate }}</span>
     </div>
 
     <div class="sort-chips">
       <button type="button" class="sort-chip" [class.active]="isActive('departure')" (click)="sort('departure')">
-        <span>Departure</span>
+        <span>{{ 'BUS.DEPARTURE' | translate }}</span>
         <span class="dir-icon">{{ direction('departure') }}</span>
       </button>
       <button type="button" class="sort-chip" [class.active]="isActive('duration')" (click)="sort('duration')">
-        <span>Duration</span>
+        <span>{{ 'BUS.DURATION' | translate }}</span>
         <span class="dir-icon">{{ direction('duration') }}</span>
       </button>
       <button type="button" class="sort-chip" [class.active]="isActive('arrival')" (click)="sort('arrival')">
-        <span>Arrival</span>
+        <span>{{ 'BUS.ARRIVAL' | translate }}</span>
         <span class="dir-icon">{{ direction('arrival') }}</span>
       </button>
       <button type="button" class="sort-chip" [class.active]="isActive('rating')" (click)="sort('rating')">
-        <span>Ratings</span>
+        <span>{{ 'BUS.RATINGS' | translate }}</span>
         <span class="dir-icon">{{ direction('rating') }}</span>
       </button>
       <button type="button" class="sort-chip" [class.active]="isActive('fare')" (click)="sort('fare')">
-        <span>Fare</span>
+        <span>{{ 'BUS.FARE' | translate }}</span>
         <span class="dir-icon">{{ direction('fare') }}</span>
       </button>
       <button type="button" class="sort-chip" [class.active]="isActive('seats')" (click)="sort('seats')">
-        <span>Seats</span>
+        <span>{{ 'BUS.SEATS' | translate }}</span>
         <span class="dir-icon">{{ direction('seats') }}</span>
       </button>
     </div>

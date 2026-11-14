@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ViewSeatsComponent } from '../../view-seats/view-seats';
+import { TranslatePipe } from '../../../../../service/translate.pipe';
 
 @Component({
   selector: 'app-bottom-tab',
   standalone: true,
-  imports: [CommonModule, ViewSeatsComponent],
+  imports: [CommonModule, ViewSeatsComponent, TranslatePipe],
   templateUrl: './bottom-tab.html',
   styleUrl: './bottom-tab.css',
 })

@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataserviceService } from '../../../../service/dataservice.service';
 import { AuthService } from '../../../../service/auth.service';
+import { TranslatePipe } from '../../../../service/translate.pipe';
 
 @Component({
   selector: 'app-bus-booking-form',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './bus-booking-form.html',
   styleUrl: './bus-booking-form.css'
 })

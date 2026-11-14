@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BusService, RouteSummary } from '../../../service/bus.service';
 import { DataserviceService } from '../../../service/dataservice.service';
 import { SearchFiltersService } from '../../../service/search-filters.service';
+import { TranslatePipe } from '../../../service/translate.pipe';
 import {
   departureSlot,
   enrichBus,
@@ -18,7 +19,7 @@ import {
 @Component({
   selector: 'app-right',
   standalone: true,
-  imports: [CommonModule, SortingBarComponent, BusBoxComponent],
+  imports: [CommonModule, SortingBarComponent, BusBoxComponent, TranslatePipe],
   templateUrl: './right.html',
   styleUrl: './right.css',
 })

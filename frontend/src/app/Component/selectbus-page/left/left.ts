@@ -2,11 +2,12 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SearchFiltersService } from '../../../service/search-filters.service';
+import { TranslatePipe } from '../../../service/translate.pipe';
 
 @Component({
   selector: 'app-left',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './left.html',
   styleUrl: './left.css',
 })

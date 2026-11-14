@@ -2,11 +2,12 @@ import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { SearchFiltersService, SortKey } from '../../../../service/search-filters.service';
+import { TranslatePipe } from '../../../../service/translate.pipe';
 
 @Component({
   selector: 'app-sorting-bar',
   standalone: true,
-  imports: [MatIconModule, MatDividerModule],
+  imports: [MatIconModule, MatDividerModule, TranslatePipe],
   templateUrl: './sorting-bar.html',
   styleUrl: './sorting-bar.css',
 })

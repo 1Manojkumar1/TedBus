@@ -9,11 +9,12 @@ import {
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BottomTabComponent } from '../bus-book/bottom-tab/bottom-tab';
+import { TranslatePipe } from '../../../../service/translate.pipe';
 
 @Component({
   selector: 'app-bus-box',
   standalone: true,
-  imports: [CommonModule, MatTooltipModule, BottomTabComponent],
+  imports: [CommonModule, MatTooltipModule, BottomTabComponent, TranslatePipe],
   templateUrl: './bus-box.html',
   styleUrl: './bus-box.css'
 })

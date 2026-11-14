@@ -1,9 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslatePipe } from '../../service/translate.pipe';
 
 @Component({
   selector: 'app-footer',
-  imports: [],
+  standalone: true,
+  imports: [TranslatePipe],
   templateUrl: './footer.html',
   styleUrl: './footer.css',
 })

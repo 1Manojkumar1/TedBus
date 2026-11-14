@@ -6,10 +6,10 @@
       <div>
         <h1 class="text-2xl md:text-3xl font-extrabold flex items-center gap-3">
           <i class="fa-solid fa-bell text-[#d84e55]"></i>
-          <span>Notification Center</span>
+          <span>{{ 'NOTIF.TITLE' | translate }}</span>
         </h1>
         <p class="text-xs md:text-sm text-purple-100 mt-1">
-          Stay informed on ticket confirmations, seat updates, travel alerts, and community replies.
+          {{ 'NOTIF.SUBTITLE' | translate }}
         </p>
       </div>
 
@@ -20,14 +20,14 @@
           [class.text-[#5f4299]]="activeTab() === 'notifications'"
           [class.text-white]="activeTab() !== 'notifications'"
           class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all">
-          Notifications ({{ notificationService.unreadCount() }})
+          {{ 'NOTIF.TAB_NOTIFS' | translate }} ({{ notificationService.unreadCount() }})
         </button>
         <button (click)="activeTab.set('preferences')"
           [class.bg-white]="activeTab() === 'preferences'"
           [class.text-[#5f4299]]="activeTab() === 'preferences'"
           [class.text-white]="activeTab() !== 'preferences'"
           class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all">
-          Preferences
+          {{ 'NOTIF.TAB_PREFS' | translate }}
         </button>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { SmallSeatsComponent } from '../small-seats/small-seats';
 import { FormDrawerComponent } from '../form-drawer/form-drawer';
+import { TranslatePipe } from '../../../../service/translate.pipe';
 
 export interface TravelPoint {
   name: string;
@@ -13,7 +14,7 @@ export interface TravelPoint {
 @Component({
   selector: 'app-view-seats',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatDividerModule, SmallSeatsComponent, FormDrawerComponent],
+  imports: [CommonModule, MatIconModule, MatDividerModule, SmallSeatsComponent, FormDrawerComponent, TranslatePipe],
   templateUrl: './view-seats.html',
   styleUrl: './view-seats.css'
 })

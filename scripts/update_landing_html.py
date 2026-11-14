@@ -1,0 +1,293 @@
+# scripts/update_landing_html.py
+
+html_code = '''<section
+    class="min-h-[520px] bg-main-color bg-[url('assets/hero-img.png')] bg-center bg-no-repeat bg-cover flex justify-center pb-16">
+    <div class="flex flex-col items-center w-full max-w-[1400px]">
+        <h1 class="text-2xl mx-4 md:text-[2.25rem] text-white font-extrabold mt-14 mb-6 text-center drop-shadow-md tracking-tight">
+            {{ 'HERO.TITLE' | translate }}
+        </h1>
+
+        <!-- travel search section starts here -->
+        <div
+            class="w-[92%] sm:w-[85%] lg:h-24 mt-2 bg-white dark:bg-slate-900 cursor-pointer relative flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl border border-gray-100 dark:border-slate-800 transition-all">
+            
+            <!-- travel search left side  -->
+            <div class="h-full flex flex-col sm:flex-row items-center justify-center lg:w-1/2">
+                <!-- Departure City -->
+                <div class="h-full border-b sm:border-r border-gray-200 dark:border-slate-800 w-full sm:w-1/2">
+                    <div class="px-6 py-6 flex items-center h-full gap-3">
+                        <i class="fa-solid fa-bus-simple text-[#5F4299] text-2xl"></i>
+                        <input class="outline-none w-full bg-transparent text-gray-800 dark:text-gray-100 font-medium placeholder-gray-400"
+                            type="text" [placeholder]="'SEARCH.FROM' | translate"
+                            [matMenuTriggerFor]="fromMenu" [ngModel]="fromoption()" (ngModelChange)="fromEvent($event)">
+                        <mat-menu #fromMenu="matMenu" class="max-h-72 overflow-y-auto">
+                            @for (city of filteredFromCities(); track city) {
+                                <button mat-menu-item (click)="fromEvent(city)">
+                                    <i class="fa-solid fa-location-dot text-xs text-[#5F4299] mr-2"></i>
+                                    <span>{{ city }}</span>
+                                </button>
+                            }
+                        </mat-menu>
+                    </div>
+                </div>
+
+                <!-- Swap Button -->
+                <button type="button" [attr.aria-label]="'SEARCH.SWAP' | translate" [title]="'SEARCH.SWAP' | translate" (click)="swapcities()"
+                    class="w-10 h-10 bg-white dark:bg-slate-800 rounded-full grid place-content-center absolute z-10 border border-gray-200 dark:border-slate-700 shadow-md hover:border-[#5F4299] hover:text-[#5F4299] transition-transform hover:scale-110 active:scale-95">
+                    <i class="fa-solid fa-arrows-turn-to-dots text-[#5F4299] text-lg"></i>
+                </button>
+
+                <!-- Destination City -->
+                <div class="h-full border-b sm:border-r border-gray-200 dark:border-slate-800 w-full sm:w-1/2">
+                    <div class="px-6 py-6 flex items-center h-full gap-3">
+                        <i class="fa-solid fa-person-walking-luggage text-[#d84e55] text-2xl"></i>
+                        <input class="outline-none w-full bg-transparent text-gray-800 dark:text-gray-100 font-medium placeholder-gray-400"
+                            type="text" [placeholder]="'SEARCH.TO' | translate"
+                            [matMenuTriggerFor]="toMenu" [ngModel]="tooption()" (ngModelChange)="toEvent($event)">
+                        <mat-menu #toMenu="matMenu" class="max-h-72 overflow-y-auto">
+                            @for (city of filteredToCities(); track city) {
+                                <button mat-menu-item (click)="toEvent(city)">
+                                    <i class="fa-solid fa-location-crosshairs text-xs text-[#d84e55] mr-2"></i>
+                                    <span>{{ city }}</span>
+                                </button>
+                            }
+                        </mat-menu>
+                    </div>
+                </div>
+            </div>
+
+            <!-- travel search right section  -->
+            <div class="flex bg-white dark:bg-slate-900 flex-col sm:flex-row lg:w-1/2">
+                <!-- Date Picker -->
+                <div class="h-full border-b sm:border-r border-gray-200 dark:border-slate-800 sm:w-1/2 w-full">
+                    <div class="px-6 py-6 flex items-center h-full gap-3 group relative pr-12">
+                        <i class="fa-solid fa-calendar-days text-[#5F4299] text-2xl"></i>
+                        <input matInput class="outline-none opacity-0 scale-[3] h-14 w-7.5 absolute left-14 z-10 cursor-pointer"
+                            [placeholder]="'SEARCH.DATE' | translate" [matDatepicker]="picker" (click)="picker.open()"
+                            (dateChange)="matchDate($event)">
+                        <div>
+                            <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block">{{ 'SEARCH.DATE' | translate }}</span>
+                            <p class="text-gray-700 dark:text-gray-200 font-bold text-sm">{{ datelabel() }}</p>
+                        </div>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </div>
+                </div>
+
+                <!-- Search Buses Button -->
+                <button
+                    class="px-8 py-6 flex items-center justify-center bg-gradient-to-r from-[#d84e55] to-[#c43d44] hover:from-[#c43d44] hover:to-[#b3333a] transition-all whitespace-nowrap text-white font-extrabold tracking-wider w-full sm:w-1/2 text-center text-sm shadow-md cursor-pointer active:scale-98"
+                    (click)="submit()">
+                    <i class="fa-solid fa-magnifying-glass mr-2"></i>
+                    <span>{{ 'SEARCH.SEARCH_BUSES' | translate }}</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Validation Error Message -->
+        @if (formerror()) {
+            <p class="text-white bg-red-600/95 shadow-md rounded-full px-5 py-2 text-xs font-bold mt-4 flex items-center gap-2 animate-bounce">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span>{{ formerror() }}</span>
+            </p>
+        }
+
+        <!-- Popular Routes Quick Select Chips -->
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-2 max-w-5xl px-4">
+            <span class="text-xs font-extrabold text-white/95 uppercase tracking-wider mr-1 drop-shadow-sm flex items-center gap-1.5">
+                <i class="fa-solid fa-fire text-amber-300"></i>
+                <span>{{ 'HERO.POPULAR_ROUTES' | translate }}:</span>
+            </span>
+            @for (pr of popularRoutes; track pr.from + pr.to) {
+                <button type="button" (click)="selectPopularRoute(pr.from, pr.to)"
+                    class="px-3.5 py-1.5 rounded-full bg-white/20 hover:bg-white text-white hover:text-[#5F4299] text-xs font-bold backdrop-blur-md border border-white/30 transition-all duration-200 shadow-xs hover:shadow-lg hover:scale-105 active:scale-95 cursor-pointer">
+                    {{ pr.from }} &rarr; {{ pr.to }}
+                </button>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Offers section starts here -->
+<section class="flex relative md:bottom-12 mb-16 justify-center">
+    <div class="flex flex-col items-center w-full max-w-[1400px] px-4 md:px-8">
+        <div class="w-full p-6 md:p-8 flex flex-col gap-6 bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-gray-100 dark:border-slate-800">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-tags text-xl text-[#d84e55]"></i>
+                    <h2 class="text-xl md:text-2xl font-extrabold text-gray-800 dark:text-gray-100">{{ 'OFFERS.TITLE' | translate }}</h2>
+                </div>
+                <button
+                    class="text-[#5F4299] dark:text-purple-300 py-1.5 font-bold text-xs md:text-sm px-4 rounded-full border border-purple-200 dark:border-purple-800 hover:bg-purple-50 dark:hover:bg-purple-950/50 transition-colors">
+                    {{ 'OFFERS.VIEW_ALL' | translate }}
+                </button>
+            </div>
+            <div class="flex text-white gap-5 overflow-x-auto pb-2 scrollbar-thin">
+
+                <!-- offer card one -->
+                <div
+                    class="h-36 w-72 rounded-2xl bg-gradient-to-r from-blue-800 to-indigo-600 flex p-3.5 cursor-pointer flex-shrink-0 shadow-md hover:shadow-lg transition-transform hover:-translate-y-1">
+                    <div class="h-full grid place-content-center px-1">
+                        <img class="rounded-full w-20 object-cover shadow-sm" src="./assets/offer1.png" alt="Bus Offer">
+                    </div>
+                    <div class="flex flex-col justify-between ml-2">
+                        <div>
+                            <span class="text-[10px] font-extrabold px-2 py-0.5 bg-white/20 rounded-full w-fit">BUS</span>
+                            <h3 class="font-bold text-sm leading-snug mt-1">{{ 'OFFERS.CARD1' | translate }}</h3>
+                        </div>
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-[11px] opacity-80">{{ 'OFFERS.VALID_TILL' | translate }}</span>
+                            <span class="bg-white/25 px-2 py-0.5 rounded font-mono font-bold text-[11px] border border-dashed border-white/40">FIRST</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- offer card two -->
+                <div
+                    class="h-36 w-72 rounded-2xl bg-gradient-to-r from-rose-800 to-red-600 flex p-3.5 cursor-pointer flex-shrink-0 shadow-md hover:shadow-lg transition-transform hover:-translate-y-1">
+                    <div class="h-full grid place-content-center px-1">
+                        <img class="rounded-full w-20 object-cover shadow-sm" src="./assets/offer2.png" alt="Bus Offer">
+                    </div>
+                    <div class="flex flex-col justify-between ml-2">
+                        <div>
+                            <span class="text-[10px] font-extrabold px-2 py-0.5 bg-white/20 rounded-full w-fit">BUS</span>
+                            <h3 class="font-bold text-sm leading-snug mt-1">{{ 'OFFERS.CARD2' | translate }}</h3>
+                        </div>
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-[11px] opacity-80">{{ 'OFFERS.VALID_TILL' | translate }}</span>
+                            <span class="bg-white/25 px-2 py-0.5 rounded font-mono font-bold text-[11px] border border-dashed border-white/40">SUPERHIT</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- offer card three -->
+                <div
+                    class="h-36 w-72 rounded-2xl bg-gradient-to-r from-emerald-800 to-teal-600 flex p-3.5 cursor-pointer flex-shrink-0 shadow-md hover:shadow-lg transition-transform hover:-translate-y-1">
+                    <div class="h-full grid place-content-center px-1">
+                        <img class="rounded-full w-20 object-cover shadow-sm" src="./assets/offer3.png" alt="Bus Offer">
+                    </div>
+                    <div class="flex flex-col justify-between ml-2">
+                        <div>
+                            <span class="text-[10px] font-extrabold px-2 py-0.5 bg-white/20 rounded-full w-fit">BUS</span>
+                            <h3 class="font-bold text-sm leading-snug mt-1">{{ 'OFFERS.CARD3' | translate }}</h3>
+                        </div>
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-[11px] opacity-80">{{ 'OFFERS.VALID_TILL' | translate }}</span>
+                            <span class="bg-white/25 px-2 py-0.5 rounded font-mono font-bold text-[11px] border border-dashed border-white/40">BUS300</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- offer card four -->
+                <div
+                    class="h-36 w-72 rounded-2xl bg-gradient-to-r from-amber-700 to-orange-600 flex p-3.5 cursor-pointer flex-shrink-0 shadow-md hover:shadow-lg transition-transform hover:-translate-y-1">
+                    <div class="h-full grid place-content-center px-1">
+                        <img class="rounded-full w-20 object-cover shadow-sm" src="./assets/offer4.png" alt="Bus Offer">
+                    </div>
+                    <div class="flex flex-col justify-between ml-2">
+                        <div>
+                            <span class="text-[10px] font-extrabold px-2 py-0.5 bg-white/20 rounded-full w-fit">BUS</span>
+                            <h3 class="font-bold text-sm leading-snug mt-1">{{ 'OFFERS.CARD4' | translate }}</h3>
+                        </div>
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-[11px] opacity-80">{{ 'OFFERS.VALID_TILL' | translate }}</span>
+                            <span class="bg-white/25 px-2 py-0.5 rounded font-mono font-bold text-[11px] border border-dashed border-white/40">RBTRIP</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Frequently Asked Questions -->
+<section class="flex justify-center mb-24">
+    <div class="flex flex-col w-full px-6 md:px-0 md:w-[85%] max-w-[1300px]">
+        <h2 class="text-gray-800 dark:text-gray-100 text-2xl md:text-3xl font-extrabold mb-8 tracking-tight">
+            {{ 'FAQ.TITLE' | translate }}
+        </h2>
+
+        <!-- FAQ Categories -->
+        <div class="flex gap-4 border-b border-gray-200 dark:border-slate-800 pb-3 text-sm md:text-base font-semibold overflow-x-auto">
+            <span class="pb-3 border-b-2 border-[#5F4299] text-[#5F4299] dark:text-purple-300 cursor-pointer whitespace-nowrap">{{ 'FAQ.GENERAL' | translate }}</span>
+            <span class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer whitespace-nowrap">{{ 'FAQ.TICKET' | translate }}</span>
+            <span class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer whitespace-nowrap">{{ 'FAQ.PAYMENT' | translate }}</span>
+            <span class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer whitespace-nowrap" (click)="gocancellation()">{{ 'FAQ.CANCELLATION' | translate }}</span>
+            <span class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer whitespace-nowrap">{{ 'FAQ.INSURANCE' | translate }}</span>
+        </div>
+
+        <!-- FAQ Accordion items -->
+        <div class="flex flex-col gap-4 mt-6">
+            <!-- FAQ 1 -->
+            <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                    <span>{{ 'FAQ.Q1' | translate }}</span>
+                    <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                </summary>
+                <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                    {{ 'FAQ.A1' | translate }}
+                </p>
+            </details>
+
+            <!-- FAQ 2 -->
+            <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                    <span>{{ 'FAQ.Q2' | translate }}</span>
+                    <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                </summary>
+                <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                    {{ 'FAQ.A2' | translate }}
+                </p>
+            </details>
+
+            <!-- FAQ 3 -->
+            <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                    <span>{{ 'FAQ.Q3' | translate }}</span>
+                    <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                </summary>
+                <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                    {{ 'FAQ.A3' | translate }}
+                </p>
+            </details>
+
+            <!-- FAQ 4 -->
+            <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                    <span>{{ 'FAQ.Q4' | translate }}</span>
+                    <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                </summary>
+                <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                    {{ 'FAQ.A4' | translate }}
+                </p>
+            </details>
+
+            <!-- FAQ 5 -->
+            <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                    <span>{{ 'FAQ.Q5' | translate }}</span>
+                    <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                </summary>
+                <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                    {{ 'FAQ.A5' | translate }}
+                </p>
+            </details>
+
+            <!-- FAQ 6 -->
+            <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                    <span>{{ 'FAQ.Q6' | translate }}</span>
+                    <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                </summary>
+                <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                    {{ 'FAQ.A6' | translate }}
+                </p>
+            </details>
+        </div>
+    </div>
+</section>
+'''
+
+with open("frontend/src/app/Component/landing-page/landing-page.html", "w", encoding="utf-8") as f:
+    f.write(html_code)
+
+print("Updated landing-page.html!")

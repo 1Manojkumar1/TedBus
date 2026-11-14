@@ -6,11 +6,12 @@ import { DataserviceService } from '../../service/dataservice.service';
 import { BusService } from '../../service/bus.service';
 import { AuthService } from '../../service/auth.service';
 import { ToastService } from '../../service/toast.service';
+import { TranslatePipe } from '../../service/translate.pipe';
 
 @Component({
   selector: 'app-payment-page',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule, TranslatePipe],
   templateUrl: './payment-page.html',
   styleUrl: './payment-page.css',
 })

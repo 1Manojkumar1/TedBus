@@ -5,11 +5,11 @@
       <a routerLink="/" class="flex items-center gap-3">
         <img class="w-14 h-auto" src="assets/red-bus-with-word-bus-it_600323-482.avif" alt="Tedbus Logo">
         <span class="hidden sm:block h-6 w-px bg-gray-300 dark:bg-slate-700"></span>
-        <span class="hidden sm:block text-sm font-semibold text-gray-500 dark:text-gray-400">My Account</span>
+        <span class="hidden sm:block text-sm font-semibold text-gray-500 dark:text-gray-400">{{ 'PROFILE.TITLE' | translate }}</span>
       </a>
       <a routerLink="/" class="flex items-center gap-2 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-[#5F4299] dark:hover:text-purple-300 transition-colors">
         <mat-icon class="text-[20px] w-5 h-5 leading-5">arrow_back</mat-icon>
-        Back to home
+        {{ 'PROFILE.BACK_HOME' | translate }}
       </a>
     </header>
 
@@ -37,7 +37,7 @@
               ? 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold text-[#5F4299] dark:text-purple-300 bg-[#f0edf7] dark:bg-purple-950/60 shadow-xs'
               : 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 transition-colors'">
             <mat-icon class="text-[20px] w-5 h-5 leading-5">confirmation_number</mat-icon>
-            <span>My Trips</span>
+            <span>{{ 'PROFILE.MY_TRIPS' | translate }}</span>
             @if (mytrip().length) {
               <span class="ml-auto text-xs font-bold text-gray-600 dark:text-gray-300 bg-white/70 dark:bg-slate-800 px-2 py-0.5 rounded-full border border-gray-200 dark:border-slate-700">
                 {{ mytrip().length }}
@@ -51,7 +51,7 @@
               ? 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold text-[#5F4299] dark:text-purple-300 bg-[#f0edf7] dark:bg-purple-950/60 shadow-xs'
               : 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 transition-colors'">
             <mat-icon class="text-[20px] w-5 h-5 leading-5">account_circle</mat-icon>
-            <span>My Profile</span>
+            <span>{{ 'PROFILE.MY_PROFILE' | translate }}</span>
           </button>
 
           <button
@@ -60,7 +60,7 @@
               ? 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold text-[#5F4299] dark:text-purple-300 bg-[#f0edf7] dark:bg-purple-950/60 shadow-xs'
               : 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 transition-colors'">
             <mat-icon class="text-[20px] w-5 h-5 leading-5">account_balance_wallet</mat-icon>
-            <span>Wallet</span>
+            <span>{{ 'NAV.WALLET' | translate }}</span>
           </button>
         </nav>
 
@@ -69,7 +69,7 @@
             <button (click)="signout()"
               class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors">
               <mat-icon class="text-[20px] w-5 h-5 leading-5">logout</mat-icon>
-              <span>Sign out</span>
+              <span>{{ 'NAV.SIGN_OUT' | translate }}</span>
             </button>
           </div>
         }

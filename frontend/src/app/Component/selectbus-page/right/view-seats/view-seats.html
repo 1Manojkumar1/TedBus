@@ -29,15 +29,15 @@
     <div class="seat-legend">
       <div class="legend-item">
         <span class="legend-swatch swatch-available"></span>
-        <span>Available</span>
+        <span>{{ 'BUS.AVAILABLE' | translate }}</span>
       </div>
       <div class="legend-item">
         <span class="legend-swatch swatch-selected"></span>
-        <span>Selected</span>
+        <span>{{ 'BUS.SELECTED' | translate }}</span>
       </div>
       <div class="legend-item">
         <span class="legend-swatch swatch-occupied"></span>
-        <span>Booked</span>
+        <span>{{ 'BUS.BOOKED' | translate }}</span>
       </div>
     </div>
 
@@ -53,10 +53,10 @@
   <div class="booking-summary-card">
     <!-- Header with Change toggle -->
     <div class="summary-header">
-      <div class="summary-title">Boarding & Dropping</div>
+      <div class="summary-title">{{ 'BUS.BOARDING_DROPPING' | translate }}</div>
       <button type="button" class="change-points-btn" (click)="togglePointEditor()">
         <i class="material-icons" style="font-size:16px;">{{ isEditingPoints ? 'check_circle' : 'edit' }}</i>
-        <span>{{ isEditingPoints ? 'Done' : 'Change' }}</span>
+        <span>{{ isEditingPoints ? ('COMMON.CONFIRM' | translate) : ('BUS.CHANGE_SEARCH' | translate) }}</span>
       </button>
     </div>
 
@@ -140,8 +140,8 @@
     <div class="fare-section">
       <div class="fare-row">
         <div>
-          <span class="fare-title">Total Fare</span>
-          <span class="fare-caption">Taxes included in payment</span>
+          <span class="fare-title">{{ 'SEATS.AMOUNT' | translate }}</span>
+          <span class="fare-caption">{{ 'SEATS.TAXES_NOTE' | translate }}</span>
         </div>
         <div class="fare-amount">
           ₹{{ selectedseats.length * seatprice }}

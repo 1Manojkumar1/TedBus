@@ -2,10 +2,10 @@
   <div class="filter-header">
     <div class="flex items-center gap-2">
       <i class="fa-solid fa-sliders text-[#5f4299]"></i>
-      <h3 class="filter-title">Filters</h3>
+      <h3 class="filter-title">{{ 'FILTER.TITLE' | translate }}</h3>
     </div>
     <button *ngIf="hasActiveFilters()" (click)="clearAll()" class="filter-reset-btn">
-      Reset All
+      {{ 'BUS.RESET_FILTERS' | translate }}
     </button>
   </div>
 
@@ -13,24 +13,24 @@
   <div class="filter-section">
     <div class="filter-section-title">
       <i class="fa-solid fa-bus text-xs text-gray-400"></i>
-      <span>Bus Type</span>
+      <span>{{ 'FILTER.BUS_TYPE' | translate }}</span>
     </div>
     <div class="filter-options-grid">
       <label class="filter-checkbox-item" [class.active]="hasBusType('ac')">
         <input type="checkbox" [checked]="hasBusType('ac')" (change)="toggleBusType('ac')" />
-        <span class="filter-label-text">AC</span>
+        <span class="filter-label-text">{{ 'FILTER.AC' | translate }}</span>
       </label>
       <label class="filter-checkbox-item" [class.active]="hasBusType('nonac')">
         <input type="checkbox" [checked]="hasBusType('nonac')" (change)="toggleBusType('nonac')" />
-        <span class="filter-label-text">Non-AC</span>
+        <span class="filter-label-text">{{ 'FILTER.NON_AC' | translate }}</span>
       </label>
       <label class="filter-checkbox-item" [class.active]="hasBusType('sleeper')">
         <input type="checkbox" [checked]="hasBusType('sleeper')" (change)="toggleBusType('sleeper')" />
-        <span class="filter-label-text">Sleeper</span>
+        <span class="filter-label-text">{{ 'FILTER.SLEEPER' | translate }}</span>
       </label>
       <label class="filter-checkbox-item" [class.active]="hasBusType('seater')">
         <input type="checkbox" [checked]="hasBusType('seater')" (change)="toggleBusType('seater')" />
-        <span class="filter-label-text">Seater</span>
+        <span class="filter-label-text">{{ 'FILTER.SEATER' | translate }}</span>
       </label>
     </div>
   </div>
@@ -39,35 +39,35 @@
   <div class="filter-section">
     <div class="filter-section-title">
       <i class="fa-regular fa-clock text-xs text-gray-400"></i>
-      <span>Departure Time</span>
+      <span>{{ 'FILTER.DEPARTURE_TIME' | translate }}</span>
     </div>
     <div class="filter-time-list">
       <label class="filter-time-item" [class.active]="hasSlot('before6')">
         <input type="checkbox" [checked]="hasSlot('before6')" (change)="toggleSlot('before6')" />
         <div class="time-item-info">
           <i class="fa-solid fa-cloud-sun text-amber-500"></i>
-          <span>Early Morning (Before 6 AM)</span>
+          <span>{{ 'FILTER.BEFORE_6AM' | translate }}</span>
         </div>
       </label>
       <label class="filter-time-item" [class.active]="hasSlot('6-12')">
         <input type="checkbox" [checked]="hasSlot('6-12')" (change)="toggleSlot('6-12')" />
         <div class="time-item-info">
           <i class="fa-solid fa-sun text-amber-400"></i>
-          <span>Morning (6 AM - 12 PM)</span>
+          <span>{{ 'FILTER.6AM_12PM' | translate }}</span>
         </div>
       </label>
       <label class="filter-time-item" [class.active]="hasSlot('12-18')">
         <input type="checkbox" [checked]="hasSlot('12-18')" (change)="toggleSlot('12-18')" />
         <div class="time-item-info">
           <i class="fa-solid fa-sun-plant-wilt text-orange-500"></i>
-          <span>Afternoon (12 PM - 6 PM)</span>
+          <span>{{ 'FILTER.12PM_6PM' | translate }}</span>
         </div>
       </label>
       <label class="filter-time-item" [class.active]="hasSlot('after18')">
         <input type="checkbox" [checked]="hasSlot('after18')" (change)="toggleSlot('after18')" />
         <div class="time-item-info">
           <i class="fa-solid fa-moon text-indigo-400"></i>
-          <span>Night (After 6 PM)</span>
+          <span>{{ 'FILTER.AFTER_6PM' | translate }}</span>
         </div>
       </label>
     </div>

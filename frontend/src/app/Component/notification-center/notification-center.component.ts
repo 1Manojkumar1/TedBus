@@ -10,10 +10,12 @@ import {
 import { AuthService } from '../../service/auth.service';
 import { TranslationService } from '../../service/translation.service';
 
+import { TranslatePipe } from '../../service/translate.pipe';
+
 @Component({
   selector: 'app-notification-center',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, TranslatePipe],
   templateUrl: './notification-center.component.html',
   styleUrls: ['./notification-center.component.css'],
 })
