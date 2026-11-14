@@ -1,7 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ViewSeatsComponent } from '../../view-seats/view-seats';
 import { TranslatePipe } from '../../../../../service/translate.pipe';
+import { ReviewService, BusReviewSummary, JourneyReview } from '../../../../../service/review.service';
+import { AuthService } from '../../../../../service/auth.service';
 
 @Component({
   selector: 'app-bottom-tab',
@@ -11,6 +13,9 @@ import { TranslatePipe } from '../../../../../service/translate.pipe';
   styleUrl: './bottom-tab.css',
 })
 export class BottomTabComponent {
+  private readonly reviewService = inject(ReviewService);
+  private readonly auth = inject(AuthService);
+
   @Input() filledseats: number[] = [];
   @Input() seatprice: number = 0;
   @Input() routedetails: any;
@@ -22,10 +27,52 @@ export class BottomTabComponent {
 
   tabstate: boolean[] = [false, false, false, false, false];
 
+  reviewsData = signal<BusReviewSummary | null>(null);
+  isLoadingReviews = signal<boolean>(false);
+
   handletabstate(value: number): void {
     for (let i = 0; i < this.tabstate.length; i++) {
       this.tabstate[i] = i === value && !this.tabstate[i];
     }
+    if (value === 2 && this.tabstate[2] && this.busid) {
+      this.fetchReviews();
+    }
+  }
+
+  fetchReviews(): void {
+    if (!this.busid) return;
+    this.isLoadingReviews.set(true);
+    this.reviewService.getBusReviews(this.busid).subscribe({
+      next: (data) => {
+        this.reviewsData.set(data);
+        this.isLoadingReviews.set(false);
+      },
+      error: () => {
+        this.isLoadingReviews.set(false);
+      },
+    });
+  }
+
+  toggleVote(review: JourneyReview): void {
+    const user = this.auth.user();
+    const userId = user?._id || user?.googleId || user?.email || 'guest_voter';
+    this.reviewService.toggleHelpful(review._id, userId).subscribe({
+      next: (res) => {
+        review.helpfulCount = res.helpfulCount;
+        const idx = review.helpfulVotes.indexOf(userId);
+        if (res.voted && idx === -1) {
+          review.helpfulVotes.push(userId);
+        } else if (!res.voted && idx !== -1) {
+          review.helpfulVotes.splice(idx, 1);
+        }
+      },
+    });
+  }
+
+  hasVoted(review: JourneyReview): boolean {
+    const user = this.auth.user();
+    const userId = user?._id || user?.googleId || user?.email || 'guest_voter';
+    return review.helpfulVotes?.includes(userId) || false;
   }
 
   get boardingPoints(): { name: string; time: string }[] {

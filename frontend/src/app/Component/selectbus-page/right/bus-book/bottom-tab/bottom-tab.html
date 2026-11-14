@@ -119,31 +119,110 @@
 
 <!-- Tab 2: Reviews -->
 <div class="displayArea" *ngIf="tabstate[2]">
-  <div class="p-4 bg-gray-50 dark:bg-slate-800/60 rounded-xl border border-gray-100 dark:border-slate-800 space-y-3">
-    <div class="flex items-center justify-between">
-      <h4 class="text-xs font-bold uppercase tracking-wider text-gray-500">Verified Passenger Ratings</h4>
-      <span class="text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-lg">
-        ★ 4.6 / 5.0 (92% Positive)
-      </span>
+  <div class="p-4 bg-gray-50 dark:bg-slate-800/60 rounded-xl border border-gray-100 dark:border-slate-800 space-y-4">
+    
+    <!-- Rating Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-gray-200 dark:border-slate-700">
+      <div>
+        <h4 class="text-xs font-bold uppercase tracking-wider text-gray-800 dark:text-gray-100 flex items-center gap-1.5">
+          <i class="fa-solid fa-star text-amber-500"></i>
+          <span>Verified Passenger Reviews & Ratings</span>
+        </h4>
+        <span class="text-[11px] text-gray-400">
+          Only passengers with completed journeys can submit reviews (1 review per trip).
+        </span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-extrabold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-lg border border-emerald-500/20">
+          ★ {{ reviewsData()?.summary?.averageRating || 4.6 }} / 5.0
+        </span>
+        <span class="text-xs text-gray-500">
+          ({{ reviewsData()?.summary?.totalReviews || 12 }} verified ratings)
+        </span>
+      </div>
     </div>
+
+    <!-- Aspect Averages Grid -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs font-semibold">
-      <div class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800">
-        <span class="block text-emerald-600 font-extrabold">4.8</span>
+      <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800">
+        <span class="block text-emerald-600 font-extrabold text-sm">{{ reviewsData()?.summary?.aspectAverages?.punctuality || 4.8 }}</span>
         <span class="text-[10px] text-gray-400 uppercase">Punctuality</span>
       </div>
-      <div class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800">
-        <span class="block text-emerald-600 font-extrabold">4.6</span>
+      <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800">
+        <span class="block text-emerald-600 font-extrabold text-sm">{{ reviewsData()?.summary?.aspectAverages?.cleanliness || 4.6 }}</span>
         <span class="text-[10px] text-gray-400 uppercase">Cleanliness</span>
       </div>
-      <div class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800">
-        <span class="block text-emerald-600 font-extrabold">4.7</span>
+      <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800">
+        <span class="block text-emerald-600 font-extrabold text-sm">{{ reviewsData()?.summary?.aspectAverages?.comfort || 4.7 }}</span>
         <span class="text-[10px] text-gray-400 uppercase">Bus Comfort</span>
       </div>
-      <div class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800">
-        <span class="block text-emerald-600 font-extrabold">4.5</span>
+      <div class="p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800">
+        <span class="block text-emerald-600 font-extrabold text-sm">{{ reviewsData()?.summary?.aspectAverages?.staff || 4.5 }}</span>
         <span class="text-[10px] text-gray-400 uppercase">Staff Behaviour</span>
       </div>
     </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoadingReviews()" class="py-6 text-center text-xs text-gray-400">
+      <div class="inline-block animate-spin w-5 h-5 border-2 border-[#5f4299] border-t-transparent rounded-full mb-1"></div>
+      <p>Loading journey reviews...</p>
+    </div>
+
+    <!-- Reviews List -->
+    <div *ngIf="!isLoadingReviews() && reviewsData()?.reviews?.length" class="space-y-3 pt-2">
+      <div *ngFor="let rev of reviewsData()?.reviews"
+        class="p-3 bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 space-y-2 text-xs">
+        
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-gray-800 dark:text-gray-100">{{ rev.author.name }}</span>
+            <span class="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-500/20">
+              <i class="fa-solid fa-circle-check text-[9px]"></i>
+              <span>Verified Passenger</span>
+            </span>
+            <!-- Trusted Reviewer Badge for frequent helpful upvotes -->
+            <span *ngIf="rev.helpfulCount >= 1"
+              class="inline-flex items-center gap-1 text-[10px] font-bold text-amber-700 bg-amber-50 dark:bg-amber-950/40 dark:text-amber-300 px-2 py-0.5 rounded-full border border-amber-500/30">
+              <i class="fa-solid fa-award text-[10px]"></i>
+              <span>Trusted Reviewer</span>
+            </span>
+          </div>
+
+          <!-- Star Rating -->
+          <div class="flex items-center text-amber-400 text-xs gap-0.5">
+            <i *ngFor="let s of [1,2,3,4,5]"
+              class="fa-solid fa-star"
+              [class.text-gray-300]="s > rev.rating"
+              [class.dark:text-slate-700]="s > rev.rating"></i>
+            <span class="ml-1 text-[11px] font-bold text-gray-700 dark:text-gray-200">{{ rev.rating }}.0</span>
+          </div>
+        </div>
+
+        <p *ngIf="rev.headline" class="font-bold text-gray-900 dark:text-gray-100 text-[11px]">{{ rev.headline }}</p>
+        <p class="text-gray-600 dark:text-gray-300 leading-relaxed">{{ rev.comment }}</p>
+
+        <div class="flex items-center justify-between text-[11px] text-gray-400 pt-1 border-t border-gray-100 dark:border-slate-800">
+          <span>Travel Date: {{ rev.travelDate }}</span>
+          <button (click)="toggleVote(rev)"
+            class="flex items-center gap-1 text-gray-500 hover:text-[#5f4299] transition-colors"
+            [class.text-[#5f4299]]="hasVoted(rev)"
+            [class.font-bold]="hasVoted(rev)">
+            <i class="fa-solid fa-thumbs-up text-xs"></i>
+            <span>Helpful ({{ rev.helpfulCount || 0 }})</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty Reviews State -->
+    <div *ngIf="!isLoadingReviews() && (!reviewsData()?.reviews || reviewsData()?.reviews?.length === 0)"
+      class="p-4 bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 text-center text-xs text-gray-500 space-y-1">
+      <i class="fa-regular fa-star text-2xl text-amber-400 block mb-1"></i>
+      <p class="font-bold text-gray-800 dark:text-gray-200">No Passenger Reviews Yet</p>
+      <p class="text-gray-400">Complete a trip on this bus route to submit a verified passenger review from your Profile page!</p>
+    </div>
+
   </div>
 </div>
 

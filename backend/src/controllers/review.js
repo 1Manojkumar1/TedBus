@@ -17,6 +17,10 @@ export async function createReview(req, res) {
       return res.status(400).json({ error: 'bookingId, rating (1-5), and comment are required' });
     }
 
+    if (comment.trim().length < 15) {
+      return res.status(400).json({ error: 'Review comment must be at least 15 characters to provide meaningful feedback.' });
+    }
+
     const customerId = author?.customerId || req.auth?.sub;
     const authorEmail = author?.email || req.auth?.email;
     const authorName = author?.name || req.auth?.name || 'Verified Passenger';
@@ -125,7 +129,12 @@ export async function updateReview(req, res) {
       };
     }
     if (headline !== undefined) review.headline = headline.trim();
-    if (comment?.trim()) review.comment = comment.trim();
+    if (comment?.trim()) {
+      if (comment.trim().length < 15) {
+        return res.status(400).json({ error: 'Review comment must be at least 15 characters to provide meaningful feedback.' });
+      }
+      review.comment = comment.trim();
+    }
 
     await review.save();
     return res.json(review);

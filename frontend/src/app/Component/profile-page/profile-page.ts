@@ -215,8 +215,8 @@ export class ProfilePage implements OnInit {
     const user = this.currentcustomer();
     if (!booking || !user) return;
 
-    if (!this.reviewForm.comment.trim()) {
-      this.toastService.warning('Feedback Required', 'Please write a short review sharing your experience.');
+    if (this.reviewForm.comment.trim().length < 15) {
+      this.toastService.warning('Review Too Short', 'Please write at least 15 characters to provide meaningful feedback.');
       return;
     }
 
