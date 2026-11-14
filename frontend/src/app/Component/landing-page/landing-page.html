@@ -1,5 +1,5 @@
 <section
-    class="min-h-[580px] md:min-h-[640px] bg-main-color bg-[url('assets/hero-img.png')] bg-center bg-no-repeat bg-cover flex justify-center pb-20 md:pb-28">
+    class="min-h-[520px] bg-main-color bg-[url('assets/hero-img.png')] bg-center bg-no-repeat bg-cover flex justify-center pb-16">
     <div class="flex flex-col items-center w-full max-w-[1400px]">
         <h1 class="text-2xl mx-4 md:text-[2.25rem] text-white font-extrabold mt-14 mb-6 text-center drop-shadow-md tracking-tight">
             {{ 'HERO.TITLE' | translate }}
@@ -88,25 +88,11 @@
                 <span>{{ formerror() }}</span>
             </p>
         }
-
-        <!-- Popular Routes Quick Select Chips (Moved down to avoid overlapping hero graphic text) -->
-        <div class="mt-12 md:mt-16 mb-4 flex flex-wrap items-center justify-center gap-2 max-w-5xl px-4 py-2.5 rounded-2xl bg-black/40 backdrop-blur-md border border-white/20 shadow-lg">
-            <span class="text-xs font-extrabold text-white/95 uppercase tracking-wider mr-1 drop-shadow-sm flex items-center gap-1.5">
-                <i class="fa-solid fa-fire text-amber-300"></i>
-                <span>{{ 'HERO.POPULAR_ROUTES' | translate }}:</span>
-            </span>
-            @for (pr of popularRoutes; track pr.from + pr.to) {
-                <button type="button" (click)="selectPopularRoute(pr.from, pr.to)"
-                    class="px-3.5 py-1.5 rounded-full bg-white/20 hover:bg-white text-white hover:text-[#5F4299] text-xs font-bold backdrop-blur-md border border-white/30 transition-all duration-200 shadow-xs hover:shadow-lg hover:scale-105 active:scale-95 cursor-pointer">
-                    {{ pr.from }} &rarr; {{ pr.to }}
-                </button>
-            }
-        </div>
     </div>
 </section>
 
 <!-- Offers section starts here -->
-<section class="flex relative mt-2 md:mt-4 mb-16 justify-center">
+<section class="flex relative md:bottom-12 mb-16 justify-center">
     <div class="flex flex-col items-center w-full max-w-[1400px] px-4 md:px-8">
         <div class="w-full p-6 md:p-8 flex flex-col gap-6 bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-gray-100 dark:border-slate-800">
             <div class="flex justify-between items-center">
