@@ -127,12 +127,13 @@
         <div class="w-full lg:w-auto flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
           <div class="relative flex-1 sm:w-64">
             <input type="text" [ngModel]="pnrInput()" (ngModelChange)="pnrInput.set($event)"
-              placeholder="e.g. TB-892144"
-              class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs md:text-sm font-semibold uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-[#5f4299]" />
+              placeholder="e.g. 6af5e284297f..."
+              class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs md:text-sm font-semibold tracking-wider focus:outline-none focus:ring-2 focus:ring-[#5f4299]" />
           </div>
-          <button (click)="checkPnrStatus()"
-            class="px-5 py-2.5 bg-[#5f4299] text-white rounded-xl text-xs md:text-sm font-bold hover:bg-[#4b337e] transition-colors cursor-pointer shadow-sm">
-            Check Status
+          <button (click)="checkPnrStatus()" [disabled]="isCheckingPnr()"
+            class="px-5 py-2.5 bg-[#5f4299] text-white rounded-xl text-xs md:text-sm font-bold hover:bg-[#4b337e] transition-colors cursor-pointer shadow-sm inline-flex items-center justify-center gap-1.5 disabled:opacity-60">
+            <i *ngIf="isCheckingPnr()" class="fa-solid fa-spinner animate-spin"></i>
+            <span>{{ isCheckingPnr() ? 'Checking...' : 'Check Status' }}</span>
           </button>
         </div>
       </div>
@@ -140,7 +141,7 @@
       <!-- PNR Result Display Card -->
       <div *ngIf="pnrResult()" class="mt-6 pt-6 border-t border-purple-200/50 dark:border-slate-800">
         <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-purple-200 dark:border-slate-700 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div>
+          <div class="space-y-1">
             <div class="flex items-center gap-2 flex-wrap">
               <span class="text-xs font-bold uppercase px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-950 text-[#5f4299] dark:text-purple-300">
                 PNR: {{ pnrResult()?.pnr }}
@@ -149,12 +150,21 @@
                 <i class="fa-solid fa-circle-check text-[10px]"></i>
                 {{ pnrResult()?.status }}
               </span>
+              <span *ngIf="pnrResult()?.fare" class="text-xs font-bold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-slate-800 px-2 py-0.5 rounded-md">
+                Fare: ₹{{ pnrResult()?.fare }}
+              </span>
             </div>
             <h4 class="font-extrabold text-base text-gray-900 dark:text-gray-100 mt-2">
               {{ pnrResult()?.route }}
             </h4>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+            <p class="text-xs text-gray-500 dark:text-gray-400">
               Operator: <strong>{{ pnrResult()?.operator }}</strong> • Timing: {{ pnrResult()?.departure }}
+            </p>
+            <p *ngIf="pnrResult()?.boardingPoint" class="text-xs text-purple-700 dark:text-purple-300">
+              Boarding: <strong>{{ pnrResult()?.boardingPoint }}</strong> ➔ Drop: <strong>{{ pnrResult()?.droppingPoint }}</strong>
+            </p>
+            <p *ngIf="pnrResult()?.seats?.length" class="text-xs text-gray-500 dark:text-gray-400">
+              Reserved Seats: <span class="font-bold text-[#5f4299] dark:text-purple-400">{{ pnrResult()?.seats?.join(', ') }}</span>
             </p>
           </div>
 

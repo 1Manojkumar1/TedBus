@@ -1,9 +1,11 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ToastService } from '../../service/toast.service';
 import { AuthService } from '../../service/auth.service';
+import { environment } from '../../../environments/environment';
 
 export interface HelpArticle {
   id: string;
@@ -26,6 +28,7 @@ export class InfoPageComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly toast = inject(ToastService);
+  private readonly http = inject(HttpClient);
   readonly auth = inject(AuthService);
 
   readonly topic = signal<string>(this.route.snapshot.data['topic'] ?? 'help');
@@ -36,6 +39,7 @@ export class InfoPageComponent {
 
   // Quick PNR Lookup state
   pnrInput = signal<string>('');
+  isCheckingPnr = signal<boolean>(false);
   pnrResult = signal<{
     found: boolean;
     pnr?: string;
@@ -43,6 +47,9 @@ export class InfoPageComponent {
     operator?: string;
     status?: string;
     departure?: string;
+    boardingPoint?: string;
+    droppingPoint?: string;
+    fare?: number;
     seats?: string[];
   } | null>(null);
 
@@ -310,51 +317,42 @@ export class InfoPageComponent {
     this.selectedCategory.set(cat);
   }
 
-  // Quick PNR Lookup
+  // Real PNR Lookup via Backend Database
   checkPnrStatus(): void {
-    const pnr = this.pnrInput().trim().toUpperCase();
+    const pnr = this.pnrInput().trim();
     if (!pnr) {
       this.toast.warning('Enter PNR', 'Please enter your Ticket ID or PNR number to check status.');
       return;
     }
 
-    // Check in-browser bookings or simulated lookup
-    try {
-      const bookingsJson = localStorage.getItem('tedbus_bookings');
-      if (bookingsJson) {
-        const bookings = JSON.parse(bookingsJson);
-        const match = Array.isArray(bookings)
-          ? bookings.find((b: any) => (b.id && b.id.toUpperCase().includes(pnr)) || (b.pnr && b.pnr.toUpperCase().includes(pnr)))
-          : null;
-        if (match) {
-          this.pnrResult.set({
-            found: true,
-            pnr: match.id || match.pnr || pnr,
-            route: `${match.from || 'Bangalore'} ➔ ${match.to || 'Goa'}`,
-            operator: match.busName || 'TedBus Primo Volvo',
-            status: match.status || 'Confirmed & Scheduled',
-            departure: match.date || 'Upcoming Journey',
-            seats: match.seats || ['Seat 12', 'Seat 14'],
-          });
-          this.toast.success('Ticket Located', `Ticket ${pnr} is active and confirmed.`);
-          return;
-        }
-      }
-    } catch (e) {
-      console.warn('Local bookings parse error', e);
-    }
+    this.isCheckingPnr.set(true);
 
-    // Default simulated resolution for sample PNRs
-    this.pnrResult.set({
-      found: true,
-      pnr: pnr,
-      route: 'Bangalore ➔ Hyderabad',
-      operator: 'TedBus Primo Multi-Axle Volvo (Verified)',
-      status: 'Confirmed & On Schedule',
-      departure: 'Today, 21:30 PM (Pickup: Majestic)',
-      seats: ['L1 (Window)', 'L2'],
+    this.http.get<any>(`${environment.apiUrl}/bookings/lookup/${encodeURIComponent(pnr)}`).subscribe({
+      next: (res) => {
+        this.isCheckingPnr.set(false);
+        this.pnrResult.set({
+          found: true,
+          pnr: res.pnr,
+          route: res.route,
+          operator: res.operator,
+          status: res.status,
+          departure: `${res.departureDate} at ${res.departureTime}:00`,
+          boardingPoint: res.boardingPoint,
+          droppingPoint: res.droppingPoint,
+          fare: res.fare,
+          seats: res.seats,
+        });
+        this.toast.success('Ticket Found', `Booking ${res.pnr} status: ${res.status}`);
+      },
+      error: (err) => {
+        this.isCheckingPnr.set(false);
+        this.pnrResult.set(null);
+        const errMsg =
+          err.error?.error ||
+          `No booking found with PNR "${pnr}". Please check the number or sign in to view your bookings.`;
+        this.toast.error('Booking Not Found', errMsg);
+      },
     });
-    this.toast.success('Ticket Located', `Booking details loaded for PNR ${pnr}`);
   }
 
   clearPnrResult(): void {
@@ -362,7 +360,7 @@ export class InfoPageComponent {
     this.pnrInput.set('');
   }
 
-  // Support Ticket submission
+  // Real Support Ticket submission into MongoDB
   submitSupportTicket(): void {
     if (!this.ticketForm.name || !this.ticketForm.email || !this.ticketForm.message) {
       this.toast.warning('Missing Information', 'Please provide your Name, Email, and Message description.');
@@ -371,19 +369,24 @@ export class InfoPageComponent {
 
     this.isSubmittingTicket.set(true);
 
-    setTimeout(() => {
-      const ticketId = `TB-SUP-${Math.floor(100000 + Math.random() * 900000)}`;
-      this.ticketSubmittedId.set(ticketId);
-      this.isSubmittingTicket.set(false);
-
-      this.toast.success(
-        'Support Ticket Created',
-        `Your case #${ticketId} has been logged. Our 24/7 team will respond to ${this.ticketForm.email} within 2 hours.`
-      );
-
-      this.ticketForm.pnr = '';
-      this.ticketForm.message = '';
-    }, 800);
+    this.http.post<any>(`${environment.apiUrl}/support/tickets`, this.ticketForm).subscribe({
+      next: (res) => {
+        this.isSubmittingTicket.set(false);
+        const ticketId = res.ticketId;
+        this.ticketSubmittedId.set(ticketId);
+        this.toast.success(
+          'Support Ticket Created',
+          `Your case #${ticketId} has been logged in our support database. We will respond to ${this.ticketForm.email} within 2 hours.`
+        );
+        this.ticketForm.pnr = '';
+        this.ticketForm.message = '';
+      },
+      error: (err) => {
+        this.isSubmittingTicket.set(false);
+        const errMsg = err.error?.error || 'Failed to submit support ticket. Please try again or call 1800 102 8888.';
+        this.toast.error('Submission Failed', errMsg);
+      },
+    });
   }
 
   resetTicketForm(): void {

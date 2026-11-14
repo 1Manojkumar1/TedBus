@@ -12,6 +12,7 @@ import notificationroutes from './routes/notification.js';
 import reviewroutes from './routes/review.js';
 import savedroutes from './routes/savedRoute.js';
 import adminroutes from './routes/admin.js';
+import supportroutes from './routes/support.js';
 import { stripewebhook, paymentmode } from './controllers/payment.js';
 import { authenticate } from './middleware/auth.js';
 import { errorhandler, notfound } from './middleware/errors.js';
@@ -101,6 +102,7 @@ export function createapp() {
   app.use('/api/reviews', reviewroutes);
   app.use('/api/saved-routes', savedroutes);
   app.use('/api/admin', adminroutes);
+  app.use('/api/support', supportroutes);
 
   app.use(notfound);
   app.use(errorhandler);

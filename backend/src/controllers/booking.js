@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { Booking } from '../models/booking.js';
+import { Bus } from '../models/bus.js';
 import {
   assertseatsfree,
   persistbooking,
@@ -55,6 +56,58 @@ export async function getbookingsbycustomer(req, res) {
     .exec();
 
   return res.json(bookings);
+}
+
+export async function lookupBookingByPnr(req, res) {
+  try {
+    const { pnr } = req.params;
+    if (!pnr) {
+      return res.status(400).json({ error: 'PNR / Booking ID is required' });
+    }
+
+    const cleanPnr = pnr.trim();
+    let query = {};
+    if (mongoose.isValidObjectId(cleanPnr)) {
+      query._id = cleanPnr;
+    } else {
+      query.$or = [
+        { 'payment.reference': cleanPnr },
+        { phoneNumber: cleanPnr },
+      ];
+    }
+
+    const booking = await Booking.findOne(query).lean().exec();
+    if (!booking) {
+      return res.status(404).json({ error: `No booking found matching PNR "${cleanPnr}". Please check the number on your ticket or sign in.` });
+    }
+
+    let busName = 'TedBus Primo Express';
+    if (booking.busId && mongoose.isValidObjectId(booking.busId)) {
+      try {
+        const bus = await Bus.findById(booking.busId).lean().exec();
+        if (bus && bus.name) busName = bus.name;
+      } catch {}
+    }
+
+    return res.json({
+      found: true,
+      pnr: String(booking._id),
+      route: `${booking.departureDetails?.city || 'Origin'} ➔ ${booking.arrivalDetails?.city || 'Destination'}`,
+      from: booking.departureDetails?.city,
+      to: booking.arrivalDetails?.city,
+      departureDate: booking.departureDetails?.date,
+      departureTime: booking.departureDetails?.time,
+      boardingPoint: booking.boardingPoint || booking.departureDetails?.location || 'Main Boarding Terminal',
+      droppingPoint: booking.droppingPoint || booking.arrivalDetails?.location || 'Main Drop Terminal',
+      seats: booking.seats?.map((s) => `Seat ${s}`) || [],
+      fare: booking.fare,
+      status: booking.status === 'upcoming' ? 'Confirmed & Scheduled' : booking.status === 'cancelled' ? 'Cancelled & Refunded' : 'Completed Journey',
+      operator: busName,
+    });
+  } catch (err) {
+    console.error('lookupBookingByPnr error:', err);
+    return res.status(500).json({ error: 'Failed to lookup booking' });
+  }
 }
 
 export async function getbookingbyid(req, res) {

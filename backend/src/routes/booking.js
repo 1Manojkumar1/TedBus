@@ -5,10 +5,14 @@ import {
   getbookingbyid,
   getbookingsbycustomer,
   getrefundquote,
+  lookupBookingByPnr,
 } from '../controllers/booking.js';
 import { requireauth } from '../middleware/auth.js';
 
 const router = Router();
+
+// Public PNR status lookup (accessible on Help & Support page)
+router.get('/lookup/:pnr', lookupBookingByPnr);
 
 router.use(requireauth);
 
