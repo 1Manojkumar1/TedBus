@@ -114,13 +114,19 @@ export async function listPosts(req, res) {
 export async function getPost(req, res) {
   try {
     const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ error: 'Post ID is required' });
+    }
+
+    const query = mongoose.isValidObjectId(id) ? { _id: id, status: 'published' } : { status: 'published' };
     if (!mongoose.isValidObjectId(id)) {
-      return res.status(400).json({ error: 'Invalid post ID' });
+      // Allow fallback lookup
+      query.$or = [{ _id: id }, { title: new RegExp(id.replace(/-/g, ' '), 'i') }];
     }
 
     // Increment view count asynchronously
     const post = await CommunityPost.findOneAndUpdate(
-      { _id: id, status: 'published' },
+      query,
       { $inc: { viewsCount: 1 } },
       { new: true }
     )

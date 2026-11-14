@@ -2538,7 +2538,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   CommunityService,
   CommunityPost,
@@ -2564,6 +2564,7 @@ export class CommunityComponent implements OnInit {
   readonly auth = inject(AuthService);
   readonly i18n = inject(TranslationService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly toastService = inject(ToastService);
   private readonly confirmDialog = inject(ConfirmDialogService);
 
@@ -2608,6 +2609,11 @@ export class CommunityComponent implements OnInit {
     tagsString: '',
   };
 
+  // Single Post Direct View (e.g. from shared link ?postId=...)
+  singlePostMode = signal<boolean>(false);
+  singlePost = signal<CommunityPost | null>(null);
+  isLoadingSinglePost = signal<boolean>(false);
+
   // Selected Post for Detail View / Comments
   activePost = signal<CommunityPost | null>(null);
   activeComments = signal<PostComment[]>([]);
@@ -2629,9 +2635,71 @@ export class CommunityComponent implements OnInit {
   reportSubmitted = signal<boolean>(false);
 
   ngOnInit(): void {
-    this.fetchPosts();
+    // Listen to queryParams for direct deep-linking to shared posts
+    this.route.queryParams.subscribe((params) => {
+      const targetId = params['postId'] || params['post'] || params['id'];
+      if (targetId) {
+        this.loadSinglePostView(targetId);
+      } else {
+        this.singlePostMode.set(false);
+        this.singlePost.set(null);
+        if (this.posts().length === 0) {
+          this.fetchPosts();
+        }
+      }
+    });
+
     if (this.auth.isloggedin()) {
       this.fetchUserStats();
+    }
+  }
+
+  loadSinglePostView(id: string): void {
+    this.singlePostMode.set(true);
+    this.isLoadingSinglePost.set(true);
+
+    this.communityService.getPost(id).subscribe({
+      next: (res) => {
+        this.singlePost.set(res.post);
+        this.activePost.set(res.post);
+        this.activeComments.set(res.comments || []);
+        this.isLoadingSinglePost.set(false);
+        if (typeof window !== 'undefined') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      },
+      error: (err) => {
+        console.warn('API getPost failed, falling back to local list:', err);
+        const localMatch =
+          this.posts().find((p) => p._id === id) ||
+          FALLBACK_DISCUSSIONS.find((p) => p._id === id);
+        if (localMatch) {
+          this.singlePost.set(localMatch);
+          this.activePost.set(localMatch);
+          this.activeComments.set(localMatch.comments || []);
+        } else {
+          this.toastService.warning(
+            'Story Not Found',
+            'The shared travel post could not be located or may have been removed.'
+          );
+          this.exitSinglePostMode();
+        }
+        this.isLoadingSinglePost.set(false);
+      },
+    });
+  }
+
+  exitSinglePostMode(): void {
+    this.singlePostMode.set(false);
+    this.singlePost.set(null);
+    this.activePost.set(null);
+    this.activeComments.set([]);
+    this.router.navigate([], {
+      queryParams: { postId: null, post: null, id: null },
+      queryParamsHandling: 'merge',
+    });
+    if (this.posts().length === 0) {
+      this.fetchPosts();
     }
   }
 
