@@ -2,6 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { ToastService } from './toast.service';
 
 export interface AppNotification {
   _id: string;
@@ -45,7 +46,9 @@ export interface NotificationPreference {
 })
 export class NotificationService {
   private readonly http = inject(HttpClient);
+  private readonly toastService = inject(ToastService);
   private readonly baseUrl = `${environment.apiUrl}/notifications`;
+  private readonly seenToastIds = new Set<string>();
 
   readonly unreadCount = signal<number>(0);
 
@@ -68,6 +71,20 @@ export class NotificationService {
     return this.http.get<NotificationResponse>(this.baseUrl, { params }).pipe(
       tap((res) => {
         this.unreadCount.set(res.unreadCount);
+        // Show in-app toast for new unread notifications
+        for (const notif of res.notifications || []) {
+          if (!notif.read && !this.seenToastIds.has(notif._id)) {
+            this.seenToastIds.add(notif._id);
+            this.toastService.show({
+              id: notif._id,
+              title: notif.title,
+              message: notif.message,
+              category: notif.category,
+              actionUrl: notif.actionUrl,
+              actionLabel: 'View details',
+            });
+          }
+        }
       })
     );
   }

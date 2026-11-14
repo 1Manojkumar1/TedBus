@@ -107,11 +107,19 @@
   </div>
 
   <div class="px-5 md:px-6 py-4 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between">
-    <button type="button" (click)="writeReview.emit(booking())"
-      class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 text-xs font-bold hover:bg-amber-100 transition-colors">
-      <mat-icon class="text-[16px] w-4 h-4 leading-4 text-amber-500">star</mat-icon>
-      <span>Rate & Review Journey</span>
-    </button>
+    @if (existingReview()) {
+      <button type="button" (click)="writeReview.emit(booking())"
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-purple-300 dark:border-purple-700 bg-purple-50 dark:bg-purple-950/40 text-[#5f4299] dark:text-purple-300 text-xs font-bold hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-colors">
+        <mat-icon class="text-[16px] w-4 h-4 leading-4 text-amber-500">star</mat-icon>
+        <span>Rated {{ existingReview()?.rating }}/5 ★ &middot; Edit Review</span>
+      </button>
+    } @else {
+      <button type="button" (click)="writeReview.emit(booking())"
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 text-xs font-bold hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors">
+        <mat-icon class="text-[16px] w-4 h-4 leading-4 text-amber-500">star</mat-icon>
+        <span>Rate & Review Journey</span>
+      </button>
+    }
 
     @if (isupcoming()) {
       <button type="button" (click)="cancel.emit(booking()._id)"

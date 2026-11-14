@@ -1,6 +1,7 @@
 import { Component, computed, input, output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Booking } from '../../../model/booking.model';
+import { JourneyReview } from '../../../service/review.service';
 
 @Component({
   selector: 'app-my-trip',
@@ -11,6 +12,7 @@ import { Booking } from '../../../model/booking.model';
 })
 export class MyTrip {
   booking = input.required<Booking>();
+  existingReview = input<JourneyReview | undefined>(undefined);
   cancel = output<string>();
   writeReview = output<Booking>();
 

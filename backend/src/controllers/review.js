@@ -95,7 +95,12 @@ export async function updateReview(req, res) {
       return res.status(404).json({ error: 'Review not found' });
     }
 
-    if (customerId && review.author.customerId !== customerId && req.auth?.email !== review.author.email) {
+    const authorEmail = req.body.author?.email || req.auth?.email;
+    const authorMatches = !customerId ||
+      review.author.customerId === customerId ||
+      (authorEmail && review.author.email && review.author.email.toLowerCase() === authorEmail.toLowerCase());
+
+    if (!authorMatches) {
       return res.status(403).json({ error: 'You can only edit your own reviews' });
     }
 

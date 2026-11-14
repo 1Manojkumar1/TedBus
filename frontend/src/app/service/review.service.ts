@@ -73,7 +73,7 @@ export class ReviewService {
       aspectRatings?: AspectRatings;
       headline?: string;
       comment?: string;
-      author?: { customerId: string };
+      author?: { customerId: string; email?: string };
     }
   ): Observable<JourneyReview> {
     return this.http.put<JourneyReview>(`${this.baseUrl}/${id}`, data);

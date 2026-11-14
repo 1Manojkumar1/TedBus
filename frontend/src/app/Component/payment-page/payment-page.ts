@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { DataserviceService } from '../../service/dataservice.service';
 import { BusService } from '../../service/bus.service';
 import { AuthService } from '../../service/auth.service';
+import { ToastService } from '../../service/toast.service';
 
 @Component({
   selector: 'app-payment-page',
@@ -19,6 +20,7 @@ export class PaymentPage implements OnInit {
   private readonly dataservice = inject(DataserviceService);
   private readonly busservice = inject(BusService);
   readonly auth = inject(AuthService);
+  private readonly toastService = inject(ToastService);
 
   passseatarray: number[] = [];
   seatprice: number = 0;
@@ -207,6 +209,12 @@ export class PaymentPage implements OnInit {
     this.busservice.addbusmongo(booking).subscribe({
       next: () => {
         this.posting.set(false);
+        this.toastService.success(
+          'Booking Confirmed! 🎫',
+          `Your trip from ${booking.departureDetails.city} to ${booking.arrivalDetails.city} on ${booking.departureDetails.date} is confirmed!`,
+          '/profile',
+          'View Ticket'
+        );
         this.router.navigate(['/profile']);
       },
       error: (error) => {

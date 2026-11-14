@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   NotificationService,
   AppNotification,
@@ -9,12 +9,11 @@ import {
 } from '../../service/notification.service';
 import { AuthService } from '../../service/auth.service';
 import { TranslationService } from '../../service/translation.service';
-import { TranslatePipe } from '../../service/translate.pipe';
 
 @Component({
   selector: 'app-notification-center',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './notification-center.component.html',
   styleUrls: ['./notification-center.component.css'],
 })
@@ -28,6 +27,7 @@ export class NotificationCenterComponent implements OnInit {
   isLoading = signal<boolean>(false);
   selectedCategory = signal<string>('all');
   activeTab = signal<'notifications' | 'preferences'>('notifications');
+  expandedIds = signal<Set<string>>(new Set<string>());
 
   // Preferences state
   preferences = signal<NotificationPreference>({
@@ -123,13 +123,36 @@ export class NotificationCenterComponent implements OnInit {
     });
   }
 
-  handleNotificationClick(item: AppNotification): void {
+  isExpanded(id: string): boolean {
+    return this.expandedIds().has(id);
+  }
+
+  toggleExpand(item: AppNotification, event?: MouseEvent): void {
+    event?.stopPropagation();
     if (!item.read) {
       this.markAsRead(item);
     }
-    if (item.actionUrl) {
-      this.router.navigateByUrl(item.actionUrl);
+    const current = new Set(this.expandedIds());
+    if (current.has(item._id)) {
+      current.delete(item._id);
+    } else {
+      current.add(item._id);
     }
+    this.expandedIds.set(current);
+  }
+
+  formatRef(val: unknown): string {
+    const str = String(val ?? '');
+    return str.length > 8 ? str.slice(-8).toUpperCase() : str;
+  }
+
+  formatSeats(val: unknown): string {
+    if (Array.isArray(val)) return val.join(', ');
+    return String(val ?? '');
+  }
+
+  handleNotificationClick(item: AppNotification): void {
+    this.toggleExpand(item);
   }
 
   loadPreferences(): void {

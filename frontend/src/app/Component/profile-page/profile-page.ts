@@ -5,7 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
 import { BusService } from '../../service/bus.service';
 import { AuthService } from '../../service/auth.service';
-import { ReviewService } from '../../service/review.service';
+import { ReviewService, JourneyReview } from '../../service/review.service';
+import { ToastService } from '../../service/toast.service';
 import { Booking } from '../../model/booking.model';
 import { MyTrip } from './my-trip/my-trip';
 
@@ -23,10 +24,15 @@ export class ProfilePage implements OnInit {
   private readonly router = inject(Router);
   private readonly auth = inject(AuthService);
   private readonly reviewService = inject(ReviewService);
+  private readonly toastService = inject(ToastService);
 
   showReviewModal = signal(false);
   reviewingBooking = signal<Booking | null>(null);
   isSubmittingReview = signal(false);
+  isEditingReview = signal(false);
+  editingReviewId = signal<string | null>(null);
+  userReviews = signal<Record<string, JourneyReview>>({});
+
   reviewForm = {
     rating: 5,
     punctuality: 5,
@@ -132,6 +138,7 @@ export class ProfilePage implements OnInit {
           )
         );
         this.loading.set(false);
+        this.loadUserReviews(userid);
       },
       error: (error: unknown) => {
         console.error('Failed to fetch trips', error);
@@ -144,17 +151,50 @@ export class ProfilePage implements OnInit {
     });
   }
 
+  loadUserReviews(userid: string): void {
+    this.reviewService.getUserReviews(userid).subscribe({
+      next: (reviews) => {
+        const map: Record<string, JourneyReview> = {};
+        for (const r of reviews) {
+          if (r.bookingId) {
+            map[r.bookingId] = r;
+          }
+        }
+        this.userReviews.set(map);
+      },
+      error: (err) => console.error('Failed to load user reviews:', err),
+    });
+  }
+
   openReviewModal(booking: Booking): void {
     this.reviewingBooking.set(booking);
-    this.reviewForm = {
-      rating: 5,
-      punctuality: 5,
-      cleanliness: 5,
-      comfort: 5,
-      staff: 5,
-      headline: '',
-      comment: '',
-    };
+    const existing = this.userReviews()[booking._id];
+
+    if (existing) {
+      this.isEditingReview.set(true);
+      this.editingReviewId.set(existing._id);
+      this.reviewForm = {
+        rating: existing.rating,
+        punctuality: existing.aspectRatings?.punctuality ?? 5,
+        cleanliness: existing.aspectRatings?.cleanliness ?? 5,
+        comfort: existing.aspectRatings?.comfort ?? 5,
+        staff: existing.aspectRatings?.staff ?? 5,
+        headline: existing.headline ?? '',
+        comment: existing.comment ?? '',
+      };
+    } else {
+      this.isEditingReview.set(false);
+      this.editingReviewId.set(null);
+      this.reviewForm = {
+        rating: 5,
+        punctuality: 5,
+        cleanliness: 5,
+        comfort: 5,
+        staff: 5,
+        headline: '',
+        comment: '',
+      };
+    }
     this.showReviewModal.set(true);
   }
 
@@ -169,36 +209,74 @@ export class ProfilePage implements OnInit {
     }
 
     this.isSubmittingReview.set(true);
-    this.reviewService
-      .createReview({
-        bookingId: booking._id,
-        rating: this.reviewForm.rating,
-        aspectRatings: {
-          punctuality: this.reviewForm.punctuality,
-          cleanliness: this.reviewForm.cleanliness,
-          comfort: this.reviewForm.comfort,
-          staff: this.reviewForm.staff,
-        },
-        headline: this.reviewForm.headline,
-        comment: this.reviewForm.comment,
-        author: {
-          customerId: user._id || user.googleId || user.email,
-          name: user.name || 'Verified Passenger',
-          email: user.email,
-          picture: user.picture,
-        },
-      })
-      .subscribe({
-        next: () => {
-          this.isSubmittingReview.set(false);
-          this.showReviewModal.set(false);
-          this.actionmessage.set('Thank you! Your verified passenger review has been published.');
-        },
-        error: (err) => {
-          this.isSubmittingReview.set(false);
-          alert(err?.error?.error || 'Failed to submit review.');
-        },
-      });
+
+    if (this.isEditingReview() && this.editingReviewId()) {
+      // Edit existing review
+      this.reviewService
+        .updateReview(this.editingReviewId()!, {
+          rating: this.reviewForm.rating,
+          aspectRatings: {
+            punctuality: this.reviewForm.punctuality,
+            cleanliness: this.reviewForm.cleanliness,
+            comfort: this.reviewForm.comfort,
+            staff: this.reviewForm.staff,
+          },
+          headline: this.reviewForm.headline,
+          comment: this.reviewForm.comment,
+          author: { customerId: user._id || user.googleId || user.email, email: user.email },
+        })
+        .subscribe({
+          next: (updated) => {
+            this.isSubmittingReview.set(false);
+            this.showReviewModal.set(false);
+            const current = { ...this.userReviews() };
+            current[booking._id] = updated;
+            this.userReviews.set(current);
+            this.actionmessage.set('Your journey review has been updated!');
+            this.toastService.success('Review Updated! ⭐', 'Your feedback has been saved.');
+          },
+          error: (err) => {
+            this.isSubmittingReview.set(false);
+            alert(err?.error?.error || 'Failed to update review.');
+          },
+        });
+    } else {
+      // Create new review
+      this.reviewService
+        .createReview({
+          bookingId: booking._id,
+          rating: this.reviewForm.rating,
+          aspectRatings: {
+            punctuality: this.reviewForm.punctuality,
+            cleanliness: this.reviewForm.cleanliness,
+            comfort: this.reviewForm.comfort,
+            staff: this.reviewForm.staff,
+          },
+          headline: this.reviewForm.headline,
+          comment: this.reviewForm.comment,
+          author: {
+            customerId: user._id || user.googleId || user.email,
+            name: user.name || 'Verified Passenger',
+            email: user.email,
+            picture: user.picture,
+          },
+        })
+        .subscribe({
+          next: (created) => {
+            this.isSubmittingReview.set(false);
+            this.showReviewModal.set(false);
+            const current = { ...this.userReviews() };
+            current[booking._id] = created;
+            this.userReviews.set(current);
+            this.actionmessage.set('Thank you! Your verified passenger review has been published.');
+            this.toastService.success('Review Published! ⭐', 'Your verified passenger review is live.');
+          },
+          error: (err) => {
+            this.isSubmittingReview.set(false);
+            alert(err?.error?.error || 'Failed to submit review.');
+          },
+        });
+    }
   }
 
   signout(): void {
