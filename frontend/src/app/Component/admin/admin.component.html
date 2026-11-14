@@ -6,17 +6,17 @@
       <div>
         <div class="inline-flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full text-xs font-semibold mb-2">
           <i class="fa-solid fa-shield-halved text-amber-400"></i>
-          <span>TedBus Operations & Moderation</span>
+          <span>TedBus Operations & Moderation Console</span>
         </div>
         <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight">Admin & Community Safety Console</h1>
         <p class="text-xs md:text-sm text-slate-300 mt-1">
-          Monitor platform health, verify user content, review flagged posts, and maintain traveler trust.
+          Monitor platform health, verify user content, review flagged posts, and take moderation actions (hide, dismiss, delete, restore).
         </p>
       </div>
 
       <div class="flex items-center gap-2 bg-emerald-500/20 text-emerald-300 px-3 py-1.5 rounded-xl border border-emerald-500/30 text-xs font-bold">
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span>Systems Operational</span>
+        <span>Platform Live & Active</span>
       </div>
     </div>
   </section>
@@ -63,118 +63,313 @@
       </div>
     </div>
 
-    <!-- Moderation Queue -->
-    <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
+    <!-- Navigation Sub-Tabs -->
+    <div class="flex border-b border-gray-200 dark:border-slate-800 gap-4">
+      <button (click)="activeTab.set('reports')"
+        [class.border-[#5f4299]]="activeTab() === 'reports'"
+        [class.text-[#5f4299]]="activeTab() === 'reports'"
+        [class.dark:text-purple-400]="activeTab() === 'reports'"
+        class="pb-3 border-b-2 font-bold text-sm flex items-center gap-2 transition-colors border-transparent text-gray-500 hover:text-gray-900 dark:hover:text-gray-100">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>Flagged Reports Queue</span>
+        <span *ngIf="stats().pendingReports > 0" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500 text-white">
+          {{ stats().pendingReports }}
+        </span>
+      </button>
+
+      <button (click)="activeTab.set('posts')"
+        [class.border-[#5f4299]]="activeTab() === 'posts'"
+        [class.text-[#5f4299]]="activeTab() === 'posts'"
+        [class.dark:text-purple-400]="activeTab() === 'posts'"
+        class="pb-3 border-b-2 font-bold text-sm flex items-center gap-2 transition-colors border-transparent text-gray-500 hover:text-gray-900 dark:hover:text-gray-100">
+        <i class="fa-solid fa-newspaper"></i>
+        <span>All Community Posts & Stories</span>
+      </button>
+    </div>
+
+    <!-- TAB 1: REPORTS QUEUE -->
+    <div *ngIf="activeTab() === 'reports'" class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
 
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-gray-100 dark:border-slate-800">
         <div>
           <h3 class="font-extrabold text-lg flex items-center gap-2">
-            <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
-            <span>Content Moderation Queue</span>
+            <i class="fa-solid fa-flag text-rose-500"></i>
+            <span>Moderation Queue</span>
           </h3>
           <p class="text-xs text-gray-500 mt-0.5">
-            User-reported posts and comments flagged for spam, harassment, or misinformation.
+            Traveler-reported items flagged for spam, harassment, inappropriate content, or misinformation.
           </p>
         </div>
 
         <!-- Filter Status Tabs -->
         <div class="inline-flex bg-gray-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-semibold">
-          <button (click)="filterStatus('pending')"
-            [class.bg-white]="selectedStatus() === 'pending'"
-            [class.dark:bg-slate-900]="selectedStatus() === 'pending'"
-            [class.text-[#5f4299]]="selectedStatus() === 'pending'"
+          <button (click)="filterReportStatus('pending')"
+            [class.bg-white]="selectedReportStatus() === 'pending'"
+            [class.dark:bg-slate-900]="selectedReportStatus() === 'pending'"
+            [class.text-[#5f4299]]="selectedReportStatus() === 'pending'"
             class="px-3 py-1.5 rounded-lg transition-colors">
-            Pending
+            Pending ({{ stats().pendingReports }})
           </button>
-          <button (click)="filterStatus('actioned')"
-            [class.bg-white]="selectedStatus() === 'actioned'"
-            [class.dark:bg-slate-900]="selectedStatus() === 'actioned'"
-            [class.text-[#5f4299]]="selectedStatus() === 'actioned'"
+          <button (click)="filterReportStatus('actioned')"
+            [class.bg-white]="selectedReportStatus() === 'actioned'"
+            [class.dark:bg-slate-900]="selectedReportStatus() === 'actioned'"
+            [class.text-[#5f4299]]="selectedReportStatus() === 'actioned'"
             class="px-3 py-1.5 rounded-lg transition-colors">
-            Actioned
+            Actioned / Hidden
           </button>
-          <button (click)="filterStatus('dismissed')"
-            [class.bg-white]="selectedStatus() === 'dismissed'"
-            [class.dark:bg-slate-900]="selectedStatus() === 'dismissed'"
-            [class.text-[#5f4299]]="selectedStatus() === 'dismissed'"
+          <button (click)="filterReportStatus('dismissed')"
+            [class.bg-white]="selectedReportStatus() === 'dismissed'"
+            [class.dark:bg-slate-900]="selectedReportStatus() === 'dismissed'"
+            [class.text-[#5f4299]]="selectedReportStatus() === 'dismissed'"
             class="px-3 py-1.5 rounded-lg transition-colors">
             Dismissed
           </button>
-          <button (click)="filterStatus('all')"
-            [class.bg-white]="selectedStatus() === 'all'"
-            [class.dark:bg-slate-900]="selectedStatus() === 'all'"
-            [class.text-[#5f4299]]="selectedStatus() === 'all'"
+          <button (click)="filterReportStatus('all')"
+            [class.bg-white]="selectedReportStatus() === 'all'"
+            [class.dark:bg-slate-900]="selectedReportStatus() === 'all'"
+            [class.text-[#5f4299]]="selectedReportStatus() === 'all'"
             class="px-3 py-1.5 rounded-lg transition-colors">
-            All
+            All Reports
           </button>
         </div>
       </div>
 
       <!-- Loading State -->
-      <div *ngIf="isLoading()" class="py-12 text-center text-sm text-gray-400">
+      <div *ngIf="isLoadingReports()" class="py-12 text-center text-sm text-gray-400">
         <div class="inline-block animate-spin w-7 h-7 border-3 border-[#5f4299] border-t-transparent rounded-full mb-2"></div>
-        <p>Loading reports queue...</p>
+        <p>Loading flagged reports...</p>
       </div>
 
       <!-- Empty State -->
-      <div *ngIf="!isLoading() && reports().length === 0" class="py-12 text-center text-gray-400">
+      <div *ngIf="!isLoadingReports() && reports().length === 0" class="py-12 text-center text-gray-400">
         <i class="fa-solid fa-circle-check text-4xl text-emerald-500 mb-2 block"></i>
         <h4 class="font-bold text-sm text-gray-700 dark:text-gray-300">Moderation queue is clean!</h4>
-        <p class="text-xs text-gray-400 mt-0.5">No reports in "{{ selectedStatus() }}" status.</p>
+        <p class="text-xs text-gray-400 mt-0.5">No reports in "{{ selectedReportStatus() }}" status.</p>
       </div>
 
       <!-- Reports List -->
-      <div *ngIf="!isLoading() && reports().length > 0" class="space-y-4">
+      <div *ngIf="!isLoadingReports() && reports().length > 0" class="space-y-4">
         <div *ngFor="let item of reports()"
           class="p-4 rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/40 space-y-3">
 
           <div class="flex items-start justify-between gap-3">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 flex-wrap">
               <span [class]="item.contentType === 'post' ? 'bg-purple-100 text-purple-800 dark:bg-purple-950/60 dark:text-purple-300' : 'bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300'"
                 class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
                 {{ item.contentType }}
               </span>
-              <span class="text-xs font-bold text-rose-600 uppercase">Reason: {{ item.reason }}</span>
+              <span class="text-xs font-bold text-rose-600 dark:text-rose-400 uppercase">Reason: {{ item.reason }}</span>
               <span class="text-xs text-gray-400">• {{ formatDate(item.createdAt) }}</span>
             </div>
 
-            <span [class]="item.status === 'pending' ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300' : (item.status === 'actioned' ? 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300' : 'bg-gray-100 text-gray-700 dark:bg-slate-700 dark:text-gray-300')"
-              class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
-              {{ item.status }}
+            <span [class]="item.status === 'pending' ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300' : (item.status === 'actioned' ? 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300' : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300')"
+              class="text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">
+              Status: {{ item.status }}
             </span>
           </div>
 
           <!-- Snippet -->
           <div class="p-3 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-lg text-xs leading-relaxed">
-            <div class="text-gray-400 text-[10px] mb-1">Author: {{ item.contentAuthor || 'Unknown' }}</div>
+            <div class="text-gray-400 text-[10px] mb-1">Author: {{ item.contentAuthor || 'Anonymous / Community Member' }}</div>
             <p class="font-medium text-gray-800 dark:text-gray-200 italic">{{ item.contentSnippet }}</p>
           </div>
 
           <!-- Reporter info & details -->
-          <div class="flex items-center justify-between text-xs text-gray-500">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-gray-500 pt-1">
             <div>
               <span>Reported by: <strong>{{ item.reportedBy.name }}</strong> ({{ item.reportedBy.email }})</span>
               <span *ngIf="item.details" class="block text-gray-400 mt-0.5">Details: "{{ item.details }}"</span>
               <span *ngIf="item.actionTaken" class="block text-emerald-600 dark:text-emerald-400 font-semibold mt-0.5">
-                Action: {{ item.actionTaken }}
+                Moderator Note: {{ item.actionTaken }}
               </span>
             </div>
 
-            <!-- Action Buttons for Pending Items -->
-            <div *ngIf="item.status === 'pending'" class="flex items-center gap-2">
-              <button (click)="resolveReport(item, 'dismiss')"
-                class="px-3 py-1.5 rounded-lg border border-gray-200 dark:border-slate-700 text-xs font-semibold hover:bg-gray-100 dark:hover:bg-slate-800">
-                Dismiss
-              </button>
-              <button (click)="resolveReport(item, 'hide')"
-                class="px-3 py-1.5 rounded-lg bg-amber-500 text-white text-xs font-bold hover:bg-amber-600">
-                Hide Content
-              </button>
-              <button (click)="resolveReport(item, 'delete')"
-                class="px-3 py-1.5 rounded-lg bg-rose-600 text-white text-xs font-bold hover:bg-rose-700">
-                Delete Content
-              </button>
+            <!-- Action Buttons for Moderators -->
+            <div class="flex items-center gap-2 shrink-0">
+              <!-- Pending Actions -->
+              <ng-container *ngIf="item.status === 'pending'">
+                <button (click)="resolveReport(item, 'dismiss')"
+                  class="px-3 py-1.5 rounded-lg border border-gray-300 dark:border-slate-700 text-xs font-semibold hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
+                  <i class="fa-solid fa-check mr-1 text-emerald-500"></i>Dismiss
+                </button>
+                <button (click)="resolveReport(item, 'hide')"
+                  class="px-3 py-1.5 rounded-lg bg-amber-500 text-white text-xs font-bold hover:bg-amber-600 transition-colors">
+                  <i class="fa-solid fa-eye-slash mr-1"></i>Hide Content
+                </button>
+                <button (click)="resolveReport(item, 'delete')"
+                  class="px-3 py-1.5 rounded-lg bg-rose-600 text-white text-xs font-bold hover:bg-rose-700 transition-colors">
+                  <i class="fa-solid fa-trash mr-1"></i>Delete Content
+                </button>
+              </ng-container>
+
+              <!-- Actioned (e.g. Hidden) Content can be Restored or Deleted -->
+              <ng-container *ngIf="item.status === 'actioned'">
+                <button (click)="resolveReport(item, 'restore')"
+                  class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 transition-colors">
+                  <i class="fa-solid fa-rotate-left mr-1"></i>Restore Content
+                </button>
+                <button (click)="resolveReport(item, 'delete')"
+                  class="px-3 py-1.5 rounded-lg bg-rose-600 text-white text-xs font-bold hover:bg-rose-700 transition-colors">
+                  <i class="fa-solid fa-trash mr-1"></i>Delete
+                </button>
+              </ng-container>
+
+              <!-- Dismissed items can be re-evaluated -->
+              <ng-container *ngIf="item.status === 'dismissed'">
+                <button (click)="resolveReport(item, 'hide')"
+                  class="px-3 py-1.5 rounded-lg border border-amber-500 text-amber-600 dark:text-amber-400 text-xs font-semibold hover:bg-amber-50 dark:hover:bg-amber-950/30 transition-colors">
+                  Re-evaluate & Hide
+                </button>
+              </ng-container>
             </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 2: ALL COMMUNITY POSTS (DIRECT MANAGEMENT) -->
+    <div *ngIf="activeTab() === 'posts'" class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
+
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-gray-100 dark:border-slate-800">
+        <div>
+          <h3 class="font-extrabold text-lg flex items-center gap-2">
+            <i class="fa-solid fa-comments text-[#5f4299]"></i>
+            <span>Community Stories & Discussions</span>
+          </h3>
+          <p class="text-xs text-gray-500 mt-0.5">
+            Directly moderate, hide, restore, or delete any community post published across India.
+          </p>
+        </div>
+
+        <button (click)="router.navigate(['/community'])"
+          class="px-3 py-1.5 rounded-xl border border-gray-200 dark:border-slate-700 text-xs font-semibold hover:bg-gray-100 dark:hover:bg-slate-800 flex items-center gap-1.5">
+          <i class="fa-solid fa-arrow-up-right-from-square text-[#5f4299]"></i>
+          <span>View Public Community</span>
+        </button>
+      </div>
+
+      <!-- Search & Filters -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <!-- Search Input -->
+        <div class="relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-400 text-xs"></i>
+          <input [(ngModel)]="postSearchQuery" (input)="fetchPosts()"
+            placeholder="Search posts or authors..."
+            class="w-full pl-8 pr-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-[#5f4299]" />
+        </div>
+
+        <!-- Category Filter -->
+        <div>
+          <select [(ngModel)]="postCategoryFilter" (change)="fetchPosts()"
+            class="w-full px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-[#5f4299]">
+            <option value="all">All Categories</option>
+            <option value="Bus Routes">Bus Routes</option>
+            <option value="Destinations">Destinations</option>
+            <option value="Travel Experiences">Travel Experiences</option>
+            <option value="Travel Tips">Travel Tips</option>
+            <option value="Safety & Recommendations">Safety & Recommendations</option>
+            <option value="General Discussions">General Discussions</option>
+          </select>
+        </div>
+
+        <!-- Status Filter -->
+        <div>
+          <select [(ngModel)]="postStatusFilter" (change)="fetchPosts()"
+            class="w-full px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-xs focus:ring-2 focus:ring-[#5f4299]">
+            <option value="all">All Visibility Statuses</option>
+            <option value="published">Published Only</option>
+            <option value="hidden">Hidden Only</option>
+            <option value="deleted">Deleted Only</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="isLoadingPosts()" class="py-12 text-center text-sm text-gray-400">
+        <div class="inline-block animate-spin w-7 h-7 border-3 border-[#5f4299] border-t-transparent rounded-full mb-2"></div>
+        <p>Loading community stories...</p>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!isLoadingPosts() && posts().length === 0" class="py-12 text-center text-gray-400">
+        <i class="fa-regular fa-folder-open text-4xl mb-2 block"></i>
+        <h4 class="font-bold text-sm text-gray-700 dark:text-gray-300">No stories match your filter criteria</h4>
+        <p class="text-xs text-gray-400 mt-0.5">Try adjusting your search terms or category filter.</p>
+      </div>
+
+      <!-- Posts List -->
+      <div *ngIf="!isLoadingPosts() && posts().length > 0" class="space-y-3">
+        <div *ngFor="let p of posts()"
+          class="p-4 rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50/40 dark:bg-slate-800/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+
+          <div class="space-y-1.5 flex-1">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 dark:bg-purple-950/60 dark:text-purple-300">
+                {{ p.category }}
+              </span>
+
+              <!-- Status Badge -->
+              <span [class]="p.status === 'published' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300' : (p.status === 'hidden' ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300' : 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300')"
+                class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
+                {{ p.status }}
+              </span>
+
+              <span class="text-xs text-gray-400">• {{ formatDate(p.createdAt) }}</span>
+            </div>
+
+            <h4 class="font-bold text-sm text-gray-900 dark:text-gray-100">{{ p.title }}</h4>
+            <p class="text-xs text-gray-500 line-clamp-1">{{ p.content }}</p>
+
+            <div class="flex items-center gap-4 text-[11px] text-gray-400 pt-1">
+              <span>Author: <strong class="text-gray-600 dark:text-gray-300">{{ p.author.name }}</strong></span>
+              <span><i class="fa-regular fa-heart text-red-500 mr-1"></i>{{ p.likesCount }}</span>
+              <span><i class="fa-regular fa-comment text-blue-500 mr-1"></i>{{ p.commentsCount }}</span>
+              <span *ngIf="p.routeTag?.from && p.routeTag?.to" class="text-purple-600 dark:text-purple-400">
+                <i class="fa-solid fa-route mr-1"></i>{{ p.routeTag?.from }} ➔ {{ p.routeTag?.to }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Moderation Actions -->
+          <div class="flex items-center gap-2 shrink-0">
+            <!-- If Published: Allow Hide or Delete -->
+            <ng-container *ngIf="p.status === 'published'">
+              <button (click)="moderatePostDirectly(p, 'hidden')"
+                class="px-3 py-1.5 rounded-lg bg-amber-500 text-white text-xs font-bold hover:bg-amber-600 transition-colors"
+                title="Hide post from public feed">
+                <i class="fa-solid fa-eye-slash mr-1"></i>Hide
+              </button>
+              <button (click)="moderatePostDirectly(p, 'deleted')"
+                class="px-3 py-1.5 rounded-lg bg-rose-600 text-white text-xs font-bold hover:bg-rose-700 transition-colors"
+                title="Delete post permanently">
+                <i class="fa-solid fa-trash mr-1"></i>Delete
+              </button>
+            </ng-container>
+
+            <!-- If Hidden: Allow Restore or Delete -->
+            <ng-container *ngIf="p.status === 'hidden'">
+              <button (click)="moderatePostDirectly(p, 'published')"
+                class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 transition-colors"
+                title="Restore post to published feed">
+                <i class="fa-solid fa-rotate-left mr-1"></i>Restore
+              </button>
+              <button (click)="moderatePostDirectly(p, 'deleted')"
+                class="px-3 py-1.5 rounded-lg bg-rose-600 text-white text-xs font-bold hover:bg-rose-700 transition-colors"
+                title="Delete post permanently">
+                <i class="fa-solid fa-trash mr-1"></i>Delete
+              </button>
+            </ng-container>
+
+            <!-- If Deleted: Allow Restore -->
+            <ng-container *ngIf="p.status === 'deleted'">
+              <button (click)="moderatePostDirectly(p, 'published')"
+                class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 transition-colors"
+                title="Restore deleted post">
+                <i class="fa-solid fa-rotate-left mr-1"></i>Restore Post
+              </button>
+            </ng-container>
           </div>
 
         </div>

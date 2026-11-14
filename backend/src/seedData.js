@@ -5,6 +5,7 @@ import { Bus } from './models/bus.js';
 import { Customer } from './models/customer.js';
 import { CommunityPost, COMMUNITY_CATEGORIES } from './models/communityPost.js';
 import { PostComment } from './models/postComment.js';
+import { ContentReport } from './models/contentReport.js';
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/tedbus';
 
@@ -1522,6 +1523,97 @@ export async function runSeed(mongooseInstance = mongoose) {
         });
         totalBuses++;
       }
+    }
+  }
+
+  // 5. Seed Content Moderation Reports
+  console.log('Seeding sample content reports for Admin moderation queue...');
+  await ContentReport.deleteMany({}).exec();
+  const samplePosts = await CommunityPost.find().limit(5).exec();
+  const sampleComments = await PostComment.find().limit(2).exec();
+
+  if (samplePosts.length > 0 && createdCustomers.length >= 5) {
+    // 1. Pending Spam Report
+    await ContentReport.create({
+      contentType: 'post',
+      contentId: samplePosts[0]._id.toString(),
+      reportedBy: {
+        customerId: createdCustomers[1]._id.toString(),
+        email: createdCustomers[1].email,
+        name: createdCustomers[1].name,
+      },
+      reason: 'spam',
+      details: 'Contains repetitive promotional external booking affiliate links in comments.',
+      status: 'pending',
+    });
+
+    // 2. Pending Misinformation Report
+    await ContentReport.create({
+      contentType: 'post',
+      contentId: samplePosts[1]._id.toString(),
+      reportedBy: {
+        customerId: createdCustomers[2]._id.toString(),
+        email: createdCustomers[2].email,
+        name: createdCustomers[2].name,
+      },
+      reason: 'misinformation',
+      details: 'The highway bypass mentioned is currently closed for monsoon maintenance until next week.',
+      status: 'pending',
+    });
+
+    // 3. Pending Harassment on Comment
+    if (sampleComments.length > 0) {
+      await ContentReport.create({
+        contentType: 'comment',
+        contentId: sampleComments[0]._id.toString(),
+        reportedBy: {
+          customerId: createdCustomers[3]._id.toString(),
+          email: createdCustomers[3].email,
+          name: createdCustomers[3].name,
+        },
+        reason: 'harassment',
+        details: 'Disrespectful language directed toward fellow traveler regarding bus fare inquiries.',
+        status: 'pending',
+      });
+    }
+
+    // 4. Actioned / Hidden Report (Demonstrating moderation history & restore feature)
+    if (samplePosts.length > 2) {
+      await CommunityPost.findByIdAndUpdate(samplePosts[2]._id, { status: 'hidden' });
+      await ContentReport.create({
+        contentType: 'post',
+        contentId: samplePosts[2]._id.toString(),
+        reportedBy: {
+          customerId: createdCustomers[0]._id.toString(),
+          email: createdCustomers[0].email,
+          name: createdCustomers[0].name,
+        },
+        reason: 'inappropriate',
+        details: 'Off-topic advertising not related to travel or bus journeys.',
+        status: 'actioned',
+        actionTaken: 'Content hidden from community',
+        reviewedBy: 'admin@tedbus.internal',
+        reviewedAt: new Date(Date.now() - 3600000 * 4),
+      });
+    }
+
+    // 5. Dismissed Report (Demonstrating false alarm handling)
+    if (samplePosts.length > 3) {
+      await ContentReport.create({
+        contentType: 'post',
+        contentId: samplePosts[3]._id.toString(),
+        reportedBy: {
+          customerId: createdCustomers[4]._id.toString(),
+          email: createdCustomers[4].email,
+          name: createdCustomers[4].name,
+        },
+        reason: 'other',
+        details: 'User reported price disagreement; verified as legitimate passenger tip.',
+        status: 'dismissed',
+        actionTaken: 'Dismissed by moderator - legitimate review',
+        reviewedBy: 'admin@tedbus.internal',
+        reviewedAt: new Date(Date.now() - 3600000 * 12),
+      });
     }
   }
 

@@ -33,6 +33,13 @@
                 <i class="fa-solid fa-map-location-dot text-sm md:text-base text-emerald-600"></i>
                 <span class="hidden sm:inline font-semibold">{{ 'NAV.ROUTE_PLANNER' | translate }}</span>
             </a>
+
+            <!-- Admin Portal -->
+            <a (click)="navigate('/admin')"
+                class="flex items-center gap-1.5 px-3 py-2 rounded-xl transition-all duration-200 cursor-pointer text-gray-700 dark:text-slate-200 hover:bg-[#f0edf7] dark:hover:bg-slate-800 hover:text-[#5F4299]">
+                <i class="fa-solid fa-shield-halved text-sm md:text-base text-amber-500"></i>
+                <span class="hidden sm:inline font-semibold">{{ 'NAV.ADMIN' | translate }}</span>
+            </a>
         </div>
     </div>
 

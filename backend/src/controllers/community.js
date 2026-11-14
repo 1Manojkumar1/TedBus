@@ -504,19 +504,22 @@ export async function reportContent(req, res) {
       return res.status(400).json({ error: 'contentType, contentId, and reason are required' });
     }
 
-    const customerId = reportedBy?.customerId || req.auth?.sub || 'anonymous';
-    const email = reportedBy?.email || req.auth?.email || 'anonymous';
-    const name = reportedBy?.name || req.auth?.name || 'Anonymous User';
+    const isAnonymous = !reportedBy?.customerId && !req.auth?.sub;
+    const customerId = reportedBy?.customerId || req.auth?.sub || `guest_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+    const email = reportedBy?.email || req.auth?.email || 'guest@tedbus.travel';
+    const name = reportedBy?.name || req.auth?.name || 'Guest Traveler';
 
-    // Prevent duplicate report by same user
-    const existing = await ContentReport.findOne({
-      contentType,
-      contentId,
-      'reportedBy.customerId': customerId,
-    }).exec();
+    // Prevent duplicate report by same registered user
+    if (!isAnonymous) {
+      const existing = await ContentReport.findOne({
+        contentType,
+        contentId,
+        'reportedBy.customerId': customerId,
+      }).exec();
 
-    if (existing) {
-      return res.status(409).json({ error: 'You have already reported this content' });
+      if (existing) {
+        return res.status(409).json({ error: 'You have already reported this content' });
+      }
     }
 
     const report = await ContentReport.create({

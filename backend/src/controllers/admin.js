@@ -114,6 +114,14 @@ export async function resolveReport(req, res) {
     } else if (action === 'dismiss') {
       report.status = 'dismissed';
       report.actionTaken = 'Dismissed by moderator';
+    } else if (action === 'restore') {
+      if (report.contentType === 'post') {
+        await CommunityPost.findByIdAndUpdate(report.contentId, { status: 'published' }).exec();
+      } else {
+        await PostComment.findByIdAndUpdate(report.contentId, { status: 'published' }).exec();
+      }
+      report.status = 'reviewed';
+      report.actionTaken = 'Content restored to community';
     }
 
     report.reviewedBy = adminEmail;
@@ -124,5 +132,78 @@ export async function resolveReport(req, res) {
   } catch (err) {
     console.error('resolveReport error:', err);
     return res.status(500).json({ error: 'Failed to resolve report' });
+  }
+}
+
+export async function listAllPosts(req, res) {
+  try {
+    const { category, status = 'all', search, page = 1, limit = 20 } = req.query;
+    const filter = {};
+    if (status && status !== 'all') {
+      filter.status = status;
+    }
+    if (category && category !== 'all') {
+      filter.category = category;
+    }
+    if (search && search.trim()) {
+      filter.$or = [
+        { title: { $regex: search.trim(), $options: 'i' } },
+        { content: { $regex: search.trim(), $options: 'i' } },
+        { 'author.name': { $regex: search.trim(), $options: 'i' } },
+      ];
+    }
+
+    const pageNum = Math.max(1, parseInt(page, 10) || 1);
+    const limitNum = Math.min(50, Math.max(1, parseInt(limit, 10) || 20));
+    const skip = (pageNum - 1) * limitNum;
+
+    const [posts, total] = await Promise.all([
+      CommunityPost.find(filter)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limitNum)
+        .lean()
+        .exec(),
+      CommunityPost.countDocuments(filter).exec(),
+    ]);
+
+    return res.json({
+      posts,
+      pagination: {
+        page: pageNum,
+        limit: limitNum,
+        total,
+        totalPages: Math.ceil(total / limitNum),
+      },
+    });
+  } catch (err) {
+    console.error('listAllPosts error:', err);
+    return res.status(500).json({ error: 'Failed to fetch posts for admin' });
+  }
+}
+
+export async function moderatePost(req, res) {
+  try {
+    const { id } = req.params;
+    const { status } = req.body; // 'published' | 'hidden' | 'deleted'
+
+    if (!['published', 'hidden', 'deleted'].includes(status)) {
+      return res.status(400).json({ error: 'Invalid status' });
+    }
+
+    const post = await CommunityPost.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    ).exec();
+
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    return res.json(post);
+  } catch (err) {
+    console.error('moderatePost error:', err);
+    return res.status(500).json({ error: 'Failed to moderate post' });
   }
 }

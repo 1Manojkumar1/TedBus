@@ -219,12 +219,20 @@
               </span>
             </div>
 
-            <!-- Share Button -->
-            <button (click)="openShareModal(post, $event)"
-              class="flex items-center gap-1.5 hover:text-[#5f4299] transition-colors">
-              <i class="fa-solid fa-share-nodes"></i>
-              <span class="hidden sm:inline">Share</span>
-            </button>
+            <!-- Share & Report Buttons -->
+            <div class="flex items-center gap-3">
+              <button (click)="openShareModal(post, $event)"
+                class="flex items-center gap-1.5 text-gray-500 dark:text-gray-400 hover:text-[#5f4299] dark:hover:text-purple-400 transition-colors">
+                <i class="fa-solid fa-share-nodes"></i>
+                <span class="hidden sm:inline">Share</span>
+              </button>
+              <button (click)="openReportModal('post', post._id, $event)"
+                class="flex items-center gap-1.5 text-gray-500 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+                title="Report Post">
+                <i class="fa-regular fa-flag text-amber-500"></i>
+                <span class="hidden sm:inline">Report</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -477,10 +485,16 @@
           </button>
           <span>{{ activePost()?.commentsCount || 0 }} Comments</span>
         </div>
-        <button (click)="openShareModal(activePost()!)" class="flex items-center gap-1.5 font-semibold text-[#5f4299]">
-          <i class="fa-solid fa-share-nodes"></i>
-          <span>Share</span>
-        </button>
+        <div class="flex items-center gap-3">
+          <button (click)="openShareModal(activePost()!)" class="flex items-center gap-1.5 font-semibold text-[#5f4299] hover:text-[#4b337e]">
+            <i class="fa-solid fa-share-nodes"></i>
+            <span>Share</span>
+          </button>
+          <button (click)="openReportModal('post', activePost()!._id)" class="flex items-center gap-1.5 font-semibold text-amber-600 hover:text-amber-700">
+            <i class="fa-regular fa-flag"></i>
+            <span>Report Post</span>
+          </button>
+        </div>
       </div>
 
       <!-- Add Comment Form -->
@@ -526,8 +540,9 @@
 
             <!-- Comment Actions -->
             <div class="flex items-center gap-2">
-              <button (click)="openReportModal('comment', comment._id)" class="text-gray-400 hover:text-amber-500" title="Report">
+              <button (click)="openReportModal('comment', comment._id)" class="flex items-center gap-1 text-gray-400 hover:text-amber-500 font-medium" title="Report Comment">
                 <i class="fa-regular fa-flag text-[11px]"></i>
+                <span class="text-[10px]">Report</span>
               </button>
               <button *ngIf="auth.user()?.email === comment.author.email" (click)="deleteComment(comment._id)" class="text-gray-400 hover:text-red-500" title="Delete">
                 <i class="fa-solid fa-trash text-[11px]"></i>
