@@ -28,9 +28,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 342,
+    "likesCount": 0,
     "commentsCount": 3,
-    "viewsCount": 4200,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -51,7 +51,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-1"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -70,7 +70,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-2"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -89,7 +89,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -124,9 +124,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 215,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 2900,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -147,7 +147,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-6"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -182,9 +182,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 480,
+    "likesCount": 0,
     "commentsCount": 2,
-    "viewsCount": 6100,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -205,7 +205,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-9"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -224,7 +224,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-3"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -259,9 +259,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 188,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 2400,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -282,7 +282,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-8"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -316,9 +316,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 290,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 3800,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -339,7 +339,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -374,9 +374,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 165,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 2100,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -397,7 +397,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-1"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -432,9 +432,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 230,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 3100,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -455,7 +455,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-10"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -490,9 +490,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 512,
+    "likesCount": 0,
     "commentsCount": 2,
-    "viewsCount": 6800,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": true,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -513,7 +513,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -532,7 +532,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-4"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -567,9 +567,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 420,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 5400,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -590,7 +590,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-3"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -625,9 +625,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 380,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 4900,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -648,7 +648,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-2"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -683,9 +683,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 295,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 3600,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -706,7 +706,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-6"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -741,9 +741,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 310,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 4100,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -764,7 +764,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-1"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -799,9 +799,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 405,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 5200,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -822,7 +822,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -857,9 +857,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 360,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 4400,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -880,7 +880,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-7"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -915,9 +915,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 620,
+    "likesCount": 0,
     "commentsCount": 2,
-    "viewsCount": 7800,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": true,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -938,7 +938,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-2"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -957,7 +957,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-8"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -992,9 +992,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 445,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 5600,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -1015,7 +1015,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-3"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1050,9 +1050,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 380,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 4600,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -1073,7 +1073,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-9"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1108,9 +1108,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 275,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 3400,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -1131,7 +1131,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-7"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1166,9 +1166,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 320,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 4100,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -1189,7 +1189,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-4"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1224,9 +1224,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 395,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 5100,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -1247,7 +1247,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1282,9 +1282,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 240,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 3100,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -1305,7 +1305,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-1"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1337,9 +1337,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 540,
+    "likesCount": 0,
     "commentsCount": 2,
-    "viewsCount": 7200,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": true,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -1360,7 +1360,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -1379,7 +1379,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-1"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1411,9 +1411,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 380,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 4900,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -1434,7 +1434,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-2"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1465,9 +1465,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 290,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 3800,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -1488,7 +1488,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-6"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1520,9 +1520,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 410,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 5400,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -1543,7 +1543,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1575,9 +1575,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 320,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 4200,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -1598,7 +1598,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-3"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1629,9 +1629,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 210,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 2700,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -1652,7 +1652,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-5"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1684,9 +1684,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 335,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 4300,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -1707,7 +1707,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-9"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1739,9 +1739,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 680,
+    "likesCount": 0,
     "commentsCount": 2,
-    "viewsCount": 8900,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": true,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -1762,7 +1762,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-2"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -1781,7 +1781,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-4"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1813,9 +1813,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 310,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 4200,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -1836,7 +1836,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-3"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1867,9 +1867,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 490,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 6300,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -1890,7 +1890,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-6"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1921,9 +1921,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 260,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 3300,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -1944,7 +1944,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-1"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1975,9 +1975,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 340,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 4400,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -1998,7 +1998,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2029,9 +2029,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 390,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 5100,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -2052,7 +2052,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-4"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2083,9 +2083,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 275,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 3600,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -2106,7 +2106,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-3"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2139,9 +2139,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 420,
+    "likesCount": 0,
     "commentsCount": 2,
-    "viewsCount": 5700,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -2162,7 +2162,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -2181,7 +2181,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-3"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2213,9 +2213,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 380,
+    "likesCount": 0,
     "commentsCount": 2,
-    "viewsCount": 5200,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -2236,7 +2236,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-1"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -2255,7 +2255,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-4"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2286,9 +2286,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 260,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 3400,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -2309,7 +2309,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-7"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2341,9 +2341,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 440,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 5900,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -2364,7 +2364,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-1"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2395,9 +2395,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 310,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 4100,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -2418,7 +2418,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-0"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2450,9 +2450,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 350,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 4700,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -2473,7 +2473,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-3"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2504,9 +2504,9 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "u1",
       "u2"
     ],
-    "likesCount": 415,
+    "likesCount": 0,
     "commentsCount": 1,
-    "viewsCount": 5500,
+    "viewsCount": 0,
     "status": "published",
     "isPinned": false,
     "createdAt": "2026-11-14T08:00:00.000Z",
@@ -2527,7 +2527,7 @@ const FALLBACK_DISCUSSIONS: any[] = [
         "likes": [
           "user-2"
         ],
-        "likesCount": 2,
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }

@@ -149,8 +149,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800"
     ],
     "authorIndex": 0,
-    "likesCount": 342,
-    "viewsCount": 4200,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 1,
@@ -182,8 +182,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=800"
     ],
     "authorIndex": 3,
-    "likesCount": 215,
-    "viewsCount": 2900,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 6,
@@ -207,8 +207,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800"
     ],
     "authorIndex": 1,
-    "likesCount": 480,
-    "viewsCount": 6100,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 9,
@@ -236,8 +236,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800"
     ],
     "authorIndex": 4,
-    "likesCount": 188,
-    "viewsCount": 2400,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 8,
@@ -260,8 +260,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800"
     ],
     "authorIndex": 5,
-    "likesCount": 290,
-    "viewsCount": 3800,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 0,
@@ -285,8 +285,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=800"
     ],
     "authorIndex": 9,
-    "likesCount": 165,
-    "viewsCount": 2100,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 1,
@@ -310,8 +310,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800"
     ],
     "authorIndex": 7,
-    "likesCount": 230,
-    "viewsCount": 3100,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 10,
@@ -335,8 +335,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800"
     ],
     "authorIndex": 2,
-    "likesCount": 512,
-    "viewsCount": 6800,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 0,
@@ -364,8 +364,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800"
     ],
     "authorIndex": 0,
-    "likesCount": 420,
-    "viewsCount": 5400,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 3,
@@ -389,8 +389,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800"
     ],
     "authorIndex": 5,
-    "likesCount": 380,
-    "viewsCount": 4900,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 2,
@@ -414,8 +414,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800"
     ],
     "authorIndex": 7,
-    "likesCount": 295,
-    "viewsCount": 3600,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 6,
@@ -439,8 +439,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800"
     ],
     "authorIndex": 4,
-    "likesCount": 310,
-    "viewsCount": 4100,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 1,
@@ -464,8 +464,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800"
     ],
     "authorIndex": 9,
-    "likesCount": 405,
-    "viewsCount": 5200,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 0,
@@ -489,8 +489,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800"
     ],
     "authorIndex": 10,
-    "likesCount": 360,
-    "viewsCount": 4400,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 7,
@@ -514,8 +514,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800"
     ],
     "authorIndex": 0,
-    "likesCount": 620,
-    "viewsCount": 7800,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 2,
@@ -543,8 +543,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800"
     ],
     "authorIndex": 1,
-    "likesCount": 445,
-    "viewsCount": 5600,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 3,
@@ -568,8 +568,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=800"
     ],
     "authorIndex": 1,
-    "likesCount": 380,
-    "viewsCount": 4600,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 9,
@@ -593,8 +593,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800"
     ],
     "authorIndex": 5,
-    "likesCount": 275,
-    "viewsCount": 3400,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 7,
@@ -618,8 +618,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800"
     ],
     "authorIndex": 3,
-    "likesCount": 320,
-    "viewsCount": 4100,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 4,
@@ -643,8 +643,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800"
     ],
     "authorIndex": 6,
-    "likesCount": 395,
-    "viewsCount": 5100,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 0,
@@ -668,8 +668,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800"
     ],
     "authorIndex": 11,
-    "likesCount": 240,
-    "viewsCount": 3100,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 1,
@@ -691,8 +691,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800"
     ],
     "authorIndex": 3,
-    "likesCount": 540,
-    "viewsCount": 7200,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 0,
@@ -718,8 +718,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800"
     ],
     "authorIndex": 4,
-    "likesCount": 380,
-    "viewsCount": 4900,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 2,
@@ -740,8 +740,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800"
     ],
     "authorIndex": 2,
-    "likesCount": 290,
-    "viewsCount": 3800,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 6,
@@ -763,8 +763,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800"
     ],
     "authorIndex": 8,
-    "likesCount": 410,
-    "viewsCount": 5400,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 0,
@@ -786,8 +786,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=800"
     ],
     "authorIndex": 11,
-    "likesCount": 320,
-    "viewsCount": 4200,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 3,
@@ -808,8 +808,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800"
     ],
     "authorIndex": 12,
-    "likesCount": 210,
-    "viewsCount": 2700,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 5,
@@ -831,8 +831,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800"
     ],
     "authorIndex": 1,
-    "likesCount": 335,
-    "viewsCount": 4300,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 9,
@@ -854,8 +854,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800"
     ],
     "authorIndex": 0,
-    "likesCount": 680,
-    "viewsCount": 8900,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 2,
@@ -881,8 +881,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1553531384-cc64ac80f931?w=800"
     ],
     "authorIndex": 1,
-    "likesCount": 310,
-    "viewsCount": 4200,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 3,
@@ -903,8 +903,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800"
     ],
     "authorIndex": 3,
-    "likesCount": 490,
-    "viewsCount": 6300,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 6,
@@ -925,8 +925,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=800"
     ],
     "authorIndex": 7,
-    "likesCount": 260,
-    "viewsCount": 3300,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 1,
@@ -947,8 +947,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800"
     ],
     "authorIndex": 8,
-    "likesCount": 340,
-    "viewsCount": 4400,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 0,
@@ -969,8 +969,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800"
     ],
     "authorIndex": 11,
-    "likesCount": 390,
-    "viewsCount": 5100,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 4,
@@ -991,8 +991,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800"
     ],
     "authorIndex": 9,
-    "likesCount": 275,
-    "viewsCount": 3600,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 3,
@@ -1015,8 +1015,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=800"
     ],
     "authorIndex": 1,
-    "likesCount": 420,
-    "viewsCount": 5700,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 0,
@@ -1042,8 +1042,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800"
     ],
     "authorIndex": 5,
-    "likesCount": 380,
-    "viewsCount": 5200,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 1,
@@ -1068,8 +1068,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1553531384-cc64ac80f931?w=800"
     ],
     "authorIndex": 8,
-    "likesCount": 260,
-    "viewsCount": 3400,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 7,
@@ -1091,8 +1091,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800"
     ],
     "authorIndex": 9,
-    "likesCount": 440,
-    "viewsCount": 5900,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 1,
@@ -1113,8 +1113,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800"
     ],
     "authorIndex": 2,
-    "likesCount": 310,
-    "viewsCount": 4100,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 0,
@@ -1136,8 +1136,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=800"
     ],
     "authorIndex": 12,
-    "likesCount": 350,
-    "viewsCount": 4700,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 3,
@@ -1158,8 +1158,8 @@ const SEED_DISCUSSIONS = [
       "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800"
     ],
     "authorIndex": 14,
-    "likesCount": 415,
-    "viewsCount": 5500,
+    "likesCount": 0,
+    "viewsCount": 0,
     "comments": [
       {
         "authorIndex": 2,
@@ -1407,12 +1407,12 @@ export async function runSeed(mongooseInstance = mongoose) {
         picture: authorUser.picture,
         badge: authorUser.badge,
       },
-      likes: [String(createdCustomers[1]._id), String(createdCustomers[2]._id)],
-      likesCount: item.likesCount || 10,
+      likes: [],
+      likesCount: 0,
       commentsCount: item.comments ? item.comments.length : 0,
-      viewsCount: item.viewsCount || 500,
+      viewsCount: 0,
       status: 'published',
-      isPinned: item.likesCount > 500,
+      isPinned: false,
     });
 
     if (item.comments && item.comments.length > 0) {
@@ -1430,8 +1430,8 @@ export async function runSeed(mongooseInstance = mongoose) {
             badge: commentAuthor.badge,
           },
           content: c.content,
-          likes: [String(authorCustomer._id)],
-          likesCount: 2,
+          likes: [],
+          likesCount: 0,
         });
       }
     }
