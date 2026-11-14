@@ -191,81 +191,347 @@
         </h2>
 
         <!-- FAQ Categories -->
-        <div class="flex gap-4 border-b border-gray-200 dark:border-slate-800 pb-3 text-sm md:text-base font-semibold overflow-x-auto">
-            <span class="pb-3 border-b-2 border-[#5F4299] text-[#5F4299] dark:text-purple-300 cursor-pointer whitespace-nowrap">{{ 'FAQ.GENERAL' | translate }}</span>
-            <span class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer whitespace-nowrap">{{ 'FAQ.TICKET' | translate }}</span>
-            <span class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer whitespace-nowrap">{{ 'FAQ.PAYMENT' | translate }}</span>
-            <span class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer whitespace-nowrap" (click)="gocancellation()">{{ 'FAQ.CANCELLATION' | translate }}</span>
-            <span class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer whitespace-nowrap">{{ 'FAQ.INSURANCE' | translate }}</span>
+        <div class="flex gap-6 border-b border-gray-200 dark:border-slate-800 pb-3 text-sm md:text-base font-semibold overflow-x-auto no-scrollbar">
+            <button (click)="setFaqCategory('general')"
+                [class]="selectedFaqCategory() === 'general' ? 'pb-3 border-b-2 border-[#5F4299] text-[#5F4299] dark:text-purple-300 font-bold whitespace-nowrap cursor-pointer transition-all' : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 whitespace-nowrap cursor-pointer transition-all'">
+                {{ 'FAQ.GENERAL' | translate }}
+            </button>
+            <button (click)="setFaqCategory('ticket')"
+                [class]="selectedFaqCategory() === 'ticket' ? 'pb-3 border-b-2 border-[#5F4299] text-[#5F4299] dark:text-purple-300 font-bold whitespace-nowrap cursor-pointer transition-all' : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 whitespace-nowrap cursor-pointer transition-all'">
+                {{ 'FAQ.TICKET' | translate }}
+            </button>
+            <button (click)="setFaqCategory('payment')"
+                [class]="selectedFaqCategory() === 'payment' ? 'pb-3 border-b-2 border-[#5F4299] text-[#5F4299] dark:text-purple-300 font-bold whitespace-nowrap cursor-pointer transition-all' : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 whitespace-nowrap cursor-pointer transition-all'">
+                {{ 'FAQ.PAYMENT' | translate }}
+            </button>
+            <button (click)="setFaqCategory('cancellation')"
+                [class]="selectedFaqCategory() === 'cancellation' ? 'pb-3 border-b-2 border-[#5F4299] text-[#5F4299] dark:text-purple-300 font-bold whitespace-nowrap cursor-pointer transition-all' : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 whitespace-nowrap cursor-pointer transition-all'">
+                {{ 'FAQ.CANCELLATION' | translate }}
+            </button>
+            <button (click)="setFaqCategory('insurance')"
+                [class]="selectedFaqCategory() === 'insurance' ? 'pb-3 border-b-2 border-[#5F4299] text-[#5F4299] dark:text-purple-300 font-bold whitespace-nowrap cursor-pointer transition-all' : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 whitespace-nowrap cursor-pointer transition-all'">
+                {{ 'FAQ.INSURANCE' | translate }}
+            </button>
         </div>
 
         <!-- FAQ Accordion items -->
         <div class="flex flex-col gap-4 mt-6">
-            <!-- FAQ 1 -->
-            <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
-                <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
-                    <span>{{ 'FAQ.Q1' | translate }}</span>
-                    <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
-                </summary>
-                <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
-                    {{ 'FAQ.A1' | translate }}
-                </p>
-            </details>
 
-            <!-- FAQ 2 -->
-            <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
-                <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
-                    <span>{{ 'FAQ.Q2' | translate }}</span>
-                    <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
-                </summary>
-                <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
-                    {{ 'FAQ.A2' | translate }}
-                </p>
-            </details>
+            <!-- 1. General FAQs -->
+            <ng-container *ngIf="selectedFaqCategory() === 'general'">
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.Q1' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.A1' | translate }}
+                    </p>
+                </details>
 
-            <!-- FAQ 3 -->
-            <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
-                <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
-                    <span>{{ 'FAQ.Q3' | translate }}</span>
-                    <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
-                </summary>
-                <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
-                    {{ 'FAQ.A3' | translate }}
-                </p>
-            </details>
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.Q2' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.A2' | translate }}
+                    </p>
+                </details>
 
-            <!-- FAQ 4 -->
-            <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
-                <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
-                    <span>{{ 'FAQ.Q4' | translate }}</span>
-                    <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
-                </summary>
-                <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
-                    {{ 'FAQ.A4' | translate }}
-                </p>
-            </details>
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.Q3' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.A3' | translate }}
+                    </p>
+                </details>
 
-            <!-- FAQ 5 -->
-            <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
-                <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
-                    <span>{{ 'FAQ.Q5' | translate }}</span>
-                    <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
-                </summary>
-                <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
-                    {{ 'FAQ.A5' | translate }}
-                </p>
-            </details>
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.Q4' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.A4' | translate }}
+                    </p>
+                </details>
 
-            <!-- FAQ 6 -->
-            <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
-                <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
-                    <span>{{ 'FAQ.Q6' | translate }}</span>
-                    <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
-                </summary>
-                <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
-                    {{ 'FAQ.A6' | translate }}
-                </p>
-            </details>
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.Q5' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.A5' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.Q6' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.A6' | translate }}
+                    </p>
+                </details>
+            </ng-container>
+
+            <!-- 2. Ticket-related FAQs -->
+            <ng-container *ngIf="selectedFaqCategory() === 'ticket'">
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.TICKET_Q1' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.TICKET_A1' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.TICKET_Q2' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.TICKET_A2' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.TICKET_Q3' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.TICKET_A3' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.TICKET_Q4' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.TICKET_A4' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.TICKET_Q5' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.TICKET_A5' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.TICKET_Q6' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.TICKET_A6' | translate }}
+                    </p>
+                </details>
+            </ng-container>
+
+            <!-- 3. Payment FAQs -->
+            <ng-container *ngIf="selectedFaqCategory() === 'payment'">
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.PAY_Q1' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.PAY_A1' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.PAY_Q2' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.PAY_A2' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.PAY_Q3' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.PAY_A3' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.PAY_Q4' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.PAY_A4' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.PAY_Q5' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.PAY_A5' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.PAY_Q6' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.PAY_A6' | translate }}
+                    </p>
+                </details>
+            </ng-container>
+
+            <!-- 4. Cancellation & Refund FAQs -->
+            <ng-container *ngIf="selectedFaqCategory() === 'cancellation'">
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.CANCEL_Q1' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.CANCEL_A1' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.CANCEL_Q2' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.CANCEL_A2' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.CANCEL_Q3' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.CANCEL_A3' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.CANCEL_Q4' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.CANCEL_A4' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.CANCEL_Q5' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.CANCEL_A5' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.CANCEL_Q6' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.CANCEL_A6' | translate }}
+                    </p>
+                </details>
+            </ng-container>
+
+            <!-- 5. Insurance FAQs -->
+            <ng-container *ngIf="selectedFaqCategory() === 'insurance'">
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.INSURE_Q1' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.INSURE_A1' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.INSURE_Q2' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.INSURE_A2' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.INSURE_Q3' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.INSURE_A3' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.INSURE_Q4' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.INSURE_A4' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.INSURE_Q5' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.INSURE_A5' | translate }}
+                    </p>
+                </details>
+
+                <details class="p-5 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-xs cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-gray-800 dark:text-gray-100 list-none">
+                        <span>{{ 'FAQ.INSURE_Q6' | translate }}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3">
+                        {{ 'FAQ.INSURE_A6' | translate }}
+                    </p>
+                </details>
+            </ng-container>
+
         </div>
     </div>
 </section>

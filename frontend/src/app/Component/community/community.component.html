@@ -67,22 +67,21 @@
       </div>
     </div>
 
-    <!-- Category Pills (Visible in all-posts feed mode) -->
-    <div *ngIf="!singlePostMode()" class="flex gap-2 overflow-x-auto pb-3 mb-8 no-scrollbar">
+    <!-- Category Pills (YouTube-Style Interactive Chips) -->
+    <div *ngIf="!singlePostMode()" class="flex items-center gap-2.5 overflow-x-auto pb-4 mb-6 no-scrollbar">
       <button *ngFor="let cat of categories" (click)="onCategorySelect(cat)"
-        [class.bg-[#5f4299]]="selectedCategory() === cat"
-        [class.text-white]="selectedCategory() === cat"
-        [class.border-[#5f4299]]="selectedCategory() === cat"
-        class="whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-700 dark:text-gray-200 hover:border-[#5f4299] transition-all cursor-pointer shadow-sm">
+        [class]="selectedCategory() === cat
+          ? 'whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-semibold bg-gray-900 text-white dark:bg-white dark:text-gray-900 shadow-xs cursor-pointer transition-colors'
+          : 'whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-medium bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700 cursor-pointer transition-colors'">
         {{ getCategoryLabelKey(cat) | translate }}
       </button>
     </div>
 
     <!-- Main Content Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-8">
 
-      <!-- Left Column: Posts Feed or Dedicated Single Shared Post (2 cols) -->
-      <div class="lg:col-span-2 space-y-5">
+      <!-- Left Column: Posts Feed or Dedicated Single Shared Post (3 cols on xl, 2 on lg) -->
+      <div class="lg:col-span-2 xl:col-span-3 space-y-6">
 
         <!-- ============================================== -->
         <!-- DEDICATED SINGLE SHARED POST VIEW (UI/UX)     -->
@@ -326,129 +325,93 @@
           </button>
         </div>
 
-        <!-- Post Cards -->
-        <div *ngFor="let post of posts()"
-          (click)="openPostDetail(post)"
-          class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all cursor-pointer group">
+        <!-- YouTube-Style Square Video Post Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-5 gap-y-8">
+          <div *ngFor="let post of posts()"
+            (click)="openPostDetail(post)"
+            class="flex flex-col cursor-pointer group">
 
-          <!-- Card Header: Author, Badge, Category, Actions -->
-          <div class="flex items-start justify-between gap-3 mb-3">
-            <div class="flex items-center gap-3">
-              <img *ngIf="post.author.picture" [src]="post.author.picture" [alt]="post.author.name"
-                class="w-10 h-10 rounded-full object-cover border border-gray-200 dark:border-slate-700" />
-              <div *ngIf="!post.author.picture"
-                class="w-10 h-10 rounded-full bg-purple-100 dark:bg-slate-800 text-[#5f4299] font-bold flex items-center justify-center text-sm">
-                {{ post.author.name.charAt(0).toUpperCase() }}
+            <!-- 1. Thumbnail Container (Square / 16:10 Aspect with Rounded Corners) -->
+            <div class="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-gray-100 dark:bg-slate-800 shadow-xs transition-transform duration-200 group-hover:scale-[1.02]">
+              
+              <!-- Thumbnail Image -->
+              <img [src]="getPostThumbnail(post)" [alt]="post.title"
+                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+
+              <!-- Read Time Pill (Bottom Right - identical to YouTube video duration '14:28') -->
+              <span class="absolute bottom-2.5 right-2.5 bg-black/85 backdrop-blur-xs text-white text-[11px] font-semibold px-2 py-0.5 rounded-md shadow-xs">
+                {{ getReadTime(post.content) }}
+              </span>
+
+              <!-- Metric & Category Badge (Top Left - identical to YouTube '1,700 🔥') -->
+              <div class="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+                <span *ngIf="post.likesCount > 0"
+                  class="bg-black/80 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1 shadow-xs">
+                  <i class="fa-solid fa-fire text-amber-400 text-[10px]"></i>
+                  <span>{{ post.likesCount }}</span>
+                </span>
+                <span class="bg-black/70 backdrop-blur-xs text-purple-200 text-[10px] font-semibold px-2 py-0.5 rounded-md shadow-xs">
+                  {{ post.category }}
+                </span>
               </div>
 
-              <div>
-                <div class="flex items-center gap-2 flex-wrap">
-                  <span class="font-bold text-sm text-gray-900 dark:text-gray-100">{{ post.author.name }}</span>
-                  <span *ngIf="post.author.badge"
-                    [class]="'text-[10px] font-bold px-2 py-0.5 rounded-full border ' + getBadgeColor(post.author.badge)">
-                    <i class="fa-solid fa-award mr-1"></i>{{ post.author.badge }}
+              <!-- Route Tag (Bottom Left - if linked to a bus route) -->
+              <span *ngIf="post.routeTag?.from && post.routeTag?.to"
+                class="absolute bottom-2.5 left-2.5 bg-[#5f4299]/90 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs flex items-center gap-1">
+                <i class="fa-solid fa-bus text-[9px]"></i>
+                <span>{{ post.routeTag?.from }} ➔ {{ post.routeTag?.to }}</span>
+              </span>
+            </div>
+
+            <!-- 2. Post Metadata Below Thumbnail (Anatomy identical to YouTube) -->
+            <div class="flex items-start gap-3 mt-3">
+              
+              <!-- Author Avatar (Left) -->
+              <div class="shrink-0" (click)="$event.stopPropagation()">
+                <img *ngIf="post.author.picture" [src]="post.author.picture" [alt]="post.author.name"
+                  class="w-9 h-9 rounded-full object-cover border border-gray-200 dark:border-slate-700" />
+                <div *ngIf="!post.author.picture"
+                  class="w-9 h-9 rounded-full bg-purple-100 dark:bg-slate-800 text-[#5f4299] font-bold flex items-center justify-center text-xs">
+                  {{ post.author.name.charAt(0).toUpperCase() }}
+                </div>
+              </div>
+
+              <!-- Content: Title, Channel/Author, Views & Timestamp (Middle) -->
+              <div class="flex-1 min-w-0">
+                
+                <!-- Title (2 lines clamp, bold, clean) -->
+                <h3 class="font-semibold text-sm sm:text-[15px] text-gray-900 dark:text-gray-100 line-clamp-2 leading-snug group-hover:text-[#5f4299] dark:group-hover:text-purple-300 transition-colors">
+                  {{ post.title }}
+                </h3>
+
+                <!-- Author Name with Verified Checkmark (like YouTube channel name) -->
+                <div class="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400 mt-1">
+                  <span class="hover:text-gray-900 dark:hover:text-gray-200 truncate font-medium">{{ post.author.name }}</span>
+                  <i *ngIf="post.author.badge" class="fa-solid fa-circle-check text-[11px] text-gray-400 dark:text-gray-500 shrink-0" [title]="post.author.badge"></i>
+                </div>
+
+                <!-- Views Count & Time Ago (e.g. '24 views • 2 days ago • 3 comments') -->
+                <div class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1.5 mt-0.5 flex-wrap">
+                  <span class="font-medium">{{ post.viewsCount || 0 }} views</span>
+                  <span>•</span>
+                  <span>{{ formatDate(post.createdAt) }}</span>
+                  <span *ngIf="post.commentsCount > 0" class="flex items-center gap-1">
+                    <span>•</span>
+                    <i class="fa-regular fa-comment text-[10px]"></i>
+                    <span>{{ post.commentsCount }}</span>
                   </span>
                 </div>
-                <div class="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
-                  <span>{{ formatDate(post.createdAt) }}</span>
-                  <span>•</span>
-                  <span class="text-[#5f4299] font-medium">{{ post.category }}</span>
-                </div>
               </div>
-            </div>
 
-            <!-- Post Menu / Owner Actions -->
-            <div class="flex items-center gap-1" (click)="$event.stopPropagation()">
-              <button *ngIf="isPostOwner(post)" (click)="openEditModal(post, $event)"
-                class="w-7 h-7 flex items-center justify-center rounded-lg text-gray-400 hover:text-[#5f4299] hover:bg-purple-50 dark:hover:bg-slate-800 transition-colors"
-                title="Edit Post">
-                <i class="fa-solid fa-pen text-xs"></i>
-              </button>
-              <button *ngIf="isPostOwner(post)" (click)="deletePost(post, $event)"
-                class="w-7 h-7 flex items-center justify-center rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-slate-800 transition-colors"
-                title="Delete Post">
-                <i class="fa-solid fa-trash text-xs"></i>
-              </button>
-              <button (click)="openReportModal('post', post._id, $event)"
-                class="w-7 h-7 flex items-center justify-center rounded-lg text-gray-400 hover:text-amber-500 hover:bg-amber-50 dark:hover:bg-slate-800 transition-colors"
-                title="Report Post">
-                <i class="fa-regular fa-flag text-xs"></i>
-              </button>
-            </div>
-          </div>
+              <!-- Three Dots Menu (Right - like YouTube) -->
+              <div class="relative shrink-0" (click)="$event.stopPropagation()">
+                <button (click)="openShareModal(post, $event)"
+                  class="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                  title="Share & Options">
+                  <i class="fa-solid fa-ellipsis-vertical text-sm"></i>
+                </button>
+              </div>
 
-          <!-- Route Tag (if attached) -->
-          <div *ngIf="post.routeTag?.from && post.routeTag?.to"
-            (click)="$event.stopPropagation()"
-            class="mb-3 inline-flex items-center gap-2 bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900/60 rounded-xl px-3 py-1.5 text-xs text-purple-900 dark:text-purple-200">
-            <i class="fa-solid fa-route text-[#5f4299]"></i>
-            <span class="font-bold">{{ post.routeTag?.from }} ➔ {{ post.routeTag?.to }}</span>
-            <button (click)="searchBusesForRoute(post.routeTag!.from, post.routeTag!.to, $event)"
-              class="ml-2 px-2 py-0.5 bg-[#5f4299] text-white text-[11px] font-semibold rounded-md hover:bg-[#4b337e] transition-colors">
-              Find Buses
-            </button>
-          </div>
-
-          <!-- Post Title -->
-          <h2 class="text-base md:text-lg font-bold text-gray-900 dark:text-gray-100 group-hover:text-[#5f4299] transition-colors mb-2">
-            {{ post.title }}
-          </h2>
-
-          <!-- Post Content Excerpt -->
-          <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-3 mb-4">
-            {{ post.content }}
-          </p>
-
-          <!-- Post Image (if any) -->
-          <div *ngIf="post.images && post.images.length > 0" class="mb-4 rounded-xl overflow-hidden max-h-72">
-            <img [src]="post.images[0]" [alt]="post.title" class="w-full h-auto object-cover rounded-xl" />
-          </div>
-
-          <!-- Tags -->
-          <div *ngIf="post.tags && post.tags.length > 0" class="flex flex-wrap gap-1.5 mb-4">
-            <span *ngFor="let t of post.tags"
-              class="text-[11px] font-medium px-2 py-0.5 rounded-md bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400">
-              #{{ t }}
-            </span>
-          </div>
-
-          <!-- Engagement Footer -->
-          <div class="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-slate-800 text-xs text-gray-500 dark:text-gray-400">
-            <div class="flex items-center gap-4">
-              <!-- Like Button -->
-              <button (click)="toggleLike(post, $event)"
-                class="flex items-center gap-1.5 hover:text-red-500 transition-colors"
-                [class.text-red-500]="isLikedByUser(post)">
-                <i [class]="isLikedByUser(post) ? 'fa-solid fa-heart text-red-500' : 'fa-regular fa-heart'"></i>
-                <span class="font-semibold">{{ post.likesCount || 0 }}</span>
-              </button>
-
-              <!-- Comments Count -->
-              <span class="flex items-center gap-1.5 hover:text-[#5f4299] transition-colors">
-                <i class="fa-regular fa-comment"></i>
-                <span class="font-semibold">{{ post.commentsCount || 0 }}</span>
-              </span>
-
-              <!-- Views Count -->
-              <span class="flex items-center gap-1.5">
-                <i class="fa-regular fa-eye"></i>
-                <span>{{ post.viewsCount || 0 }}</span>
-              </span>
-            </div>
-
-            <!-- Share & Report Buttons -->
-            <div class="flex items-center gap-3">
-              <button (click)="openShareModal(post, $event)"
-                class="flex items-center gap-1.5 text-gray-500 dark:text-gray-400 hover:text-[#5f4299] dark:hover:text-purple-400 transition-colors">
-                <i class="fa-solid fa-share-nodes"></i>
-                <span class="hidden sm:inline">Share</span>
-              </button>
-              <button (click)="openReportModal('post', post._id, $event)"
-                class="flex items-center gap-1.5 text-gray-500 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
-                title="Report Post">
-                <i class="fa-regular fa-flag text-amber-500"></i>
-                <span class="hidden sm:inline">Report</span>
-              </button>
             </div>
           </div>
         </div>

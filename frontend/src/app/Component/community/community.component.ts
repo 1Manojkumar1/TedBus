@@ -2664,6 +2664,12 @@ export class CommunityComponent implements OnInit {
         this.activePost.set(res.post);
         this.activeComments.set(res.comments || []);
         this.isLoadingSinglePost.set(false);
+        // Sync the incremented view count with the posts feed list
+        this.posts.update((list) =>
+          list.map((p) =>
+            p._id === res.post._id ? { ...p, viewsCount: res.post.viewsCount } : p
+          )
+        );
         if (typeof window !== 'undefined') {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -2674,9 +2680,15 @@ export class CommunityComponent implements OnInit {
           this.posts().find((p) => p._id === id) ||
           FALLBACK_DISCUSSIONS.find((p) => p._id === id);
         if (localMatch) {
+          localMatch.viewsCount = (localMatch.viewsCount || 0) + 1;
           this.singlePost.set(localMatch);
           this.activePost.set(localMatch);
           this.activeComments.set(localMatch.comments || []);
+          this.posts.update((list) =>
+            list.map((p) =>
+              p._id === localMatch._id ? { ...p, viewsCount: localMatch.viewsCount } : p
+            )
+          );
         } else {
           this.toastService.warning(
             'Story Not Found',
@@ -2856,19 +2868,35 @@ export class CommunityComponent implements OnInit {
 
   // Post Detail & Comments
   openPostDetail(post: CommunityPost): void {
-    this.activePost.set(post);
-    this.isLoadingComments.set(true);
-    this.communityService.getPost(post._id).subscribe({
-      next: (res) => {
-        this.activePost.set(res.post);
-        this.activeComments.set(res.comments);
-        this.isLoadingComments.set(false);
-      },
-      error: (err) => {
-        console.error('Failed to get post details:', err);
-        this.isLoadingComments.set(false);
-      },
+    // Navigate using queryParams to open single post view and record view count
+    this.router.navigate([], {
+      queryParams: { postId: post._id },
+      queryParamsHandling: 'merge',
     });
+  }
+
+  getReadTime(content: string): string {
+    if (!content) return '3 min read';
+    const words = content.trim().split(/\s+/).length;
+    const minutes = Math.max(1, Math.ceil(words / 140));
+    return `${minutes} min read`;
+  }
+
+  getPostThumbnail(post: CommunityPost): string {
+    if (post.images && post.images.length > 0 && post.images[0]) {
+      return post.images[0];
+    }
+    const categoryImages: Record<string, string> = {
+      'Bus routes': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800',
+      'Destinations': 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800',
+      'Travel advice': 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800',
+      'Tips & Hacks': 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800',
+      'Food & Stoppages': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800',
+      'Safety': 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?w=800',
+      'Bus Reviews': 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=800',
+      'General': 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800',
+    };
+    return categoryImages[post.category] || 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800';
   }
 
   closePostDetail(): void {

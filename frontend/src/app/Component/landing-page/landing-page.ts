@@ -259,6 +259,12 @@ export class LandingPage {
     });
   }
 
+  selectedFaqCategory = signal<string>('general');
+
+  setFaqCategory(category: string): void {
+    this.selectedFaqCategory.set(category);
+  }
+
   selectPopularRoute(from: string, to: string): void {
     this.fromoption.set(from);
     this.tooption.set(to);
