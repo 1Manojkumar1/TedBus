@@ -24,11 +24,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Top Contributor",
       "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 3,
     "viewsCount": 0,
     "status": "published",
@@ -48,10 +45,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"
         },
         "content": "Took the TedBus Primo 9:30 PM bus last Friday. Reached Panaji by 8:45 AM without any delays. Very comfortable suspension!",
-        "likes": [
-          "user-1"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -67,10 +62,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"
         },
         "content": "Do they halt at a decent place for dinner? Usually Tumkur dhabas are crowded.",
-        "likes": [
-          "user-2"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -86,10 +79,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
         },
         "content": "@Ananya Iyer They stop near Sira at a clean food plaza with spotless restrooms.",
-        "likes": [
-          "user-0"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -120,11 +111,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Community Champion",
       "picture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -144,10 +132,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150"
         },
         "content": "The Suryapet food court halt has the best Andhra mirchi bajji and filter coffee!",
-        "likes": [
-          "user-6"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -178,11 +164,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Route Explorer",
       "picture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 2,
     "viewsCount": 0,
     "status": "published",
@@ -202,10 +185,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150"
         },
         "content": "The new Kiratpur-Nerchowk section saves at least 3.5 hours compared to two years ago!",
-        "likes": [
-          "user-9"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -221,10 +202,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150"
         },
         "content": "Always carry warm layers inside the cabin; AC runs cold even in mountain weather.",
-        "likes": [
-          "user-3"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -255,11 +234,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Top Contributor",
       "picture": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -279,10 +255,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150"
         },
         "content": "Wakad drop is super convenient for Hinjawadi tech park workers.",
-        "likes": [
-          "user-8"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -312,11 +286,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Verified Traveler",
       "picture": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -336,10 +307,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
         },
         "content": "Silk Board drop is a lifesaver on Monday mornings to catch the yellow line metro.",
-        "likes": [
-          "user-0"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -370,11 +339,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Community Champion",
       "picture": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -394,10 +360,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"
         },
         "content": "Zingbus and IntrCity both provide smooth rides on this route with guaranteed on-time arrival.",
-        "likes": [
-          "user-1"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -428,11 +392,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Top Contributor",
       "picture": "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -452,10 +413,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150"
         },
         "content": "Boarding at Edappally Toll is much quicker than Vyttila during evening rush hour!",
-        "likes": [
-          "user-10"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -486,11 +445,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Verified Traveler",
       "picture": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 2,
     "viewsCount": 0,
     "status": "published",
@@ -510,10 +466,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
         },
         "content": "Did this exact itinerary last month! The early morning fog at Raja Seat was magical.",
-        "likes": [
-          "user-0"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -529,10 +483,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150"
         },
         "content": "Make sure to sample authentic Coorg Pandi Curry or Akki Roti near the private bus stand.",
-        "likes": [
-          "user-4"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -563,11 +515,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Top Contributor",
       "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -587,10 +536,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150"
         },
         "content": "Watching the sunrise from Matanga Hill is easily in my top 3 travel experiences across India.",
-        "likes": [
-          "user-3"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -621,11 +568,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Verified Traveler",
       "picture": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -645,10 +589,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"
         },
         "content": "Croissants at Cafe des Arts and cycling around White Town is the best way to spend a Sunday morning.",
-        "likes": [
-          "user-2"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -679,11 +621,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Top Contributor",
       "picture": "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -703,10 +642,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150"
         },
         "content": "Sit on the left side of the bus when climbing up for panoramic valley views!",
-        "likes": [
-          "user-6"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -737,11 +674,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Top Contributor",
       "picture": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -761,10 +695,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"
         },
         "content": "Buses leave every hour. Great for a quick spontaneous weekend getaway.",
-        "likes": [
-          "user-1"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -795,11 +727,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Community Champion",
       "picture": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -819,10 +748,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
         },
         "content": "Buses drop off right near Nepali Farm or the private bus stand. Very convenient for hostel transfers.",
-        "likes": [
-          "user-0"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -853,11 +780,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Verified Traveler",
       "picture": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -877,10 +801,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150"
         },
         "content": "KSRTC Fast Passenger or Super Fast buses are dirt cheap and super frequent on this route!",
-        "likes": [
-          "user-7"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -911,11 +833,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Top Contributor",
       "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 2,
     "viewsCount": 0,
     "status": "published",
@@ -935,10 +854,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"
         },
         "content": "This is so inspiring Priya! I was worried about luggage safety on sleepers, but your post gives me confidence.",
-        "likes": [
-          "user-2"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -954,10 +871,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150"
         },
         "content": "Primo buses have CCTV and emergency buttons which makes a huge difference.",
-        "likes": [
-          "user-8"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -988,11 +903,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Route Explorer",
       "picture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1012,10 +924,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150"
         },
         "content": "Amboli Ghat during peak monsoon is unreal. Glad you experienced it!",
-        "likes": [
-          "user-3"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1046,11 +956,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Route Explorer",
       "picture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1070,10 +977,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150"
         },
         "content": "The lack of engine vibration is the biggest win for sleeper cabins. You actually wake up refreshed!",
-        "likes": [
-          "user-9"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1104,11 +1009,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Verified Traveler",
       "picture": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1128,10 +1030,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150"
         },
         "content": "Truly iconic! Make sure to take an early morning bus when sunrise hits the ocean.",
-        "likes": [
-          "user-7"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1162,11 +1062,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Community Champion",
       "picture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1186,10 +1083,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150"
         },
         "content": "Overnight bus travel as a substitute for hotel rooms is the golden rule of budget backpacking.",
-        "likes": [
-          "user-4"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1220,11 +1115,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Route Explorer",
       "picture": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1244,10 +1136,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
         },
         "content": "Bandipur night traffic rules mean buses wait till 6 AM gate opening. It is so quiet and peaceful there.",
-        "likes": [
-          "user-0"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1278,11 +1168,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Top Contributor",
       "picture": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1302,10 +1189,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"
         },
         "content": "A high-capacity power bank and noise-cancelling headphones are lifesavers on 14+ hour rides.",
-        "likes": [
-          "user-1"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1333,11 +1218,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Community Champion",
       "picture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 2,
     "viewsCount": 0,
     "status": "published",
@@ -1357,10 +1239,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
         },
         "content": "Tip #8 is crucial! At midnight highway halts, dozens of identical white Volvo buses park together. Always check the number plate.",
-        "likes": [
-          "user-0"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -1376,10 +1256,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"
         },
         "content": "Bookmarked! Sharing this with my college group.",
-        "likes": [
-          "user-1"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1407,11 +1285,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Top Contributor",
       "picture": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1431,10 +1306,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"
         },
         "content": "Always pick rows 3 to 5 on the right side if you get motion sickness. Much smoother ride!",
-        "likes": [
-          "user-2"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1461,11 +1334,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Verified Traveler",
       "picture": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1485,10 +1355,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150"
         },
         "content": "The long charging cable tip is gold! Some bus USB plugs are near the foot of the berth.",
-        "likes": [
-          "user-6"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1516,11 +1384,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Verified Traveler",
       "picture": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1540,10 +1405,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
         },
         "content": "Sipping peppermint tea before boarding works wonders as well!",
-        "likes": [
-          "user-0"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1571,11 +1434,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Top Contributor",
       "picture": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1595,10 +1455,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150"
         },
         "content": "RTC extra buses are a lifesaver when private operators double their fares during festivals.",
-        "likes": [
-          "user-3"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1625,11 +1483,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Route Explorer",
       "picture": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1649,10 +1504,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150"
         },
         "content": "Spot on. Heavy oily dhabas at 1:00 AM are a recipe for insomnia.",
-        "likes": [
-          "user-5"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1680,11 +1533,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Route Explorer",
       "picture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1704,10 +1554,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150"
         },
         "content": "Always download your Google Maps offline areas for the route so you can track progress without network.",
-        "likes": [
-          "user-9"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1735,11 +1583,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Top Contributor",
       "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 2,
     "viewsCount": 0,
     "status": "published",
@@ -1759,10 +1604,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"
         },
         "content": "Thank you Priya for sharing this! The women-only adjacent seat feature on TedBus gives so much peace of mind.",
-        "likes": [
-          "user-2"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -1778,10 +1621,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150"
         },
         "content": "Great points. Keeping a small torch and power bank in your crossbody bag is also very handy.",
-        "likes": [
-          "user-4"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1809,11 +1650,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Route Explorer",
       "picture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1833,10 +1671,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150"
         },
         "content": "Completely agree. ₹15 is negligible for complete peace of mind on long trips.",
-        "likes": [
-          "user-3"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1863,11 +1699,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Community Champion",
       "picture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1887,10 +1720,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150"
         },
         "content": "The refund guarantee when a bus is late gives real accountability to operators.",
-        "likes": [
-          "user-6"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1917,11 +1748,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Top Contributor",
       "picture": "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1941,10 +1769,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"
         },
         "content": "The SOS button in the app directly calls customer support with your booking details preloaded.",
-        "likes": [
-          "user-1"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -1971,11 +1797,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Verified Traveler",
       "picture": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -1995,10 +1818,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
         },
         "content": "Agreed! Avoid dark bypass pickups at 1:00 AM under any circumstances.",
-        "likes": [
-          "user-0"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2025,11 +1846,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Top Contributor",
       "picture": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -2049,10 +1867,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150"
         },
         "content": "Lower berth 1 or 2 is closest to the entry stairs. Best for my parents.",
-        "likes": [
-          "user-4"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2079,11 +1895,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Community Champion",
       "picture": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -2103,10 +1916,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150"
         },
         "content": "Crucial awareness. Safety takes 10 seconds of observation.",
-        "likes": [
-          "user-3"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2135,11 +1946,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Route Explorer",
       "picture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 2,
     "viewsCount": 0,
     "status": "published",
@@ -2159,10 +1967,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
         },
         "content": "Rode the Zingbus EV from Delhi to Jaipur last month. The silent cabin made sleeping so easy!",
-        "likes": [
-          "user-0"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -2178,10 +1984,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150"
         },
         "content": "The Samruddhi Mahamarg cut Mumbai-Nagpur road travel time from 16 hours down to under 10 hours. Incredible infrastructure.",
-        "likes": [
-          "user-3"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2209,11 +2013,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Verified Traveler",
       "picture": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 2,
     "viewsCount": 0,
     "status": "published",
@@ -2233,10 +2034,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"
         },
         "content": "Amrik Sukhdev at Murthal for white butter parathas on the Delhi-Chandigarh run! Unbeatable.",
-        "likes": [
-          "user-1"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       },
@@ -2252,10 +2051,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150"
         },
         "content": "Aryas on the Chennai-Bangalore highway at Vellore bypass serves top-notch filter coffee and hot vadas.",
-        "likes": [
-          "user-4"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2282,11 +2079,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Verified Traveler",
       "picture": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -2306,10 +2100,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150"
         },
         "content": "Carried a full camping tent and trekking rucksack without any extra fee on Bangalore-Manali route.",
-        "likes": [
-          "user-7"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2337,11 +2129,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Community Champion",
       "picture": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -2361,10 +2150,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"
         },
         "content": "Volvo 9600s with the ultra-low floor and I-Shift transmission are supreme.",
-        "likes": [
-          "user-1"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2391,11 +2178,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Verified Traveler",
       "picture": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -2415,10 +2199,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
         },
         "content": "Overnight sleepers for long distances, daytime buses for ghat routes and hill stations!",
-        "likes": [
-          "user-0"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2446,11 +2228,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Route Explorer",
       "picture": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -2470,10 +2249,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150"
         },
         "content": "In-cabin meal pre-ordering before highway stops would be a game-changer!",
-        "likes": [
-          "user-3"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
@@ -2500,11 +2277,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
       "badge": "Route Explorer",
       "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
     },
-    "likes": [
-      "u1",
-      "u2"
-    ],
-    "likesCount": 2,
+    "likes": [],
+    "likesCount": 0,
     "commentsCount": 1,
     "viewsCount": 0,
     "status": "published",
@@ -2524,10 +2298,8 @@ const FALLBACK_DISCUSSIONS: any[] = [
           "picture": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"
         },
         "content": "Shared tea with a grandma on the Madurai bus who gave me homemade Murukku and travel blessings. Unforgettable.",
-        "likes": [
-          "user-2"
-        ],
-        "likesCount": 1,
+        "likes": [],
+        "likesCount": 0,
         "createdAt": "2026-11-14T10:00:00.000Z",
         "updatedAt": "2026-11-14T10:00:00.000Z"
       }
