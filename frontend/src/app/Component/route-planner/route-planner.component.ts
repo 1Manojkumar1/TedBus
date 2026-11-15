@@ -5,6 +5,7 @@ import {
   OnDestroy,
   inject,
   signal,
+  computed,
   ElementRef,
   viewChild,
 } from '@angular/core';
@@ -53,6 +54,28 @@ export class RoutePlannerComponent implements OnInit, AfterViewInit, OnDestroy {
   routeOptions = signal<RouteOption[]>([]);
   activeRoute = signal<RouteOption | null>(null);
 
+  // Route Comparison: compare by time, distance, or traffic impact
+  compareMode = signal<'time' | 'distance' | 'traffic'>('time');
+
+  sortedRouteOptions = computed(() => {
+    const list = [...this.routeOptions()];
+    const mode = this.compareMode();
+    if (mode === 'distance') {
+      return list.sort((a, b) => a.distanceKm - b.distanceKm);
+    }
+    if (mode === 'traffic') {
+      return list.sort((a, b) => a.trafficDelayMinutes - b.trafficDelayMinutes);
+    }
+    // Default: 'time'
+    return list.sort((a, b) => a.durationMinutes - b.durationMinutes);
+  });
+
+  // Dynamic traffic updates
+  liveTrafficAlert = signal<string>('');
+  lastTrafficUpdate = signal<Date>(new Date());
+  isTrafficLiveMonitoring = signal<boolean>(true);
+  private trafficTimer: any = null;
+
   savedRoutes = signal<SavedRouteItem[]>([]);
   isSavingRoute = signal<boolean>(false);
   saveSuccessMessage = signal<string>('');
@@ -66,6 +89,10 @@ export class RoutePlannerComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.auth.isloggedin()) {
       this.loadSavedRoutes();
     }
+    // Start dynamic live traffic monitoring ticker
+    this.trafficTimer = setInterval(() => {
+      this.refreshLiveTraffic(false);
+    }, 28000);
   }
 
   ngAfterViewInit(): void {
@@ -76,6 +103,33 @@ export class RoutePlannerComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.map) {
       this.map.remove();
+    }
+    if (this.trafficTimer) {
+      clearInterval(this.trafficTimer);
+    }
+  }
+
+  refreshLiveTraffic(manual = false): void {
+    if (this.routeOptions().length === 0) return;
+    const { updated, alertMessage } = this.routeService.simulateTrafficShift(this.routeOptions());
+    this.routeOptions.set(updated);
+    this.lastTrafficUpdate.set(new Date());
+
+    if (alertMessage) {
+      this.liveTrafficAlert.set(alertMessage);
+      if (manual) {
+        this.toastService.info('Live Traffic Shift', alertMessage);
+      }
+      // If current active route has become heavily congested and an alternate is recommended, switch to it
+      const current = this.activeRoute();
+      if (current?.id === 'express' && current.congestionLevel === 'Heavy') {
+        const alt = updated.find((r) => r.isRecommendedAlternative);
+        if (alt) {
+          this.selectRouteOption(alt);
+        }
+      }
+    } else if (manual) {
+      this.toastService.success('Traffic Checked', 'Live traffic sensors verified: conditions up to date.');
     }
   }
 

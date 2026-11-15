@@ -209,13 +209,40 @@
 
         <div class="flex items-center justify-between text-[11px] text-gray-400 pt-1 border-t border-gray-100 dark:border-slate-800">
           <span>Travel Date: {{ rev.travelDate }}</span>
-          <button (click)="toggleVote(rev)"
-            class="flex items-center gap-1 text-gray-500 hover:text-[#5f4299] transition-colors"
-            [class.text-[#5f4299]]="hasVoted(rev)"
-            [class.font-bold]="hasVoted(rev)">
-            <i class="fa-solid fa-thumbs-up text-xs"></i>
-            <span>Helpful ({{ rev.helpfulCount || 0 }})</span>
-          </button>
+          <div class="flex items-center gap-3">
+            <button (click)="openReportDialog(rev)"
+              class="flex items-center gap-1 text-gray-400 hover:text-red-500 transition-colors"
+              title="Report this review for policy violation">
+              <i class="fa-regular fa-flag text-[11px]"></i>
+              <span>Report</span>
+            </button>
+            <button (click)="toggleVote(rev)"
+              class="flex items-center gap-1 text-gray-500 hover:text-[#5f4299] transition-colors"
+              [class.text-[#5f4299]]="hasVoted(rev)"
+              [class.font-bold]="hasVoted(rev)">
+              <i class="fa-solid fa-thumbs-up text-xs"></i>
+              <span>Helpful ({{ rev.helpfulCount || 0 }})</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Inline Report Box if reporting this review -->
+        <div *ngIf="reportingReviewId() === rev._id" class="p-2.5 bg-red-50/70 dark:bg-red-950/30 border border-red-200 dark:border-red-900 rounded-lg text-xs space-y-2">
+          <p class="font-bold text-red-800 dark:text-red-300 text-[11px]">Report Review Violation</p>
+          <div class="flex items-center gap-2">
+            <select [(ngModel)]="reportReason" class="text-xs p-1 rounded bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700">
+              <option value="inappropriate">Inappropriate / Offensive Language</option>
+              <option value="spam">Spam or Advertising</option>
+              <option value="misinformation">Fake or Misleading Experience</option>
+              <option value="harassment">Harassment or Defamation</option>
+            </select>
+            <button (click)="submitReport(rev)" class="px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white font-bold text-[10px] rounded cursor-pointer">
+              Submit Report
+            </button>
+            <button (click)="cancelReport()" class="px-2 py-1 text-gray-500 text-[10px] cursor-pointer">
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>

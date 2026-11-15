@@ -47,6 +47,23 @@ export async function createReview(req, res) {
       });
     }
 
+    if (booking.status === 'cancelled') {
+      return res.status(400).json({
+        error: 'Cancelled journeys cannot be reviewed. Feedback is only allowed for completed journeys.',
+      });
+    }
+
+    // Verify journey has successfully completed
+    const travelDateStr = booking.arrivalDetails?.date || booking.departureDetails?.date;
+    const isCompletedStatus = booking.status === 'completed';
+    const isPastDate = travelDateStr && new Date(travelDateStr + 'T23:59:59') <= new Date();
+
+    if (!isCompletedStatus && !isPastDate) {
+      return res.status(400).json({
+        error: 'You can only rate and review a bus route after successfully completing your journey.',
+      });
+    }
+
     // Check if review already exists for this booking
     const existing = await JourneyReview.findOne({ bookingId: String(bookingId) }).exec();
     if (existing) {
@@ -180,7 +197,10 @@ export async function getBusReviews(req, res) {
     }
 
     return res.json({
-      reviews,
+      reviews: reviews.map((r) => ({
+        ...r,
+        isTrustedReviewer: (r.helpfulCount || 0) >= 1,
+      })),
       summary: {
         totalReviews: count,
         averageRating: avgRating,
@@ -255,5 +275,80 @@ export async function toggleHelpful(req, res) {
   } catch (err) {
     console.error('toggleHelpful error:', err);
     return res.status(500).json({ error: 'Failed to vote on review' });
+  }
+}
+
+export async function reportReview(req, res) {
+  try {
+    const { id } = req.params;
+    const { reason, details } = req.body;
+    const reporter = req.auth?.sub || req.auth?.email || req.body.reportedBy;
+
+    if (!reason) {
+      return res.status(400).json({ error: 'Report reason is required' });
+    }
+
+    const review = await JourneyReview.findById(id).exec();
+    if (!review) {
+      return res.status(404).json({ error: 'Review not found' });
+    }
+
+    const alreadyReported = review.reports?.some((r) => r.reportedBy === reporter);
+    if (!alreadyReported) {
+      review.reports.push({
+        reportedBy: reporter || 'anonymous_reporter',
+        reason,
+        details: details || '',
+        reportedAt: new Date(),
+      });
+      review.reportCount = (review.reportCount || 0) + 1;
+    }
+
+    // If reported multiple times (e.g. >= 2) or serious violation, automatically hide
+    // When hidden, it is excluded from getBusReviews query and excluded from the average rating
+    if (review.reportCount >= 2 || reason === 'inappropriate' || reason === 'harassment') {
+      review.status = 'hidden';
+    }
+
+    await review.save();
+
+    return res.json({
+      message: 'Review report submitted successfully',
+      reportCount: review.reportCount,
+      status: review.status,
+      hidden: review.status === 'hidden',
+    });
+  } catch (err) {
+    console.error('reportReview error:', err);
+    return res.status(500).json({ error: 'Failed to report review' });
+  }
+}
+
+export async function moderateReview(req, res) {
+  try {
+    const { id } = req.params;
+    const { action } = req.body; // 'hide', 'restore', 'delete'
+
+    const review = await JourneyReview.findById(id).exec();
+    if (!review) {
+      return res.status(404).json({ error: 'Review not found' });
+    }
+
+    if (action === 'hide') {
+      review.status = 'hidden';
+    } else if (action === 'restore') {
+      review.status = 'published';
+      review.reportCount = 0;
+    } else if (action === 'delete') {
+      review.status = 'deleted';
+    } else {
+      return res.status(400).json({ error: 'Invalid moderation action. Must be hide, restore, or delete' });
+    }
+
+    await review.save();
+    return res.json({ message: `Review status set to ${review.status}`, review });
+  } catch (err) {
+    console.error('moderateReview error:', err);
+    return res.status(500).json({ error: 'Failed to moderate review' });
   }
 }

@@ -108,17 +108,34 @@
 
   <div class="px-5 md:px-6 py-4 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between">
     @if (existingReview()) {
-      <button type="button" (click)="writeReview.emit(booking())"
-        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-purple-300 dark:border-purple-700 bg-purple-50 dark:bg-purple-950/40 text-[#5f4299] dark:text-purple-300 text-xs font-bold hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-colors">
-        <mat-icon class="text-[16px] w-4 h-4 leading-4 text-amber-500">star</mat-icon>
-        <span>Rated {{ existingReview()?.rating }}/5 ★ &middot; Edit Review</span>
-      </button>
-    } @else {
+      @if (canEditReview()) {
+        <button type="button" (click)="writeReview.emit(booking())"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-purple-300 dark:border-purple-700 bg-purple-50 dark:bg-purple-950/40 text-[#5f4299] dark:text-purple-300 text-xs font-bold hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-colors">
+          <mat-icon class="text-[16px] w-4 h-4 leading-4 text-amber-500">star</mat-icon>
+          <span>Rated {{ existingReview()?.rating }}/5 ★ &middot; Edit ({{ getReviewEditHoursLeft() }}h left)</span>
+        </button>
+      } @else {
+        <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-gray-500 dark:text-gray-400 text-xs font-medium">
+          <mat-icon class="text-[16px] w-4 h-4 leading-4 text-amber-500">star</mat-icon>
+          <span>Rated {{ existingReview()?.rating }}/5 ★ &middot; Locked (24h window closed)</span>
+        </div>
+      }
+    } @else if (isCompleted()) {
       <button type="button" (click)="writeReview.emit(booking())"
         class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 text-xs font-bold hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors">
         <mat-icon class="text-[16px] w-4 h-4 leading-4 text-amber-500">star</mat-icon>
         <span>Rate & Review Journey</span>
       </button>
+    } @else if (isCancelled()) {
+      <div class="inline-flex items-center gap-1.5 text-xs text-gray-400">
+        <mat-icon class="text-[16px] w-4 h-4 leading-4 text-red-400">cancel</mat-icon>
+        <span>Cancelled journey &middot; Not eligible for review</span>
+      </div>
+    } @else {
+      <div class="inline-flex items-center gap-1.5 text-xs text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/30 px-2.5 py-1 rounded-lg">
+        <mat-icon class="text-[14px] w-3.5 h-3.5 leading-3.5">schedule</mat-icon>
+        <span>Review unlocks after journey completion</span>
+      </div>
     }
 
     @if (isupcoming()) {

@@ -29,6 +29,7 @@ router.delete('/:id', deleteNotification);
 // Preference Management & Localization
 router.get('/preferences', getPreferences);
 router.put('/preferences', updatePreferences);
+router.post('/preferences', updatePreferences);
 
 // Multi-Channel Dispatch & Automated Events
 router.get('/passengers-count', getPassengersCount);

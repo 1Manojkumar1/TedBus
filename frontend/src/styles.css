@@ -156,3 +156,31 @@ html.dark .mat-mdc-dialog-container .mdc-dialog__surface {
   background-color: #1e293b !important;
   color: #f1f5f9 !important;
 }
+
+html.dark .mat-mdc-dialog-title {
+  color: #f1f5f9 !important;
+}
+
+html.dark table.mat-table,
+html.dark table.mat-mdc-table {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+html.dark th.mat-header-cell,
+html.dark th.mat-mdc-header-cell {
+  background-color: #0f172a !important;
+  color: #cbd5e1 !important;
+  border-bottom-color: #334155 !important;
+}
+
+html.dark td.mat-cell,
+html.dark td.mat-mdc-cell {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+  border-bottom-color: #334155 !important;
+}
+
+html.dark .mat-mdc-dialog-actions {
+  border-top-color: #334155 !important;
+}

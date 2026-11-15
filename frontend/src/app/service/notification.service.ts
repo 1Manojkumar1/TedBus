@@ -46,6 +46,7 @@ export interface NotificationPreference {
   communityInteractions: boolean;
   promotionalOffers: boolean;
   preferredLanguage: 'en' | 'hi' | 'te' | 'ta' | 'kn' | 'ml';
+  preferredTheme?: 'light' | 'dark';
   pushSubscription?: unknown;
 }
 

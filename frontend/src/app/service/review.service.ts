@@ -27,8 +27,11 @@ export interface JourneyReview {
   comment: string;
   travelDate: string;
   isVerifiedPassenger: boolean;
+  isTrustedReviewer?: boolean;
   helpfulVotes: string[];
   helpfulCount: number;
+  reportCount?: number;
+  status?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -89,5 +92,17 @@ export class ReviewService {
 
   toggleHelpful(id: string, userId: string): Observable<{ voted: boolean; helpfulCount: number }> {
     return this.http.post<{ voted: boolean; helpfulCount: number }>(`${this.baseUrl}/${id}/vote`, { userId });
+  }
+
+  reportReview(
+    id: string,
+    reason: string,
+    details?: string,
+    reportedBy?: string
+  ): Observable<{ message: string; reportCount: number; status: string; hidden: boolean }> {
+    return this.http.post<{ message: string; reportCount: number; status: string; hidden: boolean }>(
+      `${this.baseUrl}/${id}/report`,
+      { reason, details, reportedBy }
+    );
   }
 }

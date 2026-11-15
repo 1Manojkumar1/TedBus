@@ -41,6 +41,37 @@ export class MyTrip {
     return this.booking().status === 'upcoming';
   }
 
+  isCancelled(): boolean {
+    return this.booking().status === 'cancelled';
+  }
+
+  isCompleted(): boolean {
+    if (this.booking().status === 'cancelled') return false;
+    if (this.booking().status === 'completed') return true;
+    const travelDate = this.booking().departureDetails?.date || this.booking().bookingDate;
+    if (!travelDate) return false;
+    const parsed = new Date(travelDate);
+    if (Number.isNaN(parsed.getTime())) return false;
+    parsed.setHours(23, 59, 59, 999);
+    return parsed.getTime() <= Date.now();
+  }
+
+  canEditReview(): boolean {
+    const rev = this.existingReview();
+    if (!rev) return false;
+    const createdTime = new Date(rev.createdAt).getTime();
+    const hoursSince = (Date.now() - createdTime) / (1000 * 60 * 60);
+    return hoursSince <= 24;
+  }
+
+  getReviewEditHoursLeft(): number {
+    const rev = this.existingReview();
+    if (!rev) return 0;
+    const createdTime = new Date(rev.createdAt).getTime();
+    const hoursSince = (Date.now() - createdTime) / (1000 * 60 * 60);
+    return Math.max(0, Math.floor(24 - hoursSince));
+  }
+
   formatdate(value: string | undefined): string {
     if (!value) {
       return '-';

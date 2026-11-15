@@ -17,6 +17,11 @@ const notificationPreferenceSchema = new mongoose.Schema(
       enum: ['en', 'hi', 'te', 'ta', 'kn', 'ml'],
       default: 'en',
     },
+    preferredTheme: {
+      type: String,
+      enum: ['light', 'dark'],
+      default: 'light',
+    },
     pushSubscription: { type: mongoose.Schema.Types.Mixed },
   },
   { timestamps: true }

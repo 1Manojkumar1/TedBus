@@ -222,10 +222,27 @@ export class ProfilePage implements OnInit {
   }
 
   openReviewModal(booking: Booking): void {
+    if (booking.status === 'cancelled') {
+      this.toastService.warning('Cannot Review', 'Cancelled journeys are not eligible for review.');
+      return;
+    }
+
+    const travelDate = booking.departureDetails?.date || booking.bookingDate;
+    const isPastDate = travelDate && new Date(travelDate + 'T23:59:59').getTime() <= Date.now();
+    if (booking.status !== 'completed' && !isPastDate) {
+      this.toastService.info('Journey Incomplete', 'Reviews can only be submitted after successfully completing your journey.');
+      return;
+    }
+
     this.reviewingBooking.set(booking);
     const existing = this.userReviews()[booking._id];
 
     if (existing) {
+      const hoursSince = (Date.now() - new Date(existing.createdAt).getTime()) / (1000 * 60 * 60);
+      if (hoursSince > 24) {
+        this.toastService.warning('Edit Window Closed', 'Reviews cannot be modified after 24 hours from submission.');
+        return;
+      }
       this.isEditingReview.set(true);
       this.editingReviewId.set(existing._id);
       this.reviewForm = {
@@ -251,6 +268,10 @@ export class ProfilePage implements OnInit {
       };
     }
     this.showReviewModal.set(true);
+  }
+
+  get commentLength(): number {
+    return (this.reviewForm.comment || '').trim().length;
   }
 
   submitReview(): void {

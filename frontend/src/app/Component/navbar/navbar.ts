@@ -43,6 +43,9 @@ export class Navbar {
             if (prefs?.preferredLanguage && prefs.preferredLanguage !== this.i18n.currentLanguage()) {
               this.i18n.setLanguage(prefs.preferredLanguage);
             }
+            if (prefs?.preferredTheme && prefs.preferredTheme !== this.themeService.theme()) {
+              this.themeService.setTheme(prefs.preferredTheme, true);
+            }
           },
           error: () => {},
         });
@@ -64,6 +67,18 @@ export class Navbar {
 
   toggleTheme() {
     this.themeService.toggleTheme();
+    if (this.auth.isloggedin()) {
+      const user = this.auth.user();
+      if (user?.email) {
+        this.notificationService
+          .updatePreferences({
+            customerId: user._id || user.googleId || user.email,
+            email: user.email,
+            preferredTheme: this.themeService.theme(),
+          } as any)
+          .subscribe({ error: () => {} });
+      }
+    }
   }
 
   selectLanguage(lang: SupportedLanguage) {

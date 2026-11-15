@@ -18,6 +18,10 @@ export interface RouteOption {
   formattedDuration: string;
   trafficStatus: 'normal' | 'moderate' | 'heavy';
   trafficDelayMinutes: number;
+  congestionLevel: 'Low' | 'Moderate' | 'Heavy';
+  trafficConditionSummary: string;
+  isRecommendedAlternative?: boolean;
+  recommendationReason?: string;
   coordinates: [number, number][];
   waypoints: RouteLocation[];
   estimatedToll: number;
@@ -143,13 +147,16 @@ export class RoutePlannerService {
 
     const primaryRoute: RouteOption = {
       id: 'express',
-      name: 'Fastest Route (Expressway / National Corridor)',
-      highway: 'NH44 / Asian Highway Network',
+      name: 'Primary Expressway Corridor',
+      highway: 'NH44 / National Golden Corridor',
       distanceKm: totalBaseDistance,
       durationMinutes: expressDurationMins,
       formattedDuration: this.formatDuration(expressDurationMins),
       trafficStatus: totalBaseDistance > 500 ? 'moderate' : 'normal',
-      trafficDelayMinutes: totalBaseDistance > 500 ? 25 : 10,
+      trafficDelayMinutes: totalBaseDistance > 500 ? 25 : 8,
+      congestionLevel: totalBaseDistance > 500 ? 'Moderate' : 'Low',
+      trafficConditionSummary: totalBaseDistance > 500 ? 'Slow movement near toll gates (+25m delay)' : 'Free-flowing highway (+8m delay)',
+      isRecommendedAlternative: false,
       coordinates: buildPath(allStops, 0.04),
       waypoints,
       estimatedToll: Math.round(totalBaseDistance * 1.6),
@@ -157,19 +164,80 @@ export class RoutePlannerService {
 
     const alternateRoute: RouteOption = {
       id: 'state_highway',
-      name: 'Scenic Route (State Highway Corridor)',
-      highway: 'SH / Coastal Highway Link',
+      name: 'State Highway Alternative Corridor',
+      highway: 'SH Arterial / Bypass Link',
       distanceKm: altDistance,
       durationMinutes: altDurationMins,
       formattedDuration: this.formatDuration(altDurationMins),
       trafficStatus: 'normal',
       trafficDelayMinutes: 5,
+      congestionLevel: 'Low',
+      trafficConditionSummary: 'Minimal congestion, smooth green corridor (+5m delay)',
+      isRecommendedAlternative: totalBaseDistance > 500,
+      recommendationReason: totalBaseDistance > 500 ? 'Recommended Alternative: Avoids heavy toll & corridor jams' : undefined,
       coordinates: buildPath(allStops, -0.06),
       waypoints,
       estimatedToll: Math.round(altDistance * 1.1),
     };
 
-    return [primaryRoute, alternateRoute];
+    const bypassDistance = Math.round(totalBaseDistance * 1.14);
+    const bypassDurationMins = Math.round((bypassDistance / 52) * 60) + waypointDelayMinutes + 12;
+
+    const bypassRoute: RouteOption = {
+      id: 'outer_bypass',
+      name: 'Ring Road & Outer Bypass Corridor',
+      highway: 'Outer Ring Expressway / Orbital Link',
+      distanceKm: bypassDistance,
+      durationMinutes: bypassDurationMins,
+      formattedDuration: this.formatDuration(bypassDurationMins),
+      trafficStatus: 'normal',
+      trafficDelayMinutes: 0,
+      congestionLevel: 'Low',
+      trafficConditionSummary: 'Zero urban choke-points, nonstop cruise (+0m delay)',
+      isRecommendedAlternative: false,
+      coordinates: buildPath(allStops, 0.09),
+      waypoints,
+      estimatedToll: Math.round(bypassDistance * 1.4),
+    };
+
+    return [primaryRoute, alternateRoute, bypassRoute];
+  }
+
+  simulateTrafficShift(routes: RouteOption[]): { updated: RouteOption[]; alertMessage: string } {
+    const updated = routes.map((r) => ({ ...r }));
+    const express = updated.find((r) => r.id === 'express');
+    const alt = updated.find((r) => r.id === 'state_highway');
+    const bypass = updated.find((r) => r.id === 'outer_bypass');
+
+    let alertMessage = '';
+
+    if (express && alt) {
+      if (express.congestionLevel === 'Low') {
+        express.trafficStatus = 'heavy';
+        express.congestionLevel = 'Heavy';
+        express.trafficDelayMinutes = 35;
+        express.trafficConditionSummary = 'Accident cleared slowly on NH44 corridor (+35m delay)';
+        express.durationMinutes += 25;
+        express.formattedDuration = this.formatDuration(express.durationMinutes);
+
+        alt.isRecommendedAlternative = true;
+        alt.recommendationReason = 'AI Auto-Suggestion: Switch to State Highway to bypass heavy NH44 delays!';
+        alertMessage = '⚠️ Live Traffic Alert: Heavy congestion detected on Expressway (+35m delay). State Highway Alternative is now recommended!';
+      } else {
+        express.trafficStatus = 'normal';
+        express.congestionLevel = 'Low';
+        express.trafficDelayMinutes = 8;
+        express.trafficConditionSummary = 'Traffic normalized, open high-speed lanes (+8m delay)';
+        express.durationMinutes = Math.max(60, express.durationMinutes - 25);
+        express.formattedDuration = this.formatDuration(express.durationMinutes);
+
+        alt.isRecommendedAlternative = false;
+        alt.recommendationReason = undefined;
+        alertMessage = '✅ Live Traffic Alert: Expressway corridor cleared! Flow back to normal speed.';
+      }
+    }
+
+    return { updated, alertMessage };
   }
 
   formatDuration(minutes: number): string {

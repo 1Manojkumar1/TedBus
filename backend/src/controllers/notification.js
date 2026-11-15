@@ -168,6 +168,7 @@ export async function getPreferences(req, res) {
         communityInteractions: true,
         promotionalOffers: true,
         preferredLanguage: 'en',
+        preferredTheme: 'light',
       };
     }
 
@@ -192,6 +193,7 @@ export async function updatePreferences(req, res) {
       communityInteractions,
       promotionalOffers,
       preferredLanguage,
+      preferredTheme,
       pushSubscription,
     } = req.body;
 
@@ -216,6 +218,7 @@ export async function updatePreferences(req, res) {
         communityInteractions: communityInteractions ?? true,
         promotionalOffers: promotionalOffers ?? true,
         preferredLanguage: preferredLanguage || 'en',
+        preferredTheme: preferredTheme === 'dark' ? 'dark' : 'light',
         ...(pushSubscription ? { pushSubscription } : {}),
       },
       { upsert: true, new: true }

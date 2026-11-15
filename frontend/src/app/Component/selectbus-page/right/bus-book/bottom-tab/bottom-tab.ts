@@ -1,20 +1,23 @@
 import { Component, Input, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ViewSeatsComponent } from '../../view-seats/view-seats';
 import { TranslatePipe } from '../../../../../service/translate.pipe';
 import { ReviewService, BusReviewSummary, JourneyReview } from '../../../../../service/review.service';
 import { AuthService } from '../../../../../service/auth.service';
+import { ToastService } from '../../../../../service/toast.service';
 
 @Component({
   selector: 'app-bottom-tab',
   standalone: true,
-  imports: [CommonModule, ViewSeatsComponent, TranslatePipe],
+  imports: [CommonModule, FormsModule, ViewSeatsComponent, TranslatePipe],
   templateUrl: './bottom-tab.html',
   styleUrl: './bottom-tab.css',
 })
 export class BottomTabComponent {
   private readonly reviewService = inject(ReviewService);
   private readonly auth = inject(AuthService);
+  private readonly toastService = inject(ToastService);
 
   @Input() filledseats: number[] = [];
   @Input() seatprice: number = 0;
@@ -29,6 +32,8 @@ export class BottomTabComponent {
 
   reviewsData = signal<BusReviewSummary | null>(null);
   isLoadingReviews = signal<boolean>(false);
+  reportingReviewId = signal<string | null>(null);
+  reportReason = signal<string>('inappropriate');
 
   handletabstate(value: number): void {
     for (let i = 0; i < this.tabstate.length; i++) {
@@ -73,6 +78,40 @@ export class BottomTabComponent {
     const user = this.auth.user();
     const userId = user?._id || user?.googleId || user?.email || 'guest_voter';
     return review.helpfulVotes?.includes(userId) || false;
+  }
+
+  openReportDialog(review: JourneyReview): void {
+    if (!this.auth.isloggedin()) {
+      this.toastService.warning('Sign In Required', 'Please sign in to report inappropriate reviews.');
+      return;
+    }
+    this.reportingReviewId.set(review._id);
+    this.reportReason.set('inappropriate');
+  }
+
+  cancelReport(): void {
+    this.reportingReviewId.set(null);
+  }
+
+  submitReport(review: JourneyReview): void {
+    const user = this.auth.user();
+    const reporter = user?._id || user?.googleId || user?.email;
+    const reason = this.reportReason();
+
+    this.reviewService.reportReview(review._id, reason, 'Reported by user from route details page', reporter).subscribe({
+      next: (res) => {
+        this.reportingReviewId.set(null);
+        if (res.hidden) {
+          this.toastService.info('Review Hidden', 'Thank you. This review was hidden for violating community guidelines and removed from ratings.');
+          this.fetchReviews();
+        } else {
+          this.toastService.success('Report Submitted', 'Your report has been submitted to moderation for review.');
+        }
+      },
+      error: () => {
+        this.toastService.error('Report Failed', 'Could not submit report. Please try again.');
+      },
+    });
   }
 
   get boardingPoints(): { name: string; time: string }[] {

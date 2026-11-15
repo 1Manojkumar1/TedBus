@@ -62,6 +62,18 @@ const journeyReviewSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    reportCount: {
+      type: Number,
+      default: 0,
+    },
+    reports: [
+      {
+        reportedBy: { type: String, required: true },
+        reason: { type: String, required: true },
+        details: { type: String },
+        reportedAt: { type: Date, default: Date.now },
+      },
+    ],
     status: {
       type: String,
       enum: ['published', 'hidden', 'deleted'],
