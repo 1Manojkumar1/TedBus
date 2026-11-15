@@ -1,90 +1,291 @@
 import { Notification } from '../models/notification.js';
 import { NotificationPreference } from '../models/notificationPreference.js';
+import { Booking } from '../models/booking.js';
+import { getLocalizedContent } from './notificationTemplates.js';
+import { dispatchEmail, dispatchWebPush, retryFailedDeliveries } from './notificationDelivery.js';
+
+export { retryFailedDeliveries };
 
 /**
- * Dispatches an event-based notification to a customer, respecting their preferences.
+ * Dispatches a multi-channel notification to a customer, respecting their preferences
+ * and generating the message in their chosen language.
  */
 export async function sendNotification({
   recipientId,
   recipientEmail,
+  templateKey,
+  templateParams = {},
   title,
   message,
   category = 'system',
   actionUrl = '/profile',
-  channel = 'in_app',
+  channels = ['in_app'],
   metadata = {},
 }) {
-  if (!recipientId || !recipientEmail) {
+  if (!recipientId && !recipientEmail) {
     return null;
   }
 
   try {
-    // Check preferences
+    const emailLower = recipientEmail ? recipientEmail.toLowerCase() : '';
+
+    // Retrieve user preferences
     const prefs = await NotificationPreference.findOne({
-      $or: [{ customerId: recipientId }, { email: recipientEmail.toLowerCase() }],
+      $or: [
+        ...(recipientId ? [{ customerId: recipientId }] : []),
+        ...(emailLower ? [{ email: emailLower }] : []),
+      ],
     }).lean().exec();
 
+    const lang = prefs?.preferredLanguage || 'en';
+
+    // Check opt-out rules
     if (prefs) {
       if (category === 'booking' && prefs.bookingUpdates === false) return null;
       if (category === 'community' && prefs.communityInteractions === false) return null;
       if (category === 'promo' && prefs.promotionalOffers === false) return null;
-      if (channel === 'in_app' && prefs.inAppEnabled === false) return null;
+      if (category === 'trip' && prefs.journeyReminders === false) return null;
     }
 
+    // Resolve localized title and message
+    let finalTitle = title;
+    let finalMessage = message;
+
+    if (templateKey) {
+      const localized = getLocalizedContent(templateKey, lang, templateParams);
+      finalTitle = localized.title || title;
+      finalMessage = localized.message || message;
+    }
+
+    // Determine active channels based on preferences
+    const activeChannels = [];
+    if (prefs ? prefs.inAppEnabled !== false : true) {
+      activeChannels.push('in_app');
+    }
+    if (prefs ? prefs.emailEnabled : true) {
+      activeChannels.push('email');
+    }
+    if (prefs?.pushEnabled) {
+      activeChannels.push('push');
+    }
+
+    if (activeChannels.length === 0) {
+      activeChannels.push('in_app');
+    }
+
+    // Create the persistent notification record in MongoDB (History Log)
     const notification = await Notification.create({
-      recipientId,
-      recipientEmail: recipientEmail.toLowerCase(),
-      title,
-      message,
+      recipientId: recipientId || emailLower,
+      recipientEmail: emailLower,
+      title: finalTitle,
+      message: finalMessage,
       category,
       actionUrl,
-      channel,
-      deliveryStatus: 'delivered',
-      metadata,
+      channel: activeChannels[0] || 'in_app',
+      channels: activeChannels,
+      deliveryStatus: 'pending',
+      deliveryAttempts: 1,
+      lastAttemptAt: new Date(),
+      language: lang,
+      metadata: { ...metadata, templateKey, lang },
     });
+
+    let overallSuccess = true;
+    let failureDetail = null;
+
+    // Dispatch Email if enabled and email address exists
+    if (activeChannels.includes('email') && emailLower) {
+      const emailResult = await dispatchEmail({
+        to: emailLower,
+        subject: finalTitle,
+        text: finalMessage,
+      });
+      if (!emailResult.success) {
+        overallSuccess = false;
+        failureDetail = `Email: ${emailResult.error}`;
+      }
+    }
+
+    // Dispatch Web Push if enabled and user has subscription
+    if (activeChannels.includes('push') && prefs?.pushSubscription) {
+      const pushResult = await dispatchWebPush(prefs.pushSubscription, {
+        title: finalTitle,
+        body: finalMessage,
+        url: actionUrl,
+      });
+      if (!pushResult.success) {
+        // Push warning recorded but doesn't fail in-app
+        console.warn(`Push dispatch notice: ${pushResult.error}`);
+      }
+    }
+
+    // Update delivery status
+    notification.deliveryStatus = overallSuccess ? 'delivered' : 'failed';
+    notification.failureReason = failureDetail;
+    if (!overallSuccess) {
+      // Schedule initial retry in 2 minutes
+      notification.nextRetryAt = new Date(Date.now() + 2 * 60 * 1000);
+    }
+    await notification.save();
 
     return notification;
   } catch (err) {
-    console.error('Failed to create notification:', err);
+    console.error('sendNotification failed:', err);
     return null;
   }
 }
 
+/**
+ * 1. Booking Confirmation Notification
+ */
 export async function sendBookingConfirmation(booking) {
   const recipientId = booking.customerId || booking.email;
   const recipientEmail = booking.email;
-  const from = booking.boardingPoint ? `${booking.departureDetails?.city || 'Origin'} (${booking.boardingPoint})` : (booking.departureDetails?.city || 'Origin');
-  const to = booking.droppingPoint ? `${booking.arrivalDetails?.city || 'Destination'} (${booking.droppingPoint})` : (booking.arrivalDetails?.city || 'Destination');
+  const from = booking.boardingPoint
+    ? `${booking.departureDetails?.city || 'Origin'} (${booking.boardingPoint})`
+    : (booking.departureDetails?.city || 'Origin');
+  const to = booking.droppingPoint
+    ? `${booking.arrivalDetails?.city || 'Destination'} (${booking.droppingPoint})`
+    : (booking.arrivalDetails?.city || 'Destination');
   const seats = booking.seats?.join(', ') || 'N/A';
+  const date = booking.departureDetails?.date || 'Upcoming';
 
   return sendNotification({
     recipientId,
     recipientEmail,
-    title: 'Booking Confirmed! 🎫',
-    message: `Your bus trip from ${from} to ${to} on ${booking.departureDetails?.date} is confirmed. Seats: ${seats}. Have a safe journey!`,
+    templateKey: 'booking_confirmed',
+    templateParams: { from, to, seats, date },
     category: 'booking',
     actionUrl: '/profile',
-    metadata: { bookingId: booking._id, seats: booking.seats, fare: booking.fare },
+    metadata: {
+      bookingId: booking._id,
+      seats: booking.seats,
+      fare: booking.fare,
+      pnr: booking.pnr || String(booking._id).slice(-8).toUpperCase(),
+    },
   });
 }
 
+/**
+ * 2. Booking Cancellation Notification
+ */
 export async function sendBookingCancellation(booking) {
   const recipientId = booking.customerId || booking.email;
   const recipientEmail = booking.email;
-  const from = booking.boardingPoint ? `${booking.departureDetails?.city || 'Origin'} (${booking.boardingPoint})` : (booking.departureDetails?.city || 'Origin');
-  const to = booking.droppingPoint ? `${booking.arrivalDetails?.city || 'Destination'} (${booking.droppingPoint})` : (booking.arrivalDetails?.city || 'Destination');
+  const from = booking.departureDetails?.city || 'Origin';
+  const to = booking.arrivalDetails?.city || 'Destination';
 
   return sendNotification({
     recipientId,
     recipientEmail,
-    title: 'Booking Cancelled ℹ️',
-    message: `Your booking for ${from} to ${to} has been cancelled and seats released.`,
+    templateKey: 'booking_cancelled',
+    templateParams: { from, to },
     category: 'booking',
     actionUrl: '/profile',
-    metadata: { bookingId: booking._id },
+    metadata: {
+      bookingId: booking._id,
+      pnr: booking.pnr || String(booking._id).slice(-8).toUpperCase(),
+    },
   });
 }
 
+/**
+ * 3. Schedule Change Notification (when route or departure time changes)
+ */
+export async function sendScheduleChangeNotification({
+  booking,
+  oldTime,
+  newTime,
+  operatorName = 'Bus Operator',
+}) {
+  const recipientId = booking.customerId || booking.email;
+  const recipientEmail = booking.email;
+  const from = booking.departureDetails?.city || 'Origin';
+  const to = booking.arrivalDetails?.city || 'Destination';
+  const date = booking.departureDetails?.date || 'Journey Date';
+
+  return sendNotification({
+    recipientId,
+    recipientEmail,
+    templateKey: 'schedule_changed',
+    templateParams: {
+      from,
+      to,
+      date,
+      oldTime,
+      newTime,
+      operatorName,
+    },
+    category: 'trip',
+    actionUrl: '/profile',
+    metadata: {
+      bookingId: booking._id,
+      oldTime,
+      newTime,
+      operatorName,
+    },
+  });
+}
+
+/**
+ * 4. Upcoming Journey Reminder Notification (sent prior to departure)
+ */
+export async function sendJourneyReminderNotification({
+  booking,
+  hoursLeft = 4,
+}) {
+  const recipientId = booking.customerId || booking.email;
+  const recipientEmail = booking.email;
+  const to = booking.arrivalDetails?.city || 'Destination';
+  const departureTime = booking.departureDetails?.time || 'Scheduled Time';
+  const boardingPoint = booking.boardingPoint || booking.departureDetails?.city || 'Boarding Point';
+
+  return sendNotification({
+    recipientId,
+    recipientEmail,
+    templateKey: 'journey_reminder',
+    templateParams: {
+      to,
+      hoursLeft,
+      departureTime,
+      boardingPoint,
+    },
+    category: 'trip',
+    actionUrl: '/profile',
+    metadata: {
+      bookingId: booking._id,
+      hoursLeft,
+      departureTime,
+      boardingPoint,
+    },
+  });
+}
+
+/**
+ * 5. Promotional & Offer Notification (broadcast or targeted)
+ */
+export async function sendPromotionalNotification({
+  recipientId,
+  recipientEmail,
+  code = 'TEDTRIP',
+  discount = '15% OFF',
+  title,
+  message,
+}) {
+  return sendNotification({
+    recipientId,
+    recipientEmail,
+    templateKey: 'promotional_offer',
+    templateParams: { code, discount, title, message },
+    category: 'promo',
+    actionUrl: '/',
+    metadata: { code, discount },
+  });
+}
+
+/**
+ * 6. Community Interaction Notification
+ */
 export async function sendCommunityInteractionNotification({
   recipientId,
   recipientEmail,
@@ -93,27 +294,50 @@ export async function sendCommunityInteractionNotification({
   postTitle,
   postId,
 }) {
-  let title = 'New Community Interaction';
-  let message = '';
-
-  if (type === 'comment') {
-    title = 'New Comment on Your Story 💬';
-    message = `${actorName} commented on your travel post: "${postTitle}"`;
-  } else if (type === 'reply') {
-    title = 'New Reply to Your Comment 💬';
-    message = `${actorName} replied to your comment on "${postTitle}"`;
-  } else if (type === 'like') {
-    title = 'Someone Liked Your Story ❤️';
-    message = `${actorName} liked your travel post: "${postTitle}"`;
-  }
-
   return sendNotification({
     recipientId,
     recipientEmail,
-    title,
-    message,
+    templateKey: 'community_interaction',
+    templateParams: { actorName, type, postTitle },
     category: 'community',
     actionUrl: `/community?postId=${postId}`,
     metadata: { postId, type },
   });
+}
+
+/**
+ * Periodic scanner for upcoming journeys to dispatch automatic reminders.
+ */
+export async function scanUpcomingJourneys() {
+  try {
+    const today = new Date().toISOString().split('T')[0];
+    // Find active confirmed bookings departing today
+    const upcomingBookings = await Booking.find({
+      'departureDetails.date': today,
+      status: { $in: ['confirmed', 'booked', 'active'] },
+    }).limit(50).lean().exec();
+
+    let sentCount = 0;
+    for (const b of upcomingBookings) {
+      // Check if reminder was already sent today for this booking
+      const alreadySent = await Notification.findOne({
+        'metadata.bookingId': b._id,
+        category: 'trip',
+        'metadata.hoursLeft': { $exists: true },
+      }).exec();
+
+      if (!alreadySent) {
+        await sendJourneyReminderNotification({
+          booking: b,
+          hoursLeft: 4,
+        });
+        sentCount++;
+      }
+    }
+
+    return { scanned: upcomingBookings.length, remindersSent: sentCount };
+  } catch (err) {
+    console.error('scanUpcomingJourneys error:', err);
+    return { error: err.message };
+  }
 }

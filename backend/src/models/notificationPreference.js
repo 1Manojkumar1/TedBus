@@ -8,8 +8,16 @@ const notificationPreferenceSchema = new mongoose.Schema(
     emailEnabled: { type: Boolean, default: true },
     pushEnabled: { type: Boolean, default: false },
     bookingUpdates: { type: Boolean, default: true },
+    journeyReminders: { type: Boolean, default: true },
+    scheduleChanges: { type: Boolean, default: true },
     communityInteractions: { type: Boolean, default: true },
     promotionalOffers: { type: Boolean, default: true },
+    preferredLanguage: {
+      type: String,
+      enum: ['en', 'hi', 'te', 'ta', 'kn', 'ml'],
+      default: 'en',
+    },
+    pushSubscription: { type: mongoose.Schema.Types.Mixed },
   },
   { timestamps: true }
 );

@@ -24,6 +24,12 @@ const notificationSchema = new mongoose.Schema(
       enum: ['sent', 'delivered', 'failed', 'pending'],
       default: 'delivered',
     },
+    deliveryAttempts: { type: Number, default: 1 },
+    lastAttemptAt: { type: Date, default: Date.now },
+    nextRetryAt: { type: Date },
+    failureReason: { type: String, default: null },
+    language: { type: String, default: 'en' },
+    channels: [{ type: String, enum: ['in_app', 'email', 'push'] }],
     metadata: {
       type: mongoose.Schema.Types.Mixed,
     },

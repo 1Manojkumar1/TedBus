@@ -14,7 +14,11 @@ export interface AppNotification {
   actionUrl?: string;
   read: boolean;
   channel: 'in_app' | 'email' | 'push';
+  channels?: ('in_app' | 'email' | 'push')[];
   deliveryStatus: 'sent' | 'delivered' | 'failed' | 'pending';
+  deliveryAttempts?: number;
+  failureReason?: string;
+  language?: string;
   metadata?: Record<string, unknown>;
   createdAt: string;
 }
@@ -37,8 +41,12 @@ export interface NotificationPreference {
   emailEnabled: boolean;
   pushEnabled: boolean;
   bookingUpdates: boolean;
+  journeyReminders: boolean;
+  scheduleChanges: boolean;
   communityInteractions: boolean;
   promotionalOffers: boolean;
+  preferredLanguage: 'en' | 'hi' | 'te' | 'ta' | 'kn' | 'ml';
+  pushSubscription?: unknown;
 }
 
 @Injectable({
@@ -51,6 +59,11 @@ export class NotificationService {
   private readonly seenToastIds = new Set<string>();
 
   readonly unreadCount = signal<number>(0);
+  readonly pushPermission = signal<NotificationPermission>(
+    typeof window !== 'undefined' && 'Notification' in window
+      ? Notification.permission
+      : 'default'
+  );
 
   getNotifications(options: {
     customerId?: string;
@@ -83,6 +96,9 @@ export class NotificationService {
               actionUrl: notif.actionUrl,
               actionLabel: 'View details',
             });
+
+            // If browser push permission is granted, also pop native OS notification!
+            this.dispatchNativeBrowserNotification(notif.title, notif.message);
           }
         }
       })
@@ -123,5 +139,63 @@ export class NotificationService {
 
   updatePreferences(prefs: NotificationPreference): Observable<NotificationPreference> {
     return this.http.put<NotificationPreference>(`${this.baseUrl}/preferences`, prefs);
+  }
+
+  sendTestNotification(customerId?: string, email?: string, channel: string = 'all'): Observable<{ success: boolean; notification: AppNotification }> {
+    return this.http.post<{ success: boolean; notification: AppNotification }>(`${this.baseUrl}/test-channel`, {
+      customerId,
+      email,
+      channel,
+    });
+  }
+
+  triggerUpcomingReminders(): Observable<{ scanned: number; remindersSent: number }> {
+    return this.http.post<{ scanned: number; remindersSent: number }>(`${this.baseUrl}/trigger-reminders`, {});
+  }
+
+  retryFailedDeliveries(): Observable<{ retriedCount: number; succeeded?: number }> {
+    return this.http.post<{ retriedCount: number; succeeded?: number }>(`${this.baseUrl}/retry-failed`, {});
+  }
+
+  /**
+   * Requests browser Web Push notification permission.
+   */
+  async requestPushPermission(): Promise<boolean> {
+    if (typeof window === 'undefined' || !('Notification' in window)) {
+      return false;
+    }
+
+    try {
+      const permission = await Notification.requestPermission();
+      this.pushPermission.set(permission);
+      if (permission === 'granted') {
+        this.dispatchNativeBrowserNotification(
+          'Push Notifications Active! 🔔',
+          'You will receive instant alerts for booking updates and journey reminders.'
+        );
+        return true;
+      }
+      return false;
+    } catch (err) {
+      console.warn('Could not request notification permission:', err);
+      return false;
+    }
+  }
+
+  /**
+   * Pops an OS-level browser push notification when permitted.
+   */
+  dispatchNativeBrowserNotification(title: string, body: string): void {
+    if (typeof window === 'undefined' || !('Notification' in window)) return;
+    if (Notification.permission === 'granted') {
+      try {
+        new Notification(title, {
+          body,
+          icon: '/favicon.ico',
+        });
+      } catch (e) {
+        console.warn('Failed to dispatch native notification:', e);
+      }
+    }
   }
 }

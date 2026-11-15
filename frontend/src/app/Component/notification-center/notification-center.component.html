@@ -19,14 +19,14 @@
           [class.bg-white]="activeTab() === 'notifications'"
           [class.text-[#5f4299]]="activeTab() === 'notifications'"
           [class.text-white]="activeTab() !== 'notifications'"
-          class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all">
+          class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer">
           {{ 'NOTIF.TAB_NOTIFS' | translate }} ({{ notificationService.unreadCount() }})
         </button>
         <button (click)="activeTab.set('preferences')"
           [class.bg-white]="activeTab() === 'preferences'"
           [class.text-[#5f4299]]="activeTab() === 'preferences'"
           [class.text-white]="activeTab() !== 'preferences'"
-          class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all">
+          class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer">
           {{ 'NOTIF.TAB_PREFS' | translate }}
         </button>
       </div>
@@ -56,17 +56,19 @@
           <button *ngFor="let cat of categories" (click)="filterCategory(cat.id)"
             [class.bg-[#5f4299]]="selectedCategory() === cat.id"
             [class.text-white]="selectedCategory() === cat.id"
-            class="px-3 py-1.5 rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-semibold whitespace-nowrap shadow-xs hover:border-[#5f4299] transition-colors">
+            class="px-3 py-1.5 rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-semibold whitespace-nowrap shadow-xs hover:border-[#5f4299] transition-colors cursor-pointer">
             <i [class]="cat.icon + ' mr-1.5'"></i>
             <span>{{ cat.label }}</span>
           </button>
         </div>
 
-        <button *ngIf="notifications().length > 0 && notificationService.unreadCount() > 0"
-          (click)="markAllAsRead()"
-          class="text-xs font-bold text-[#5f4299] hover:underline whitespace-nowrap self-end sm:self-auto">
-          Mark all as read
-        </button>
+        <div class="flex items-center gap-3 self-end sm:self-auto">
+          <button *ngIf="notifications().length > 0 && notificationService.unreadCount() > 0"
+            (click)="markAllAsRead()"
+            class="text-xs font-bold text-[#5f4299] hover:underline whitespace-nowrap cursor-pointer">
+            Mark all as read
+          </button>
+        </div>
       </div>
 
       <!-- Loading State -->
@@ -81,9 +83,12 @@
         <i class="fa-regular fa-bell text-4xl text-gray-300 dark:text-gray-600 mb-3 block"></i>
         <h4 class="font-bold text-base">You're all caught up!</h4>
         <p class="text-xs text-gray-400 mt-1">No notifications found in this category.</p>
+        <button (click)="sendTestNotification()" class="mt-4 px-4 py-2 bg-[#5f4299] text-white text-xs font-bold rounded-xl hover:bg-[#4b337e] transition-colors">
+          Send a Test Notification
+        </button>
       </div>
 
-      <!-- Notifications List -->
+      <!-- Notifications List (History Log) -->
       <div *ngIf="!isLoading() && notifications().length > 0" class="space-y-3">
         <div *ngFor="let item of notifications()"
           (click)="handleNotificationClick(item)"
@@ -93,7 +98,7 @@
 
           <!-- Category Icon -->
           <div [class]="'w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-base ' + getIconForCategory(item.category)">
-            <i [class]="item.category === 'booking' ? 'fa-solid fa-ticket' : (item.category === 'community' ? 'fa-solid fa-comments' : (item.category === 'payment' ? 'fa-solid fa-credit-card' : 'fa-solid fa-bell'))"></i>
+            <i [class]="item.category === 'booking' ? 'fa-solid fa-ticket' : (item.category === 'trip' ? 'fa-solid fa-bus' : (item.category === 'community' ? 'fa-solid fa-comments' : (item.category === 'payment' ? 'fa-solid fa-credit-card' : 'fa-solid fa-bell')))"></i>
           </div>
 
           <!-- Content Body -->
@@ -103,12 +108,32 @@
                 <span>{{ item.title }}</span>
                 <span *ngIf="!item.read" class="w-2 h-2 rounded-full bg-[#d84e55] inline-block"></span>
               </h4>
-              <span class="text-[11px] text-gray-400 shrink-0">{{ formatDate(item.createdAt) }}</span>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <!-- Delivery Status Tracking Badge -->
+                <span [class]="'text-[9px] font-bold px-2 py-0.5 rounded-full capitalize ' + getStatusBadgeClass(item.deliveryStatus)">
+                  <i [class]="item.deliveryStatus === 'delivered' ? 'fa-solid fa-check-double text-[8px] mr-1' : (item.deliveryStatus === 'failed' ? 'fa-solid fa-circle-exclamation text-[8px] mr-1' : 'fa-solid fa-paper-plane text-[8px] mr-1')"></i>
+                  <span>{{ item.deliveryStatus }}</span>
+                </span>
+                <span class="text-[11px] text-gray-400">&bull; {{ formatDate(item.createdAt) }}</span>
+              </div>
             </div>
 
             <p class="text-xs text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
               {{ item.message }}
             </p>
+
+            <!-- Channels & Language Pills -->
+            <div class="flex flex-wrap items-center gap-2 mt-2">
+              <span *ngFor="let ch of (item.channels || [item.channel])"
+                class="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-md bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300">
+                <i [class]="ch === 'email' ? 'fa-solid fa-envelope text-[9px] text-blue-500' : (ch === 'push' ? 'fa-solid fa-bell text-[9px] text-purple-500' : 'fa-solid fa-mobile-screen text-[9px] text-emerald-500')"></i>
+                <span class="capitalize">{{ ch.replace('_', ' ') }}</span>
+              </span>
+              <span *ngIf="item.language && item.language !== 'en'"
+                class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-50 dark:bg-purple-950/40 text-[#5f4299] uppercase">
+                {{ item.language }}
+              </span>
+            </div>
 
             <div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-100 dark:border-slate-800/60 text-[11px]">
               <button type="button"
@@ -120,11 +145,11 @@
 
               <div class="flex items-center gap-2" (click)="$event.stopPropagation()">
                 <button *ngIf="!item.read" (click)="markAsRead(item, $event)"
-                  class="text-gray-400 hover:text-[#5f4299]" title="Mark as read">
+                  class="text-gray-400 hover:text-[#5f4299] p-1" title="Mark as read">
                   <i class="fa-solid fa-check"></i>
                 </button>
                 <button (click)="deleteNotification(item, $event)"
-                  class="text-gray-400 hover:text-red-500" title="Delete">
+                  class="text-gray-400 hover:text-red-500 p-1" title="Delete">
                   <i class="fa-solid fa-trash text-[11px]"></i>
                 </button>
               </div>
@@ -141,16 +166,25 @@
                     {{ item.category }} Alert
                   </span>
                   <span class="text-gray-400">&bull;</span>
-                  <span class="text-gray-500 dark:text-gray-400 capitalize">Delivered via {{ item.channel.replace('_', ' ') }}</span>
+                  <span class="text-gray-500 dark:text-gray-400">
+                    Delivery Status: <strong>{{ item.deliveryStatus }}</strong>
+                    <span *ngIf="item.deliveryAttempts">({{ item.deliveryAttempts }} attempt)</span>
+                  </span>
                 </div>
                 <span class="text-[11px] font-semibold text-gray-500 dark:text-gray-400">{{ formatDate(item.createdAt) }}</span>
+              </div>
+
+              <!-- Failure notice if any -->
+              <div *ngIf="item.failureReason" class="p-2 rounded-lg bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 text-[11px]">
+                <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+                <span>{{ item.failureReason }}</span>
               </div>
 
               <!-- Specific metadata details if available -->
               <div *ngIf="item.metadata" class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1 text-[11px]">
                 <div *ngIf="item.metadata['bookingId']" class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800">
-                  <span class="block text-gray-400 text-[10px] uppercase font-bold">Booking Ref</span>
-                  <span class="font-bold text-gray-800 dark:text-gray-100 font-mono">{{ formatRef(item.metadata['bookingId']) }}</span>
+                  <span class="block text-gray-400 text-[10px] uppercase font-bold">Booking / PNR</span>
+                  <span class="font-bold text-gray-800 dark:text-gray-100 font-mono">{{ item.metadata['pnr'] || formatRef(item.metadata['bookingId']) }}</span>
                 </div>
                 <div *ngIf="item.metadata['seats']" class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800">
                   <span class="block text-gray-400 text-[10px] uppercase font-bold">Seat Number(s)</span>
@@ -159,6 +193,14 @@
                 <div *ngIf="item.metadata['fare']" class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800">
                   <span class="block text-gray-400 text-[10px] uppercase font-bold">Total Fare</span>
                   <span class="font-bold text-emerald-600 dark:text-emerald-400">&#8377;{{ item.metadata['fare'] }}</span>
+                </div>
+                <div *ngIf="item.metadata['hoursLeft']" class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800">
+                  <span class="block text-gray-400 text-[10px] uppercase font-bold">Departure In</span>
+                  <span class="font-bold text-blue-600 dark:text-blue-400">{{ item.metadata['hoursLeft'] }} Hours</span>
+                </div>
+                <div *ngIf="item.metadata['newTime']" class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800">
+                  <span class="block text-gray-400 text-[10px] uppercase font-bold">Updated Time</span>
+                  <span class="font-bold text-amber-600 dark:text-amber-400">{{ item.metadata['newTime'] }}</span>
                 </div>
               </div>
 
@@ -182,15 +224,23 @@
 
     </div>
 
-    <!-- Signed In: Preferences Tab -->
+    <!-- Signed In: Preferences & Testing Tab -->
     <div *ngIf="auth.isloggedin() && activeTab() === 'preferences'"
       class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
 
-      <div>
-        <h3 class="font-extrabold text-base mb-1">Notification Preferences</h3>
-        <p class="text-xs text-gray-500">
-          Choose how and when TedBus sends you trip updates, promotional discounts, and community alerts.
-        </p>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h3 class="font-extrabold text-base mb-1">Notification Preferences & Localization</h3>
+          <p class="text-xs text-gray-500">
+            Configure delivery channels, opt-ins, and select your preferred notification language.
+          </p>
+        </div>
+
+        <button (click)="sendTestNotification()" [disabled]="isTestingChannel()"
+          class="px-3.5 py-2 bg-purple-50 dark:bg-purple-950/50 text-[#5f4299] dark:text-purple-300 border border-purple-200 dark:border-purple-800 rounded-xl text-xs font-bold hover:bg-purple-100 transition-colors flex items-center gap-2 self-start sm:self-auto cursor-pointer disabled:opacity-50">
+          <i [class]="isTestingChannel() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-paper-plane'"></i>
+          <span>{{ isTestingChannel() ? 'Dispatching...' : 'Test Channels Now' }}</span>
+        </button>
       </div>
 
       <div *ngIf="prefSaveSuccess()" class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center gap-2">
@@ -198,45 +248,117 @@
         <span>Preferences updated successfully!</span>
       </div>
 
-      <!-- Channel Settings -->
-      <div class="space-y-4">
-        <h4 class="font-bold text-xs uppercase tracking-wider text-gray-400">Delivery Channels</h4>
-
-        <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50">
-          <div>
-            <span class="block font-bold text-sm">In-App Notifications</span>
-            <span class="text-xs text-gray-500">Receive alerts in your notification bell center</span>
-          </div>
-          <input type="checkbox" [(ngModel)]="preferences().inAppEnabled" class="w-5 h-5 accent-[#5f4299]" />
+      <!-- 1. Preferred Notification Language -->
+      <div class="p-4 rounded-xl bg-purple-50/50 dark:bg-slate-800/40 border border-purple-100 dark:border-slate-800 space-y-2">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-language text-[#5f4299] text-base"></i>
+          <label class="font-bold text-sm text-gray-800 dark:text-gray-100">Preferred Notification Language</label>
         </div>
-
-        <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50">
-          <div>
-            <span class="block font-bold text-sm">Email Notifications</span>
-            <span class="text-xs text-gray-500">Send confirmations and receipts to {{ auth.user()?.email }}</span>
-          </div>
-          <input type="checkbox" [(ngModel)]="preferences().emailEnabled" class="w-5 h-5 accent-[#5f4299]" />
-        </div>
-
-        <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50">
-          <div>
-            <span class="block font-bold text-sm">Push Notifications</span>
-            <span class="text-xs text-gray-500">Get instant updates on bus boarding time and delays</span>
-          </div>
-          <input type="checkbox" [(ngModel)]="preferences().pushEnabled" class="w-5 h-5 accent-[#5f4299]" />
+        <p class="text-xs text-gray-500">
+          All automated alerts (booking confirmations, cancellations, journey reminders) will be sent in this language.
+        </p>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2">
+          <button *ngFor="let l of supportedLanguages" type="button"
+            (click)="selectLanguage(l.code)"
+            [class.border-[#5f4299]]="preferences().preferredLanguage === l.code"
+            [class.bg-[#5f4299]]="preferences().preferredLanguage === l.code"
+            [class.text-white]="preferences().preferredLanguage === l.code"
+            [class.bg-white]="preferences().preferredLanguage !== l.code"
+            [class.dark:bg-slate-900]="preferences().preferredLanguage !== l.code"
+            class="p-2.5 rounded-xl border border-gray-200 dark:border-slate-700 text-left text-xs font-semibold flex items-center justify-between transition-all cursor-pointer">
+            <div>
+              <span class="block font-bold">{{ l.native }}</span>
+              <span class="text-[10px] opacity-75">{{ l.name }}</span>
+            </div>
+            <i *ngIf="preferences().preferredLanguage === l.code" class="fa-solid fa-check text-xs"></i>
+          </button>
         </div>
       </div>
 
-      <!-- Category Opt-ins -->
+      <!-- 2. Delivery Channels -->
+      <div class="space-y-4">
+        <h4 class="font-bold text-xs uppercase tracking-wider text-gray-400">Delivery Channels</h4>
+
+        <div class="flex items-center justify-between p-3.5 rounded-xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-mobile-screen"></i>
+            </div>
+            <div>
+              <span class="block font-bold text-sm">In-App Notifications</span>
+              <span class="text-xs text-gray-500">Real-time alerts in navbar bell and toast popups</span>
+            </div>
+          </div>
+          <input type="checkbox" [(ngModel)]="preferences().inAppEnabled" (change)="savePreferences()" class="w-5 h-5 accent-[#5f4299] cursor-pointer" />
+        </div>
+
+        <div class="flex items-center justify-between p-3.5 rounded-xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-600 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-envelope"></i>
+            </div>
+            <div>
+              <span class="block font-bold text-sm">Email Notifications</span>
+              <span class="text-xs text-gray-500">Delivered directly to {{ auth.user()?.email }}</span>
+            </div>
+          </div>
+          <input type="checkbox" [(ngModel)]="preferences().emailEnabled" (change)="savePreferences()" class="w-5 h-5 accent-[#5f4299] cursor-pointer" />
+        </div>
+
+        <div class="flex items-center justify-between p-3.5 rounded-xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-purple-50 dark:bg-purple-950/40 text-[#5f4299] flex items-center justify-center text-sm">
+              <i class="fa-solid fa-bell"></i>
+            </div>
+            <div>
+              <span class="block font-bold text-sm">Push Notifications</span>
+              <span class="text-xs text-gray-500">Browser & device notifications for upcoming departures</span>
+            </div>
+          </div>
+          <button (click)="onTogglePush()"
+            [class.bg-[#5f4299]]="preferences().pushEnabled"
+            [class.bg-gray-300]="!preferences().pushEnabled"
+            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors cursor-pointer">
+            <span [class.translate-x-6]="preferences().pushEnabled" [class.translate-x-1]="!preferences().pushEnabled"
+              class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. Key Notification Events -->
       <div class="space-y-4 pt-4 border-t border-gray-100 dark:border-slate-800">
-        <h4 class="font-bold text-xs uppercase tracking-wider text-gray-400">Notification Types</h4>
+        <h4 class="font-bold text-xs uppercase tracking-wider text-gray-400">Key Event Triggers</h4>
 
         <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50">
           <div>
-            <span class="block font-bold text-sm">Booking & Trip Alerts</span>
-            <span class="text-xs text-gray-500">Seat confirmations, schedule changes, cancellations</span>
+            <span class="block font-bold text-sm">Booking Confirmations & Cancellations</span>
+            <span class="text-xs text-gray-500">Ticket PNR, seat allocations, and refund status</span>
           </div>
-          <input type="checkbox" [(ngModel)]="preferences().bookingUpdates" class="w-5 h-5 accent-[#5f4299]" />
+          <input type="checkbox" [(ngModel)]="preferences().bookingUpdates" (change)="savePreferences()" class="w-5 h-5 accent-[#5f4299] cursor-pointer" />
+        </div>
+
+        <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50">
+          <div>
+            <span class="block font-bold text-sm">Upcoming Journey Reminders</span>
+            <span class="text-xs text-gray-500">Scheduled departure reminders (4 hours prior) with boarding details</span>
+          </div>
+          <input type="checkbox" [(ngModel)]="preferences().journeyReminders" (change)="savePreferences()" class="w-5 h-5 accent-[#5f4299] cursor-pointer" />
+        </div>
+
+        <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50">
+          <div>
+            <span class="block font-bold text-sm">Schedule & Delay Changes</span>
+            <span class="text-xs text-gray-500">Alerts when bus departure time or boarding stop changes</span>
+          </div>
+          <input type="checkbox" [(ngModel)]="preferences().scheduleChanges" (change)="savePreferences()" class="w-5 h-5 accent-[#5f4299] cursor-pointer" />
+        </div>
+
+        <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50">
+          <div>
+            <span class="block font-bold text-sm">Promotional Offers & Discounts</span>
+            <span class="text-xs text-gray-500">Festive discounts, coupons, and wallet cashbacks</span>
+          </div>
+          <input type="checkbox" [(ngModel)]="preferences().promotionalOffers" (change)="savePreferences()" class="w-5 h-5 accent-[#5f4299] cursor-pointer" />
         </div>
 
         <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50">
@@ -244,21 +366,33 @@
             <span class="block font-bold text-sm">Community Activity</span>
             <span class="text-xs text-gray-500">Replies and likes on your travel stories and advice</span>
           </div>
-          <input type="checkbox" [(ngModel)]="preferences().communityInteractions" class="w-5 h-5 accent-[#5f4299]" />
-        </div>
-
-        <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-slate-800/50">
-          <div>
-            <span class="block font-bold text-sm">Offers & Deals</span>
-            <span class="text-xs text-gray-500">Festive discounts, coupons, and wallet cashbacks</span>
-          </div>
-          <input type="checkbox" [(ngModel)]="preferences().promotionalOffers" class="w-5 h-5 accent-[#5f4299]" />
+          <input type="checkbox" [(ngModel)]="preferences().communityInteractions" (change)="savePreferences()" class="w-5 h-5 accent-[#5f4299] cursor-pointer" />
         </div>
       </div>
 
-      <div class="flex justify-end pt-4 border-t border-gray-100 dark:border-slate-800">
+      <!-- 4. Reliability & Delivery Tracking Engine Actions -->
+      <div class="p-4 rounded-xl bg-gray-50 dark:bg-slate-800/40 border border-gray-200 dark:border-slate-800 space-y-3">
+        <h4 class="font-bold text-xs uppercase tracking-wider text-gray-500">Delivery Reliability & Automation Engine</h4>
+        <p class="text-xs text-gray-500">
+          Test background scanning and automatic retry queues for failed deliveries.
+        </p>
+        <div class="flex flex-wrap gap-2 pt-1">
+          <button (click)="triggerUpcomingReminders()" [disabled]="isScanningJourneys()"
+            class="px-3 py-1.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-xs font-semibold rounded-lg hover:border-[#5f4299] transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50">
+            <i [class]="isScanningJourneys() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-clock'"></i>
+            <span>Scan Upcoming Journeys</span>
+          </button>
+          <button (click)="retryFailedDeliveries()" [disabled]="isRetryingDeliveries()"
+            class="px-3 py-1.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-xs font-semibold rounded-lg hover:border-[#5f4299] transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50">
+            <i [class]="isRetryingDeliveries() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-rotate'"></i>
+            <span>Retry Failed Deliveries</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex justify-end pt-2">
         <button (click)="savePreferences()" [disabled]="isSavingPrefs()"
-          class="px-5 py-2.5 bg-[#5f4299] text-white text-xs font-bold rounded-xl hover:bg-[#4b337e] transition-colors disabled:opacity-50">
+          class="px-5 py-2.5 bg-[#5f4299] text-white text-xs font-bold rounded-xl hover:bg-[#4b337e] transition-colors disabled:opacity-50 cursor-pointer">
           {{ isSavingPrefs() ? 'Saving...' : 'Save Preferences' }}
         </button>
       </div>

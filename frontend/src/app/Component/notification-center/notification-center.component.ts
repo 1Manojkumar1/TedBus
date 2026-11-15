@@ -9,7 +9,7 @@ import {
 } from '../../service/notification.service';
 import { AuthService } from '../../service/auth.service';
 import { TranslationService } from '../../service/translation.service';
-
+import { ToastService } from '../../service/toast.service';
 import { TranslatePipe } from '../../service/translate.pipe';
 
 @Component({
@@ -23,6 +23,7 @@ export class NotificationCenterComponent implements OnInit {
   readonly notificationService = inject(NotificationService);
   readonly auth = inject(AuthService);
   readonly i18n = inject(TranslationService);
+  private readonly toastService = inject(ToastService);
   private readonly router = inject(Router);
 
   notifications = signal<AppNotification[]>([]);
@@ -30,6 +31,12 @@ export class NotificationCenterComponent implements OnInit {
   selectedCategory = signal<string>('all');
   activeTab = signal<'notifications' | 'preferences'>('notifications');
   expandedIds = signal<Set<string>>(new Set<string>());
+
+  // Action feedback states
+  isTestingChannel = signal<boolean>(false);
+  testStatus = signal<string>('');
+  isScanningJourneys = signal<boolean>(false);
+  isRetryingDeliveries = signal<boolean>(false);
 
   // Preferences state
   preferences = signal<NotificationPreference>({
@@ -39,8 +46,11 @@ export class NotificationCenterComponent implements OnInit {
     emailEnabled: true,
     pushEnabled: false,
     bookingUpdates: true,
+    journeyReminders: true,
+    scheduleChanges: true,
     communityInteractions: true,
     promotionalOffers: true,
+    preferredLanguage: 'en',
   });
   isSavingPrefs = signal<boolean>(false);
   prefSaveSuccess = signal<boolean>(false);
@@ -48,9 +58,19 @@ export class NotificationCenterComponent implements OnInit {
   readonly categories = [
     { id: 'all', label: 'All Notifications', icon: 'fa-solid fa-bell' },
     { id: 'booking', label: 'Bookings', icon: 'fa-solid fa-ticket' },
+    { id: 'trip', label: 'Journey & Schedules', icon: 'fa-solid fa-bus' },
     { id: 'community', label: 'Community', icon: 'fa-solid fa-comments' },
     { id: 'payment', label: 'Payments', icon: 'fa-solid fa-credit-card' },
     { id: 'promo', label: 'Offers', icon: 'fa-solid fa-tag' },
+  ];
+
+  readonly supportedLanguages = [
+    { code: 'en', name: 'English', native: 'English' },
+    { code: 'hi', name: 'Hindi', native: 'हिन्दी' },
+    { code: 'te', name: 'Telugu', native: 'తెలుగు' },
+    { code: 'ta', name: 'Tamil', native: 'தமிழ்' },
+    { code: 'kn', name: 'Kannada', native: 'ಕನ್ನಡ' },
+    { code: 'ml', name: 'Malayalam', native: 'മലയാളം' },
   ];
 
   ngOnInit(): void {
@@ -110,6 +130,7 @@ export class NotificationCenterComponent implements OnInit {
       next: () => {
         const updated = this.notifications().map((n) => ({ ...n, read: true }));
         this.notifications.set(updated);
+        this.toastService.success('Done', 'All notifications marked as read.');
       },
       error: (err) => console.error('Failed to mark all as read:', err),
     });
@@ -120,6 +141,7 @@ export class NotificationCenterComponent implements OnInit {
     this.notificationService.deleteNotification(item._id).subscribe({
       next: () => {
         this.notifications.set(this.notifications().filter((n) => n._id !== item._id));
+        this.toastService.info('Removed', 'Notification deleted.');
       },
       error: (err) => console.error('Failed to delete notification:', err),
     });
@@ -157,6 +179,14 @@ export class NotificationCenterComponent implements OnInit {
     this.toggleExpand(item);
   }
 
+  selectLanguage(code: string): void {
+    this.preferences.update((p) => ({
+      ...p,
+      preferredLanguage: code as 'en' | 'hi' | 'te' | 'ta' | 'kn' | 'ml',
+    }));
+    this.savePreferences();
+  }
+
   loadPreferences(): void {
     if (!this.auth.isloggedin()) return;
     const user = this.auth.user();
@@ -167,6 +197,9 @@ export class NotificationCenterComponent implements OnInit {
           ...prefs,
           customerId: this.userIdentifier,
           email: user?.email || '',
+          preferredLanguage: prefs.preferredLanguage || this.i18n.currentLanguage() || 'en',
+          journeyReminders: prefs.journeyReminders ?? true,
+          scheduleChanges: prefs.scheduleChanges ?? true,
         });
       },
       error: () => {},
@@ -182,11 +215,95 @@ export class NotificationCenterComponent implements OnInit {
         this.preferences.set(saved);
         this.isSavingPrefs.set(false);
         this.prefSaveSuccess.set(true);
+        this.toastService.success('Preferences Saved', 'Your notification settings have been updated.');
         setTimeout(() => this.prefSaveSuccess.set(false), 3000);
       },
       error: (err) => {
         console.error('Failed to save preferences:', err);
         this.isSavingPrefs.set(false);
+        this.toastService.error('Save Failed', 'Unable to update preferences right now.');
+      },
+    });
+  }
+
+  async onTogglePush(): Promise<void> {
+    const current = this.preferences();
+    if (!current.pushEnabled) {
+      // User turned on push
+      const granted = await this.notificationService.requestPushPermission();
+      if (granted) {
+        this.preferences.update((p) => ({ ...p, pushEnabled: true }));
+        this.savePreferences();
+      } else {
+        this.preferences.update((p) => ({ ...p, pushEnabled: false }));
+        this.toastService.warning(
+          'Push Blocked',
+          'Please allow notifications in your browser site permissions.'
+        );
+      }
+    } else {
+      this.preferences.update((p) => ({ ...p, pushEnabled: false }));
+      this.savePreferences();
+    }
+  }
+
+  sendTestNotification(): void {
+    if (!this.auth.isloggedin()) {
+      this.toastService.warning('Sign in', 'Please sign in to test notification channels.');
+      return;
+    }
+
+    this.isTestingChannel.set(true);
+    const user = this.auth.user();
+    this.notificationService
+      .sendTestNotification(this.userIdentifier, user?.email)
+      .subscribe({
+        next: (res) => {
+          this.isTestingChannel.set(false);
+          this.toastService.success(
+            'Test Dispatched!',
+            'Check In-App, Email, and Browser Push alerts.'
+          );
+          // Refresh list to show test alert in feed
+          this.fetchNotifications();
+        },
+        error: (err) => {
+          this.isTestingChannel.set(false);
+          this.toastService.error('Test Failed', 'Could not deliver test notification.');
+        },
+      });
+  }
+
+  triggerUpcomingReminders(): void {
+    this.isScanningJourneys.set(true);
+    this.notificationService.triggerUpcomingReminders().subscribe({
+      next: (res) => {
+        this.isScanningJourneys.set(false);
+        this.toastService.info(
+          'Journey Scan Complete',
+          `Scanned ${res.scanned} active bookings. Reminders sent: ${res.remindersSent}.`
+        );
+        this.fetchNotifications();
+      },
+      error: () => {
+        this.isScanningJourneys.set(false);
+      },
+    });
+  }
+
+  retryFailedDeliveries(): void {
+    this.isRetryingDeliveries.set(true);
+    this.notificationService.retryFailedDeliveries().subscribe({
+      next: (res) => {
+        this.isRetryingDeliveries.set(false);
+        this.toastService.info(
+          'Retry Complete',
+          `Retried ${res.retriedCount} notifications. Successful: ${res.succeeded || 0}.`
+        );
+        this.fetchNotifications();
+      },
+      error: () => {
+        this.isRetryingDeliveries.set(false);
       },
     });
   }
@@ -195,6 +312,8 @@ export class NotificationCenterComponent implements OnInit {
     switch (category) {
       case 'booking':
         return 'fa-solid fa-ticket text-[#5f4299] bg-purple-50 dark:bg-purple-950/40';
+      case 'trip':
+        return 'fa-solid fa-bus text-blue-600 bg-blue-50 dark:bg-blue-950/40';
       case 'community':
         return 'fa-solid fa-comments text-rose-500 bg-rose-50 dark:bg-rose-950/40';
       case 'payment':
@@ -202,7 +321,22 @@ export class NotificationCenterComponent implements OnInit {
       case 'promo':
         return 'fa-solid fa-tag text-amber-500 bg-amber-50 dark:bg-amber-950/40';
       default:
-        return 'fa-solid fa-bell text-blue-500 bg-blue-50 dark:bg-blue-950/40';
+        return 'fa-solid fa-bell text-gray-600 bg-gray-50 dark:bg-slate-800';
+    }
+  }
+
+  getStatusBadgeClass(status?: string): string {
+    switch (status) {
+      case 'delivered':
+        return 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 border border-emerald-500/20';
+      case 'sent':
+        return 'bg-blue-50 dark:bg-blue-950/40 text-blue-600 border border-blue-500/20';
+      case 'pending':
+        return 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 border border-amber-500/20';
+      case 'failed':
+        return 'bg-rose-50 dark:bg-rose-950/40 text-rose-600 border border-rose-500/20';
+      default:
+        return 'bg-gray-100 dark:bg-slate-800 text-gray-500 border border-gray-200 dark:border-slate-700';
     }
   }
 
