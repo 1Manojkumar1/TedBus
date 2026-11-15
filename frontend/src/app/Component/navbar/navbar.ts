@@ -37,6 +37,15 @@ export class Navbar {
             limit: 5,
           })
           .subscribe({ error: () => {} });
+
+        this.notificationService.getPreferences(customerId, user?.email).subscribe({
+          next: (prefs) => {
+            if (prefs?.preferredLanguage && prefs.preferredLanguage !== this.i18n.currentLanguage()) {
+              this.i18n.setLanguage(prefs.preferredLanguage);
+            }
+          },
+          error: () => {},
+        });
       }
     });
 
@@ -59,6 +68,18 @@ export class Navbar {
 
   selectLanguage(lang: SupportedLanguage) {
     this.i18n.setLanguage(lang);
+    if (this.auth.isloggedin()) {
+      const user = this.auth.user();
+      if (user?.email) {
+        this.notificationService
+          .updatePreferences({
+            customerId: user._id || user.googleId || user.email,
+            email: user.email,
+            preferredLanguage: lang,
+          } as any)
+          .subscribe({ error: () => {} });
+      }
+    }
   }
 
   handlelogout() {
