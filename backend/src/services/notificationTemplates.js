@@ -6,62 +6,62 @@
 export const NOTIFICATION_TEMPLATES = {
   booking_confirmed: {
     en: {
-      title: 'Booking Confirmed! 🎫',
-      message: (p) => `Your bus trip from ${p.from} to ${p.to} on ${p.date} is confirmed. Seats: ${p.seats}. Have a safe journey!`,
+      title: 'TedBus: Booking Confirmed! 🎫',
+      message: (p) => `Your TedBus trip from ${p.from} to ${p.to} on ${p.date} is confirmed. Seats: ${p.seats}. Have a safe journey!`,
     },
     hi: {
-      title: 'बुकिंग की पुष्टि हुई! 🎫',
+      title: 'TedBus: बुकिंग की पुष्टि हुई! 🎫',
       message: (p) => `${p.date} को ${p.from} से ${p.to} तक की आपकी बस यात्रा कन्फर्म हो गई है। सीटें: ${p.seats}। आपकी यात्रा मंगलमय हो!`,
     },
     te: {
-      title: 'బుకింగ్ నిర్ధారించబడింది! 🎫',
+      title: 'TedBus: బుకింగ్ నిర్ధారించబడింది! 🎫',
       message: (p) => `${p.date} తేదీన ${p.from} నుండి ${p.to} వరకు మీ బస్ ప్రయాణం ఖరారైంది. సీట్లు: ${p.seats}. సురక్షిత ప్రయాణం కావాలని కోరుకుంటున్నాము!`,
     },
     ta: {
-      title: 'முன்பதிவு உறுதி செய்யப்பட்டது! 🎫',
+      title: 'TedBus: முன்பதிவு உறுதி செய்யப்பட்டது! 🎫',
       message: (p) => `${p.date} அன்று ${p.from} முதல் ${p.to} வரையிலான உங்கள் பஸ் பயணம் உறுதி செய்யப்பட்டது. இருக்கைகள்: ${p.seats}. இனிய பயணம் அமையட்டும்!`,
     },
     kn: {
-      title: 'ಬುಕಿಂಗ್ ದೃಢೀಕರಿಸಲಾಗಿದೆ! 🎫',
+      title: 'TedBus: ಬುಕಿಂಗ್ ದೃಢೀಕರಿಸಲಾಗಿದೆ! 🎫',
       message: (p) => `${p.date} ರಂದು ${p.from} ನಿಂದ ${p.to} ವರೆಗಿನ ನಿಮ್ಮ ಬಸ್ ಪ್ರಯಾಣ ದೃಢೀಕರಿಸಲಾಗಿದೆ. ಸೀಟುಗಳು: ${p.seats}. ನಿಮ್ಮ ಪ್ರಯಾಣ ಸುಖಕರವಾಗಿರಲಿ!`,
     },
     ml: {
-      title: 'ബുക്കിംഗ് സ്ഥിരീകരിച്ചു! 🎫',
+      title: 'TedBus: ബുക്കിംഗ് സ്ഥിരീകരിച്ചു! 🎫',
       message: (p) => `${p.date} തീയതിയിൽ ${p.from} മുതൽ ${p.to} വരെയുള്ള നിങ്ങളുടെ ബസ് യാത്ര സ്ഥിരീകരിച്ചു. സീറ്റുകൾ: ${p.seats}. സുരക്ഷിതമായ യാത്ര ആശംസിക്കുന്നു!`,
     },
   },
 
   booking_cancelled: {
     en: {
-      title: 'Booking Cancelled ℹ️',
-      message: (p) => `Your booking for ${p.from} to ${p.to} has been cancelled. Refund processing initiated as per policy.`,
+      title: 'TedBus: Booking Cancelled ℹ️',
+      message: (p) => `Your TedBus booking for ${p.from} to ${p.to} has been cancelled. Refund processing initiated as per policy.`,
     },
     hi: {
-      title: 'बुकिंग रद्द कर दी गई ℹ️',
+      title: 'TedBus: बुकिंग रद्द कर दी गई ℹ️',
       message: (p) => `${p.from} से ${p.to} के लिए आपकी बुकिंग रद्द कर दी गई है। नियमानुसार रिफंड प्रक्रिया शुरू कर दी गई है।`,
     },
     te: {
-      title: 'బుకింగ్ రద్దు చేయబడింది ℹ️',
+      title: 'TedBus: బుకింగ్ రద్దు చేయబడింది ℹ️',
       message: (p) => `${p.from} నుండి ${p.to} వరకు మీ బుకింగ్ రద్దు చేయబడింది. నిబంధనల ప్రకారం రీఫండ్ ప్రారంభించబడింది.`,
     },
     ta: {
-      title: 'முன்பதிவு ரத்து செய்யப்பட்டது ℹ️',
+      title: 'TedBus: முன்பதிவு ரத்து செய்யப்பட்டது ℹ️',
       message: (p) => `${p.from} முதல் ${p.to} வரையிலான உங்கள் முன்பதிவு ரத்து செய்யப்பட்டது. ரீஃபண்ட் செயல்முறை தொடங்கப்பட்டுள்ளது.`,
     },
     kn: {
-      title: 'ಬುಕಿಂಗ್ ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ ℹ️',
+      title: 'TedBus: ಬುಕಿಂಗ್ ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ ℹ️',
       message: (p) => `${p.from} ನಿಂದ ${p.to} ವರೆಗಿನ ನಿಮ್ಮ ಬುಕಿಂಗ್ ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ. ನಿಯಮಾವಳಿ ಪ್ರಕಾರ ಮರುಪಾವತಿ ಪ್ರಕ್ರಿಯೆ ಪ್ರಾರಂಭವಾಗಿದೆ.`,
     },
     ml: {
-      title: 'ബുക്കിംഗ് റദ്ദാക്കി ℹ️',
+      title: 'TedBus: ബുക്കിംഗ് റദ്ദാക്കി ℹ️',
       message: (p) => `${p.from} മുതൽ ${p.to} വരെയുള്ള നിങ്ങളുടെ ബുക്കിംഗ് റദ്ദാക്കി. റീഫണ്ട് നടപടികൾ ആരംഭിച്ചു.`,
     },
   },
 
   schedule_changed: {
     en: {
-      title: 'Schedule Change Alert ⚠️',
-      message: (p) => `Notice for your trip from ${p.from} to ${p.to} on ${p.date}: Departure schedule updated to ${p.newTime} (previous: ${p.oldTime}). Operator: ${p.operatorName}.`,
+      title: 'TedBus: Schedule Change Alert ⚠️',
+      message: (p) => `Notice for your TedBus trip from ${p.from} to ${p.to} on ${p.date}: Departure schedule updated to ${p.newTime} (previous: ${p.oldTime}). Operator: ${p.operatorName}.`,
     },
     hi: {
       title: 'समय-सारणी परिवर्तन सूचना ⚠️',
@@ -87,8 +87,8 @@ export const NOTIFICATION_TEMPLATES = {
 
   journey_reminder: {
     en: {
-      title: 'Upcoming Journey Reminder 🚌',
-      message: (p) => `Reminder: Your bus to ${p.to} departs in ${p.hoursLeft} hours at ${p.departureTime} from ${p.boardingPoint}. Carry a valid government ID.`,
+      title: 'TedBus: Upcoming Journey Reminder 🚌',
+      message: (p) => `Reminder: Your TedBus trip to ${p.to} departs in ${p.hoursLeft} hours at ${p.departureTime} from ${p.boardingPoint}. Carry a valid government ID.`,
     },
     hi: {
       title: 'आगामी यात्रा अनुस्मारक 🚌',

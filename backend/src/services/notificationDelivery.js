@@ -55,19 +55,73 @@ async function getTransporter() {
 /**
  * Dispatches an email notification.
  * Uses Google Apps Script Email Web App when configured, with fallback to Nodemailer SMTP.
+ * Strictly brands all sender headers, titles, subjects, and HTML layouts as TedBus.
  */
 export async function dispatchEmail({ to, subject, text, html }) {
+  const brandSubject =
+    subject && (subject.includes('TedBus') || subject.includes('[TedBus]'))
+      ? subject
+      : `TedBus 🚌 • ${subject}`;
+
+  const plainText = `[TedBus Intercity Bus Travel]
+--------------------------------------------------
+${brandSubject}
+
+${text}
+
+--------------------------------------------------
+TedBus India • 24/7 Traveler Care • https://tedbus-frontend.vercel.app
+Safe & Seamless Intercity Journeys
+Please do not reply directly to this automated email.`;
+
   const htmlBody =
     html ||
-    `<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 24px; color: #1e293b; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 16px;">
-      <div style="display: flex; align-items: center; margin-bottom: 16px;">
-        <span style="font-size: 20px; font-weight: 800; color: #5F4299;">TedBus</span>
-        <span style="font-size: 12px; color: #64748b; margin-left: 8px;">&bull; Journey Notifications</span>
+    `<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 620px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(95, 66, 153, 0.08);">
+      <!-- TedBus Header Banner -->
+      <div style="background: linear-gradient(135deg, #4b337e 0%, #5F4299 100%); padding: 26px 32px; color: #ffffff;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td>
+              <div style="display: inline-block; vertical-align: middle;">
+                <span style="font-size: 26px; font-weight: 900; letter-spacing: -0.5px; color: #ffffff;">TedBus</span>
+                <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #e9d5ff; margin-left: 8px; padding: 2px 8px; background: rgba(255,255,255,0.18); border-radius: 20px; vertical-align: middle; font-weight: 600;">Intercity Travel</span>
+              </div>
+            </td>
+            <td align="right">
+              <span style="font-size: 26px;">🚌</span>
+            </td>
+          </tr>
+        </table>
       </div>
-      <h2 style="color: #5F4299; font-size: 18px; margin-top: 0;">${subject}</h2>
-      <p style="font-size: 14px; line-height: 1.6; color: #334155;">${text}</p>
-      <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;" />
-      <p style="font-size: 11px; color: #94a3b8; margin: 0;">TedBus Intercity Bus Travel &bull; Real-time updates &bull; Please do not reply directly to this automated email.</p>
+
+      <!-- Message Body -->
+      <div style="padding: 32px; color: #1e293b;">
+        <h1 style="color: #5F4299; font-size: 19px; font-weight: 800; margin-top: 0; margin-bottom: 16px; line-height: 1.4;">
+          ${brandSubject}
+        </h1>
+        <div style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 24px; white-space: pre-line;">
+          ${text}
+        </div>
+        <div style="text-align: center; margin: 28px 0 10px;">
+          <a href="https://tedbus-frontend.vercel.app" style="display: inline-block; background-color: #5F4299; color: #ffffff; padding: 12px 28px; border-radius: 12px; font-weight: 700; text-decoration: none; font-size: 14px; box-shadow: 0 2px 6px rgba(95,66,153,0.3);">
+            Open TedBus App &rarr;
+          </a>
+        </div>
+      </div>
+
+      <!-- Official TedBus Footer -->
+      <div style="background-color: #f8fafc; border-top: 1px solid #e2e8f0; padding: 20px 32px; text-align: center;">
+        <p style="font-size: 12px; font-weight: 700; color: #5F4299; margin: 0 0 6px;">
+          TedBus Mobility Network &bull; India's Verified Smart Bus Platform
+        </p>
+        <p style="font-size: 11px; color: #94a3b8; margin: 0 0 8px; line-height: 1.5;">
+          You received this message because you have an account or active booking on TedBus.<br />
+          Please do not reply directly to this automated email.
+        </p>
+        <p style="font-size: 10px; color: #cbd5e1; margin: 0;">
+          &copy; ${new Date().getFullYear()} TedBus Travel Technologies. All rights reserved.
+        </p>
+      </div>
     </div>`;
 
   // 1. Primary: Google Apps Script Web App Gateway
@@ -88,9 +142,18 @@ export async function dispatchEmail({ to, subject, text, html }) {
         body: JSON.stringify({
           apiKey: appsScriptKey,
           to,
-          subject,
-          text,
-          body: text,
+          name: 'TedBus',
+          senderName: 'TedBus',
+          fromName: 'TedBus Intercity Travel',
+          sender: 'TedBus',
+          appName: 'TedBus',
+          app: 'TedBus',
+          brand: 'TedBus',
+          company: 'TedBus',
+          from: 'TedBus <notifications@tedbus.travel>',
+          subject: brandSubject,
+          text: plainText,
+          body: plainText,
           html: htmlBody,
           htmlBody,
         }),
@@ -121,8 +184,8 @@ export async function dispatchEmail({ to, subject, text, html }) {
     const info = await mailer.sendMail({
       from: fromAddress,
       to,
-      subject,
-      text,
+      subject: brandSubject,
+      text: plainText,
       html: htmlBody,
     });
 
