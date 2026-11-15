@@ -6,13 +6,14 @@ import { Router, RouterLink } from '@angular/router';
 import { BusService } from '../../service/bus.service';
 import { AuthService } from '../../service/auth.service';
 import { ReviewService, JourneyReview } from '../../service/review.service';
+import { CommunityService, UserCommunityStats, CommunityPost } from '../../service/community.service';
 import { ToastService } from '../../service/toast.service';
 import { ConfirmDialogService } from '../../service/confirm-dialog.service';
 import { TranslatePipe } from '../../service/translate.pipe';
 import { Booking } from '../../model/booking.model';
 import { MyTrip } from './my-trip/my-trip';
 
-type ProfileView = 'trips' | 'profile' | 'wallet';
+type ProfileView = 'trips' | 'profile' | 'community' | 'wallet';
 
 @Component({
   selector: 'app-profile-page',
@@ -28,6 +29,7 @@ export class ProfilePage implements OnInit {
   private readonly reviewService = inject(ReviewService);
   private readonly toastService = inject(ToastService);
   private readonly confirmDialog = inject(ConfirmDialogService);
+  private readonly communityService = inject(CommunityService);
 
   showReviewModal = signal(false);
   reviewingBooking = signal<Booking | null>(null);
@@ -35,6 +37,10 @@ export class ProfilePage implements OnInit {
   isEditingReview = signal(false);
   editingReviewId = signal<string | null>(null);
   userReviews = signal<Record<string, JourneyReview>>({});
+
+  userCommunityStats = signal<UserCommunityStats | null>(null);
+  userCommunityPosts = signal<CommunityPost[]>([]);
+  isLoadingCommunity = signal(false);
 
   reviewForm = {
     rating: 5,
@@ -88,11 +94,48 @@ export class ProfilePage implements OnInit {
 
   handlelistitemclick(selected: ProfileView): void {
     this.selecteditem.set(selected);
+    if (selected === 'community' && !this.userCommunityStats()) {
+      this.loadCommunityActivity();
+    }
+  }
+
+  loadCommunityActivity(): void {
+    const user = this.currentcustomer();
+    const customerId = user?._id || user?.googleId || user?.email;
+    if (!customerId) return;
+
+    this.isLoadingCommunity.set(true);
+    this.communityService.getUserStats(customerId, user?.email).subscribe({
+      next: (stats) => this.userCommunityStats.set(stats),
+      error: () => {},
+    });
+
+    this.communityService.getPosts({ authorId: customerId, limit: 20 }).subscribe({
+      next: (res) => {
+        this.userCommunityPosts.set(res.posts || []);
+        this.isLoadingCommunity.set(false);
+      },
+      error: () => this.isLoadingCommunity.set(false),
+    });
+  }
+
+  getBadgeColor(badge?: string): string {
+    switch (badge) {
+      case 'Top Contributor':
+        return 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border-amber-300 dark:border-amber-700';
+      case 'Verified Traveler':
+        return 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700';
+      case 'Route Explorer':
+        return 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-300 border-indigo-300 dark:border-indigo-700';
+      default:
+        return 'bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300 border-purple-200 dark:border-purple-800';
+    }
   }
 
   ngOnInit(): void {
     if (this.currentcustomer()?._id) {
       this.loadtrips();
+      this.loadCommunityActivity();
     }
   }
 

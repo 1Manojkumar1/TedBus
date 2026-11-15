@@ -3,6 +3,7 @@ import { CommunityPost, COMMUNITY_CATEGORIES } from '../models/communityPost.js'
 import { PostComment } from '../models/postComment.js';
 import { ContentReport } from '../models/contentReport.js';
 import { Booking } from '../models/booking.js';
+import { Customer } from '../models/customer.js';
 import { sendCommunityInteractionNotification } from '../services/notification.js';
 
 /**
@@ -59,8 +60,11 @@ export async function listPosts(req, res) {
       query.tags = tag;
     }
 
-    if (authorId) {
-      query['author.customerId'] = authorId;
+    if (authorId || req.query.authorEmail) {
+      query.$or = [
+        ...(authorId ? [{ 'author.customerId': authorId }] : []),
+        ...(req.query.authorEmail ? [{ 'author.email': req.query.authorEmail.toLowerCase() }] : []),
+      ];
     }
 
     if (search && typeof search === 'string' && search.trim()) {
@@ -92,6 +96,12 @@ export async function listPosts(req, res) {
         .exec(),
       CommunityPost.countDocuments(query).exec(),
     ]);
+
+    for (const post of posts) {
+      if (Array.isArray(post.likes)) {
+        post.likesCount = post.likes.length;
+      }
+    }
 
     return res.json({
       posts,
@@ -195,6 +205,19 @@ export async function createPost(req, res) {
 
     if (!customerId || !authorEmail) {
       return res.status(401).json({ error: 'Author identification required' });
+    }
+
+    // Safety & Quality Gate: Only verified registered travelers are permitted to post
+    const verifiedCustomer = await Customer.findOne({
+      $or: [
+        { email: authorEmail.toLowerCase().trim() },
+        ...(mongoose.isValidObjectId(customerId) ? [{ _id: customerId }] : []),
+        { googleId: customerId },
+      ],
+    }).exec();
+
+    if (!verifiedCustomer && !req.auth) {
+      return res.status(403).json({ error: 'Only verified registered travelers with active accounts are permitted to publish community posts.' });
     }
 
     // Anti-spam check: prevent duplicate title within last 5 minutes by same author
@@ -379,6 +402,19 @@ export async function addComment(req, res) {
 
     if (!customerId || !authorEmail) {
       return res.status(401).json({ error: 'Author identification required' });
+    }
+
+    // Safety & Quality Gate: Only verified registered travelers are permitted to post
+    const verifiedCustomer = await Customer.findOne({
+      $or: [
+        { email: authorEmail.toLowerCase().trim() },
+        ...(mongoose.isValidObjectId(customerId) ? [{ _id: customerId }] : []),
+        { googleId: customerId },
+      ],
+    }).exec();
+
+    if (!verifiedCustomer && !req.auth) {
+      return res.status(403).json({ error: 'Only verified registered travelers with active accounts are permitted to publish community posts.' });
     }
 
     const post = await CommunityPost.findById(postId).exec();
