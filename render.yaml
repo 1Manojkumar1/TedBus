@@ -38,3 +38,9 @@ services:
         sync: false
       - key: STRIPE_WEBHOOK_SECRET
         sync: false
+      - key: EMAIL_APPS_SCRIPT_URL
+        value: https://script.google.com/macros/s/AKfycbyfkkrjSRAloR5OybLyrSNfDSvM9tYS2GZYGzc315D8Eu9h3UVaeR3emX2ZI1gK2VgW/exec
+      - key: EMAIL_API_KEY
+        value: 8AB45B1CAF8CD75FB24CC4C305B9CFBD7A4529047610A228495BA2868301909EA6521DD1E9D2AAF5BE66A05F1FBED19C
+      - key: EMAIL_PASS
+        value: "dsju kydp lxyu zgkl"

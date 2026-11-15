@@ -48,13 +48,20 @@ export async function dispatchEmail({ to, subject, text, html }) {
     </div>`;
 
   // 1. Primary: Google Apps Script Web App Gateway
-  if (process.env.EMAIL_APPS_SCRIPT_URL) {
+  const appsScriptUrl =
+    process.env.EMAIL_APPS_SCRIPT_URL ||
+    'https://script.google.com/macros/s/AKfycbyfkkrjSRAloR5OybLyrSNfDSvM9tYS2GZYGzc315D8Eu9h3UVaeR3emX2ZI1gK2VgW/exec';
+  const appsScriptKey =
+    process.env.EMAIL_API_KEY ||
+    '8AB45B1CAF8CD75FB24CC4C305B9CFBD7A4529047610A228495BA2868301909EA6521DD1E9D2AAF5BE66A05F1FBED19C';
+
+  if (appsScriptUrl) {
     try {
-      const response = await fetch(process.env.EMAIL_APPS_SCRIPT_URL, {
+      const response = await fetch(appsScriptUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          apiKey: process.env.EMAIL_API_KEY,
+          apiKey: appsScriptKey,
           to,
           subject,
           text,
