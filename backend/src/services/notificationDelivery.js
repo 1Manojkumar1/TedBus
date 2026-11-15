@@ -31,8 +31,53 @@ async function getTransporter() {
 
 /**
  * Dispatches an email notification.
+ * Uses Google Apps Script Email Web App when configured, with fallback to Nodemailer SMTP.
  */
 export async function dispatchEmail({ to, subject, text, html }) {
+  const htmlBody =
+    html ||
+    `<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 24px; color: #1e293b; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; rounded: 16px;">
+      <div style="display: flex; align-items: center; margin-bottom: 16px;">
+        <span style="font-size: 20px; font-weight: 800; color: #5F4299;">TedBus</span>
+        <span style="font-size: 12px; color: #64748b; margin-left: 8px;">&bull; Journey Notifications</span>
+      </div>
+      <h2 style="color: #5F4299; font-size: 18px; margin-top: 0;">${subject}</h2>
+      <p style="font-size: 14px; line-height: 1.6; color: #334155;">${text}</p>
+      <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;" />
+      <p style="font-size: 11px; color: #94a3b8; margin: 0;">TedBus Intercity Bus Travel &bull; Real-time updates &bull; Please do not reply directly to this automated email.</p>
+    </div>`;
+
+  // 1. Primary: Google Apps Script Web App Gateway
+  if (process.env.EMAIL_APPS_SCRIPT_URL) {
+    try {
+      const response = await fetch(process.env.EMAIL_APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          apiKey: process.env.EMAIL_API_KEY,
+          to,
+          subject,
+          text,
+          body: text,
+          html: htmlBody,
+          htmlBody,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json().catch(() => ({}));
+        console.log(`[Google Apps Script Dispatch] Successfully dispatched live email to ${to}: ${data.messageId || 'sent'}`);
+        return { success: true, messageId: data.messageId || `gas_${Date.now()}` };
+      } else {
+        const errText = await response.text();
+        console.warn(`[Google Apps Script Warning] HTTP ${response.status}: ${errText}. Falling back to Nodemailer...`);
+      }
+    } catch (gasErr) {
+      console.warn(`[Google Apps Script Exception]: ${gasErr.message}. Falling back to Nodemailer...`);
+    }
+  }
+
+  // 2. Secondary / Fallback: Nodemailer SMTP
   try {
     const mailer = await getTransporter();
     const info = await mailer.sendMail({
@@ -40,10 +85,10 @@ export async function dispatchEmail({ to, subject, text, html }) {
       to,
       subject,
       text,
-      html: html || `<div style="font-family: sans-serif; padding: 20px; color: #333;"><h2 style="color: #5F4299;">${subject}</h2><p style="font-size: 15px; line-height: 1.6;">${text}</p><hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" /><p style="font-size: 12px; color: #888;">TedBus Intercity Bus Travel &bull; Real-time updates</p></div>`,
+      html: htmlBody,
     });
 
-    console.log(`[Email Dispatch] Successfully queued email to ${to}: ${info.messageId || 'delivered'}`);
+    console.log(`[Nodemailer Dispatch] Successfully queued email to ${to}: ${info.messageId || 'delivered'}`);
     return { success: true, messageId: info.messageId || `msg_${Date.now()}` };
   } catch (err) {
     console.error(`[Email Dispatch Failed] Error delivering to ${to}:`, err.message);
