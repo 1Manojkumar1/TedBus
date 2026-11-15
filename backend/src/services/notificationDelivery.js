@@ -53,11 +53,32 @@ async function getTransporter() {
 }
 
 /**
+ * Checks if an email belongs to seeded dummy accounts or test domains.
+ */
+export function isDummyEmail(email) {
+  if (!email) return true;
+  const em = String(email).toLowerCase().trim();
+  return (
+    em.endsWith('.test') ||
+    em.endsWith('.community') ||
+    em.endsWith('.example') ||
+    em.includes('@tedbus.test') ||
+    em.includes('@tedbus.community')
+  );
+}
+
+/**
  * Dispatches an email notification.
  * Uses Google Apps Script Email Web App when configured, with fallback to Nodemailer SMTP.
  * Strictly brands all sender headers, titles, subjects, and HTML layouts as TedBus.
+ * Automatically skips dummy seeded accounts so emails are only sent to genuine users.
  */
 export async function dispatchEmail({ to, subject, text, html }) {
+  if (isDummyEmail(to)) {
+    console.log(`[Email Shield] Skipped sending to seeded dummy address: ${to}`);
+    return { success: true, skipped: true, reason: 'dummy_seed_address' };
+  }
+
   const brandSubject =
     subject && (subject.includes('TedBus') || subject.includes('[TedBus]'))
       ? subject

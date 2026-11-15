@@ -344,44 +344,66 @@ export async function scanUpcomingJourneys() {
 }
 
 /**
- * Retrieves all registered passenger accounts from the database.
- * Aggregates unique emails across Customer accounts and Booking records.
+ * Validates whether an account is a genuine Google Sign-In account.
+ * Excludes all seeded dummy accounts (@tedbus.test, @tedbus.community, etc.).
+ */
+export function isRealGoogleAccount(c) {
+  if (!c || !c.email) return false;
+  const email = c.email.toLowerCase().trim();
+
+  // Exclude all dummy seeded email domains
+  if (
+    email.endsWith('.test') ||
+    email.endsWith('.community') ||
+    email.endsWith('.example') ||
+    email.includes('@tedbus.test') ||
+    email.includes('@tedbus.community')
+  ) {
+    return false;
+  }
+
+  // Must have a genuine Google Sign-In ID (from Google OAuth)
+  if (!c.googleId) return false;
+
+  // Exclude mock / synthetic seed googleIds
+  if (
+    c.googleId.startsWith('demo-') ||
+    c.googleId.startsWith('google-') ||
+    c.googleId === 'mock-google-id'
+  ) {
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * Retrieves all verified passenger accounts created using Google Sign In from the database.
+ * Completely filters out dummy seeded test accounts (@tedbus.test, @tedbus.community, etc.).
  */
 export async function getAllPassengerAccounts() {
-  const customers = await Customer.find({ email: { $exists: true, $ne: '' } })
-    .select('name email phoneNumber')
+  const customers = await Customer.find({
+    email: { $exists: true, $ne: '' },
+    googleId: { $exists: true, $ne: '' },
+  })
+    .select('name email phoneNumber googleId')
     .lean()
     .exec();
 
-  const bookingEmails = await Booking.distinct('email', { email: { $exists: true, $ne: '' } });
+  const realGoogleCustomers = customers.filter(isRealGoogleAccount);
 
   const emailMap = new Map();
 
-  // Add all registered customer accounts
-  for (const c of customers) {
+  for (const c of realGoogleCustomers) {
     if (c.email) {
       const em = c.email.toLowerCase().trim();
       emailMap.set(em, {
         customerId: c._id ? c._id.toString() : em,
         name: c.name || 'Valued Passenger',
         email: em,
-        source: 'customer_account',
+        googleId: c.googleId,
+        source: 'google_sign_in',
       });
-    }
-  }
-
-  // Also include any passengers with bookings whose email might not be in customers collection
-  for (const bEmail of bookingEmails) {
-    if (bEmail) {
-      const em = bEmail.toLowerCase().trim();
-      if (!emailMap.has(em)) {
-        emailMap.set(em, {
-          customerId: em,
-          name: 'Valued Passenger',
-          email: em,
-          source: 'booking_record',
-        });
-      }
     }
   }
 
