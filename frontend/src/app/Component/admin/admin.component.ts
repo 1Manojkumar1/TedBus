@@ -70,8 +70,24 @@ export class AdminComponent implements OnInit {
     discount: '25% OFF',
     title: 'Weekend Travel Sale! 🎟️',
     message: 'Save 25% on your next bus journey across 180+ verified routes with code FESTIVE25. Book now!',
+    targetEmail: '',
   };
   isBroadcasting = signal<boolean>(false);
+
+  // Broadcast to All Registered Passengers Form
+  broadcastAllForm = {
+    title: 'Important Travel Notice for All Passengers 🚍',
+    message: 'TedBus has updated intercity schedules and expanded boarding amenities across key routes. Check your account for active bookings, journey passes, and customer perks.',
+    category: 'system',
+    sendEmail: true,
+  };
+  isBroadcastingAll = signal<boolean>(false);
+
+  // Live passenger account metrics
+  passengerStats = signal<{ totalPassengers: number; sampleEmails: string[] }>({
+    totalPassengers: 0,
+    sampleEmails: [],
+  });
 
   // Schedule Change form
   scheduleForm = {
@@ -120,6 +136,14 @@ export class AdminComponent implements OnInit {
     this.fetchStats();
     this.fetchReports();
     this.fetchPosts();
+    this.fetchPassengerStats();
+  }
+
+  fetchPassengerStats(): void {
+    this.http.get<{ totalPassengers: number; sampleEmails: string[] }>(`${environment.apiUrl}/notifications/passengers-count`).subscribe({
+      next: (data) => this.passengerStats.set(data),
+      error: () => {},
+    });
   }
 
   fetchStats(): void {
@@ -266,14 +290,44 @@ export class AdminComponent implements OnInit {
     }
 
     this.isBroadcasting.set(true);
-    this.http.post<{ success: boolean; recipientsCount: number }>(`${environment.apiUrl}/notifications/broadcast-promo`, this.promoForm).subscribe({
+    this.http.post<{ success: boolean; recipientsCount: number; totalAccounts?: number }>(`${environment.apiUrl}/notifications/broadcast-promo`, this.promoForm).subscribe({
       next: (res) => {
         this.isBroadcasting.set(false);
-        this.toastService.success('Promotional Campaign Dispatched', `Broadcast sent to ${res.recipientsCount} opted-in travelers in their chosen language.`);
+        this.toastService.success('Promotional Campaign Dispatched', `Broadcast sent to ${res.recipientsCount} passenger accounts in their chosen language.`);
+        this.fetchPassengerStats();
       },
       error: (err) => {
         this.isBroadcasting.set(false);
         this.toastService.error('Broadcast Error', 'Could not dispatch promo notifications.');
+      },
+    });
+  }
+
+  broadcastToAllPassengers(): void {
+    if (!this.broadcastAllForm.title.trim() || !this.broadcastAllForm.message.trim()) {
+      this.toastService.warning('Validation', 'Message title and body are required to broadcast.');
+      return;
+    }
+
+    this.isBroadcastingAll.set(true);
+    this.http.post<{
+      success: boolean;
+      totalPassengers: number;
+      dispatched: number;
+      delivered: number;
+      failed: number;
+    }>(`${environment.apiUrl}/notifications/broadcast-all`, this.broadcastAllForm).subscribe({
+      next: (res) => {
+        this.isBroadcastingAll.set(false);
+        this.toastService.success(
+          'Broadcast Completed',
+          `Successfully dispatched email & app notifications to ${res.totalPassengers} passenger accounts (${res.delivered} Delivered).`
+        );
+        this.fetchPassengerStats();
+      },
+      error: (err) => {
+        this.isBroadcastingAll.set(false);
+        this.toastService.error('Broadcast Error', 'Failed to dispatch broadcast to passengers.');
       },
     });
   }

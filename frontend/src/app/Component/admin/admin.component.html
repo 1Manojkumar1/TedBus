@@ -391,18 +391,75 @@
 
       <!-- Top Overview Card -->
       <div class="bg-gradient-to-r from-purple-900 to-[#5f4299] text-white rounded-2xl p-6 shadow-sm">
-        <h3 class="text-xl font-extrabold flex items-center gap-2.5">
-          <i class="fa-solid fa-tower-broadcast text-amber-400"></i>
-          <span>Multi-Channel Notification Dispatcher</span>
-        </h3>
-        <p class="text-xs text-purple-100 mt-1 max-w-2xl leading-relaxed">
-          Trigger real-time multi-channel alerts (In-App, Email, Browser Push) across localized languages for promotional offers, emergency schedule updates, and automated trip reminders.
-        </p>
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h3 class="text-xl font-extrabold flex items-center gap-2.5">
+              <i class="fa-solid fa-tower-broadcast text-amber-400"></i>
+              <span>Multi-Channel Notification Dispatcher</span>
+            </h3>
+            <p class="text-xs text-purple-100 mt-1 max-w-2xl leading-relaxed">
+              Trigger real-time multi-channel alerts (In-App, Email, Browser Push) across localized languages for promotional offers, emergency schedule updates, and automated trip reminders.
+            </p>
+          </div>
+          <div class="bg-white/10 border border-white/20 rounded-xl px-4 py-2.5 flex items-center gap-3 shrink-0">
+            <i class="fa-solid fa-users-line text-2xl text-amber-300"></i>
+            <div>
+              <div class="text-[11px] text-purple-200 uppercase tracking-wider font-semibold">Registered Accounts</div>
+              <div class="text-lg font-black">{{ passengerStats().totalPassengers }} Passenger Accounts in DB</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-        <!-- 1. Promotional Broadcast Card -->
+        <!-- 1. Broadcast to ALL Passengers (Account Holders) Card -->
+        <div class="bg-white dark:bg-slate-900 border border-purple-200 dark:border-purple-900/50 rounded-2xl p-6 shadow-sm space-y-4">
+          <div class="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-slate-800">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-purple-50 dark:bg-purple-950/60 text-[#5f4299] dark:text-purple-300 flex items-center justify-center">
+                <i class="fa-solid fa-envelope-open-text"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-sm text-gray-900 dark:text-gray-100">Broadcast Email to All Passengers</h4>
+                <p class="text-[11px] text-gray-400">Sends directly to mailboxes of all {{ passengerStats().totalPassengers }} passenger accounts in database.</p>
+              </div>
+            </div>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950 text-[#5f4299] dark:text-purple-300">
+              All Accounts
+            </span>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <div>
+              <label class="block text-gray-500 font-semibold mb-1">Message Subject / Title</label>
+              <input type="text" [(ngModel)]="broadcastAllForm.title" placeholder="e.g. Important Service Notice from TedBus"
+                class="w-full px-3 py-2 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 font-medium" />
+            </div>
+
+            <div>
+              <label class="block text-gray-500 font-semibold mb-1">Email & Notification Content</label>
+              <textarea rows="3" [(ngModel)]="broadcastAllForm.message" placeholder="Write the update message delivered to all passenger emails..."
+                class="w-full px-3 py-2 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 leading-relaxed"></textarea>
+            </div>
+
+            <div class="flex items-center justify-between pt-1">
+              <label class="flex items-center gap-2 cursor-pointer text-gray-600 dark:text-gray-300">
+                <input type="checkbox" [(ngModel)]="broadcastAllForm.sendEmail" class="rounded text-[#5f4299]" />
+                <span class="font-medium">Deliver live email to every passenger mailbox</span>
+              </label>
+              <span class="text-[11px] text-gray-400 font-mono">{{ passengerStats().totalPassengers }} recipients</span>
+            </div>
+
+            <button (click)="broadcastToAllPassengers()" [disabled]="isBroadcastingAll()"
+              class="w-full py-2.5 bg-gradient-to-r from-purple-800 to-[#5f4299] text-white font-bold rounded-xl hover:from-purple-900 hover:to-[#4b337e] transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer shadow-sm">
+              <i [class]="isBroadcastingAll() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-paper-plane'"></i>
+              <span>{{ isBroadcastingAll() ? 'Dispatching to All Passengers...' : 'Send Message to All Passenger Accounts' }}</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Promotional Broadcast Card -->
         <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-4">
           <div class="flex items-center gap-2.5 pb-2 border-b border-gray-100 dark:border-slate-800">
             <div class="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-500 flex items-center justify-center">
@@ -410,7 +467,7 @@
             </div>
             <div>
               <h4 class="font-bold text-sm text-gray-900 dark:text-gray-100">Broadcast Promotional Offer</h4>
-              <p class="text-[11px] text-gray-400">Dispatched in recipient's chosen language to all opted-in travelers.</p>
+              <p class="text-[11px] text-gray-400">Dispatched in recipient's chosen language to travelers.</p>
             </div>
           </div>
 
@@ -435,6 +492,12 @@
             </div>
 
             <div>
+              <label class="block text-gray-500 font-semibold mb-1">Specific Target Email (Optional)</label>
+              <input type="email" [(ngModel)]="promoForm.targetEmail" placeholder="Leave blank to broadcast to ALL passenger accounts"
+                class="w-full px-3 py-2 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700" />
+            </div>
+
+            <div>
               <label class="block text-gray-500 font-semibold mb-1">Broadcast Message</label>
               <textarea rows="2" [(ngModel)]="promoForm.message"
                 class="w-full px-3 py-2 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700"></textarea>
@@ -448,7 +511,7 @@
           </div>
         </div>
 
-        <!-- 2. Schedule Change Dispatch Card -->
+        <!-- 3. Schedule Change Dispatch Card -->
         <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-4">
           <div class="flex items-center gap-2.5 pb-2 border-b border-gray-100 dark:border-slate-800">
             <div class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-600 flex items-center justify-center">

@@ -9,6 +9,8 @@ import {
   sendPromotionalNotification,
   scanUpcomingJourneys,
   retryFailedDeliveries,
+  broadcastToAllPassengers,
+  getAllPassengerAccounts,
 } from '../services/notification.js';
 
 export async function getNotifications(req, res) {
@@ -259,7 +261,9 @@ export async function sendTestNotification(req, res) {
 }
 
 /**
- * Broadcasts or dispatches a promotional notification to opted-in travelers.
+ * Broadcasts or dispatches a promotional notification to travelers.
+ * If targetEmail is specified, sends to that individual.
+ * If not specified, broadcasts to ALL registered passenger accounts in the database (respecting opt-outs).
  */
 export async function broadcastPromo(req, res) {
   try {
@@ -267,11 +271,16 @@ export async function broadcastPromo(req, res) {
 
     let targetUsers = [];
     if (targetEmail) {
-      targetUsers = [{ email: targetEmail, customerId: targetEmail }];
+      targetUsers = [{ email: targetEmail.toLowerCase().trim(), customerId: targetEmail }];
     } else {
-      targetUsers = await NotificationPreference.find({
-        promotionalOffers: true,
-      }).lean().exec();
+      const allPassengers = await getAllPassengerAccounts();
+      const optedOut = await NotificationPreference.find({ promotionalOffers: false })
+        .select('email')
+        .lean()
+        .exec();
+      const optedOutSet = new Set(optedOut.map((p) => p.email?.toLowerCase().trim()));
+
+      targetUsers = allPassengers.filter((p) => !optedOutSet.has(p.email));
     }
 
     let sent = 0;
@@ -291,10 +300,54 @@ export async function broadcastPromo(req, res) {
       }
     }
 
-    return res.json({ success: true, recipientsCount: sent });
+    return res.json({ success: true, recipientsCount: sent, totalAccounts: targetUsers.length });
   } catch (err) {
     console.error('broadcastPromo error:', err);
     return res.status(500).json({ error: 'Failed to broadcast promo' });
+  }
+}
+
+/**
+ * Broadcasts a custom message/announcement to ALL passenger accounts in the database.
+ */
+export async function broadcastToAll(req, res) {
+  try {
+    const { title, message, category, actionUrl, code, discount, sendEmail } = req.body;
+
+    if (!title || !message) {
+      return res.status(400).json({ error: 'Title and message are required for broadcasting.' });
+    }
+
+    const result = await broadcastToAllPassengers({
+      title,
+      message,
+      category: category || 'system',
+      actionUrl: actionUrl || '/notifications',
+      code,
+      discount,
+      sendEmailChannel: sendEmail !== false,
+    });
+
+    return res.json(result);
+  } catch (err) {
+    console.error('broadcastToAll error:', err);
+    return res.status(500).json({ error: 'Failed to broadcast message to all passengers' });
+  }
+}
+
+/**
+ * Retrieves the count of all registered passenger accounts in the database.
+ */
+export async function getPassengersCount(req, res) {
+  try {
+    const passengers = await getAllPassengerAccounts();
+    return res.json({
+      totalPassengers: passengers.length,
+      sampleEmails: passengers.slice(0, 5).map((p) => p.email),
+    });
+  } catch (err) {
+    console.error('getPassengersCount error:', err);
+    return res.status(500).json({ error: 'Failed to get passengers count' });
   }
 }
 

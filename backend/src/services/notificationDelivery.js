@@ -4,21 +4,44 @@ import { Notification } from '../models/notification.js';
 let transporter = null;
 
 /**
+ * Sanitizes environment variable strings (strips accidental surrounding quotes and whitespace).
+ */
+function cleanEnv(val) {
+  if (val === undefined || val === null) return '';
+  return String(val).trim().replace(/^["']|["']$/g, '').trim();
+}
+
+/**
  * Initializes or returns the Nodemailer transporter.
+ * Supports direct Gmail App Password authentication or generic SMTP.
  */
 async function getTransporter() {
   if (transporter) return transporter;
 
-  if (process.env.SMTP_HOST && process.env.SMTP_USER) {
-    transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT) || 587,
-      secure: Number(process.env.SMTP_PORT) === 465,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+  const smtpUser = cleanEnv(process.env.SMTP_USER || process.env.EMAIL_USER);
+  const smtpPass = cleanEnv(process.env.SMTP_PASS || process.env.EMAIL_PASS);
+  const smtpHost = cleanEnv(process.env.SMTP_HOST);
+  const smtpPort = Number(cleanEnv(process.env.SMTP_PORT)) || (smtpPass ? 465 : 587);
+
+  if (smtpPass && (smtpUser || smtpHost)) {
+    const config = smtpHost
+      ? {
+          host: smtpHost,
+          port: smtpPort,
+          secure: smtpPort === 465,
+          auth: {
+            user: smtpUser,
+            pass: smtpPass,
+          },
+        }
+      : {
+          service: 'gmail',
+          auth: {
+            user: smtpUser || '24eg105p52@gmail.com',
+            pass: smtpPass,
+          },
+        };
+    transporter = nodemailer.createTransport(config);
   } else {
     // Development / fallback: create test transport or simulated verified transporter
     transporter = nodemailer.createTransport({
@@ -36,7 +59,7 @@ async function getTransporter() {
 export async function dispatchEmail({ to, subject, text, html }) {
   const htmlBody =
     html ||
-    `<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 24px; color: #1e293b; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; rounded: 16px;">
+    `<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 24px; color: #1e293b; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 16px;">
       <div style="display: flex; align-items: center; margin-bottom: 16px;">
         <span style="font-size: 20px; font-weight: 800; color: #5F4299;">TedBus</span>
         <span style="font-size: 12px; color: #64748b; margin-left: 8px;">&bull; Journey Notifications</span>
@@ -48,12 +71,14 @@ export async function dispatchEmail({ to, subject, text, html }) {
     </div>`;
 
   // 1. Primary: Google Apps Script Web App Gateway
-  const appsScriptUrl =
+  const appsScriptUrl = cleanEnv(
     process.env.EMAIL_APPS_SCRIPT_URL ||
-    'https://script.google.com/macros/s/AKfycbyfkkrjSRAloR5OybLyrSNfDSvM9tYS2GZYGzc315D8Eu9h3UVaeR3emX2ZI1gK2VgW/exec';
-  const appsScriptKey =
+    'https://script.google.com/macros/s/AKfycbyfkkrjSRAloR5OybLyrSNfDSvM9tYS2GZYGzc315D8Eu9h3UVaeR3emX2ZI1gK2VgW/exec'
+  );
+  const appsScriptKey = cleanEnv(
     process.env.EMAIL_API_KEY ||
-    '8AB45B1CAF8CD75FB24CC4C305B9CFBD7A4529047610A228495BA2868301909EA6521DD1E9D2AAF5BE66A05F1FBED19C';
+    '8AB45B1CAF8CD75FB24CC4C305B9CFBD7A4529047610A228495BA2868301909EA6521DD1E9D2AAF5BE66A05F1FBED19C'
+  );
 
   if (appsScriptUrl) {
     try {
@@ -87,8 +112,14 @@ export async function dispatchEmail({ to, subject, text, html }) {
   // 2. Secondary / Fallback: Nodemailer SMTP
   try {
     const mailer = await getTransporter();
+    const fromAddress =
+      cleanEnv(process.env.EMAIL_FROM) ||
+      (cleanEnv(process.env.EMAIL_USER)
+        ? `"TedBus Alerts" <${cleanEnv(process.env.EMAIL_USER)}>`
+        : '"TedBus Notifications" <notifications@tedbus.travel>');
+
     const info = await mailer.sendMail({
-      from: process.env.EMAIL_FROM || '"TedBus Notifications" <notifications@tedbus.travel>',
+      from: fromAddress,
       to,
       subject,
       text,

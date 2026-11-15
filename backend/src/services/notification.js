@@ -1,6 +1,7 @@
 import { Notification } from '../models/notification.js';
 import { NotificationPreference } from '../models/notificationPreference.js';
 import { Booking } from '../models/booking.js';
+import { Customer } from '../models/customer.js';
 import { getLocalizedContent } from './notificationTemplates.js';
 import { dispatchEmail, dispatchWebPush, retryFailedDeliveries } from './notificationDelivery.js';
 
@@ -340,4 +341,126 @@ export async function scanUpcomingJourneys() {
     console.error('scanUpcomingJourneys error:', err);
     return { error: err.message };
   }
+}
+
+/**
+ * Retrieves all registered passenger accounts from the database.
+ * Aggregates unique emails across Customer accounts and Booking records.
+ */
+export async function getAllPassengerAccounts() {
+  const customers = await Customer.find({ email: { $exists: true, $ne: '' } })
+    .select('name email phoneNumber')
+    .lean()
+    .exec();
+
+  const bookingEmails = await Booking.distinct('email', { email: { $exists: true, $ne: '' } });
+
+  const emailMap = new Map();
+
+  // Add all registered customer accounts
+  for (const c of customers) {
+    if (c.email) {
+      const em = c.email.toLowerCase().trim();
+      emailMap.set(em, {
+        customerId: c._id ? c._id.toString() : em,
+        name: c.name || 'Valued Passenger',
+        email: em,
+        source: 'customer_account',
+      });
+    }
+  }
+
+  // Also include any passengers with bookings whose email might not be in customers collection
+  for (const bEmail of bookingEmails) {
+    if (bEmail) {
+      const em = bEmail.toLowerCase().trim();
+      if (!emailMap.has(em)) {
+        emailMap.set(em, {
+          customerId: em,
+          name: 'Valued Passenger',
+          email: em,
+          source: 'booking_record',
+        });
+      }
+    }
+  }
+
+  return Array.from(emailMap.values());
+}
+
+/**
+ * Broadcasts an announcement or alert message to ALL registered passenger accounts in the database.
+ * Dispatches both in-app notification logs and live emails to each passenger's mailbox.
+ * Processes in batches of 5 to ensure reliable delivery without hitting rate-limits.
+ */
+export async function broadcastToAllPassengers({
+  title,
+  message,
+  category = 'system',
+  actionUrl = '/notifications',
+  code,
+  discount,
+  sendEmailChannel = true,
+}) {
+  const passengers = await getAllPassengerAccounts();
+  console.log(`[Broadcast Engine] Dispatching message to all ${passengers.length} passenger accounts in database...`);
+
+  let dispatched = 0;
+  let delivered = 0;
+  let failed = 0;
+
+  // Dispatch in controlled batches of 5
+  const batchSize = 5;
+  for (let i = 0; i < passengers.length; i += batchSize) {
+    const batch = passengers.slice(i, i + batchSize);
+
+    await Promise.all(
+      batch.map(async (passenger) => {
+        try {
+          const channels = ['in_app'];
+          if (sendEmailChannel) {
+            channels.push('email');
+          }
+
+          const notif = await sendNotification({
+            recipientId: passenger.customerId,
+            recipientEmail: passenger.email,
+            title: title || 'Important Notice from TedBus 🚌',
+            message: message || 'We have an important travel update for your account.',
+            category,
+            actionUrl,
+            channels,
+            metadata: {
+              broadcastToAll: true,
+              passengerName: passenger.name,
+              code,
+              discount,
+            },
+          });
+
+          dispatched++;
+          if (notif?.deliveryStatus === 'delivered') {
+            delivered++;
+          } else {
+            failed++;
+          }
+        } catch (err) {
+          console.error(`[Broadcast Error] Failed for ${passenger.email}:`, err.message);
+          failed++;
+        }
+      })
+    );
+
+    if (i + batchSize < passengers.length) {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    }
+  }
+
+  return {
+    success: true,
+    totalPassengers: passengers.length,
+    dispatched,
+    delivered,
+    failed,
+  };
 }
