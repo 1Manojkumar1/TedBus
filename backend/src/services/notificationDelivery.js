@@ -127,7 +127,7 @@ Please do not reply directly to this automated email.`;
   // 1. Primary: Google Apps Script Web App Gateway
   const appsScriptUrl = cleanEnv(
     process.env.EMAIL_APPS_SCRIPT_URL ||
-    'https://script.google.com/macros/s/AKfycbyfkkrjSRAloR5OybLyrSNfDSvM9tYS2GZYGzc315D8Eu9h3UVaeR3emX2ZI1gK2VgW/exec'
+    'https://script.google.com/macros/s/AKfycbwkqUJ8n95lfjBJwfxaWyHOjICHgcz5kjqmBSf4-oQIkiPaDS39MPlRw06SJx9roXDz/exec'
   );
   const appsScriptKey = cleanEnv(
     process.env.EMAIL_API_KEY ||
