@@ -58,6 +58,7 @@ export class NotificationService {
   private readonly toastService = inject(ToastService);
   private readonly baseUrl = `${environment.apiUrl}/notifications`;
   private readonly seenToastIds = new Set<string>();
+  private isInitialLoad = true;
 
   readonly unreadCount = signal<number>(0);
   readonly pushPermission = signal<NotificationPermission>(
@@ -85,21 +86,31 @@ export class NotificationService {
     return this.http.get<NotificationResponse>(this.baseUrl, { params }).pipe(
       tap((res) => {
         this.unreadCount.set(res.unreadCount);
-        // Show in-app toast for new unread notifications
-        for (const notif of res.notifications || []) {
-          if (!notif.read && !this.seenToastIds.has(notif._id)) {
-            this.seenToastIds.add(notif._id);
-            this.toastService.show({
-              id: notif._id,
-              title: notif.title,
-              message: notif.message,
-              category: notif.category,
-              actionUrl: notif.actionUrl,
-              actionLabel: 'View details',
-            });
 
-            // If browser push permission is granted, also pop native OS notification!
-            this.dispatchNativeBrowserNotification(notif.title, notif.message);
+        // On initial app load, mark existing unread notifications as seen so they don't blast the screen as toasts
+        if (this.isInitialLoad) {
+          for (const notif of res.notifications || []) {
+            this.seenToastIds.add(notif._id);
+          }
+          this.isInitialLoad = false;
+        } else {
+          // On subsequent background updates, show toast for at most 1 new notification at a time to prevent popup storms
+          for (const notif of res.notifications || []) {
+            if (!notif.read && !this.seenToastIds.has(notif._id)) {
+              this.seenToastIds.add(notif._id);
+              this.toastService.show({
+                id: notif._id,
+                title: notif.title,
+                message: notif.message,
+                category: notif.category,
+                actionUrl: notif.actionUrl,
+                actionLabel: 'View details',
+              });
+
+              // If browser push permission is granted, also pop native OS notification!
+              this.dispatchNativeBrowserNotification(notif.title, notif.message);
+              break; // Limit to 1 toast per update cycle to prevent visual clutter
+            }
           }
         }
       })

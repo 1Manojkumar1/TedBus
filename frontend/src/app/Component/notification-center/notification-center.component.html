@@ -89,36 +89,36 @@
       </div>
 
       <!-- Notifications List (History Log) -->
-      <div *ngIf="!isLoading() && notifications().length > 0" class="space-y-3">
+      <div *ngIf="!isLoading() && notifications().length > 0" class="space-y-2.5 sm:space-y-3">
         <div *ngFor="let item of notifications()"
           (click)="handleNotificationClick(item)"
           [class.border-l-4]="!item.read"
           [class.border-l-[#5f4299]]="!item.read"
-          class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl p-4 shadow-xs hover:shadow-md transition-all cursor-pointer flex items-start gap-4">
+          class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl p-3 sm:p-4 shadow-xs hover:shadow-md transition-all cursor-pointer flex items-start gap-2.5 sm:gap-4">
 
           <!-- Category Icon -->
-          <div [class]="'w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-base ' + getIconForCategory(item.category)">
+          <div [class]="'w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 text-sm sm:text-base ' + getIconForCategory(item.category)">
             <i [class]="item.category === 'booking' ? 'fa-solid fa-ticket' : (item.category === 'trip' ? 'fa-solid fa-bus' : (item.category === 'community' ? 'fa-solid fa-comments' : (item.category === 'payment' ? 'fa-solid fa-credit-card' : 'fa-solid fa-bell')))"></i>
           </div>
 
           <!-- Content Body -->
           <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between gap-2">
-              <h4 class="font-bold text-sm text-gray-900 dark:text-gray-100 flex items-center gap-2">
-                <span>{{ item.title }}</span>
-                <span *ngIf="!item.read" class="w-2 h-2 rounded-full bg-[#d84e55] inline-block"></span>
+            <div class="flex items-center justify-between gap-1.5">
+              <h4 class="font-bold text-xs sm:text-sm text-gray-900 dark:text-gray-100 flex items-center gap-1.5 truncate">
+                <span class="truncate">{{ item.title }}</span>
+                <span *ngIf="!item.read" class="w-1.5 h-1.5 rounded-full bg-[#d84e55] inline-block shrink-0"></span>
               </h4>
               <div class="flex items-center gap-1.5 shrink-0">
                 <!-- Delivery Status Tracking Badge -->
-                <span [class]="'text-[9px] font-bold px-2 py-0.5 rounded-full capitalize ' + getStatusBadgeClass(item.deliveryStatus)">
+                <span [class]="'text-[8px] sm:text-[9px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full capitalize ' + getStatusBadgeClass(item.deliveryStatus)">
                   <i [class]="item.deliveryStatus === 'delivered' ? 'fa-solid fa-check-double text-[8px] mr-1' : (item.deliveryStatus === 'failed' ? 'fa-solid fa-circle-exclamation text-[8px] mr-1' : 'fa-solid fa-paper-plane text-[8px] mr-1')"></i>
                   <span>{{ item.deliveryStatus }}</span>
                 </span>
-                <span class="text-[11px] text-gray-400">&bull; {{ formatDate(item.createdAt) }}</span>
+                <span class="text-[10px] sm:text-[11px] text-gray-400 hidden xs:inline">&bull; {{ formatDate(item.createdAt) }}</span>
               </div>
             </div>
 
-            <p class="text-xs text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
+            <p class="text-[11px] sm:text-xs text-gray-600 dark:text-gray-300 mt-0.5 leading-snug sm:leading-relaxed">
               {{ item.message }}
             </p>
 

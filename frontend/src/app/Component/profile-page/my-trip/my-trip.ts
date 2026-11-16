@@ -1,4 +1,4 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, input, output, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Booking } from '../../../model/booking.model';
 import { JourneyReview } from '../../../service/review.service';
@@ -15,6 +15,12 @@ export class MyTrip {
   existingReview = input<JourneyReview | undefined>(undefined);
   cancel = output<string>();
   writeReview = output<Booking>();
+
+  readonly isExpanded = signal(false);
+
+  toggleDetails(): void {
+    this.isExpanded.update((v) => !v);
+  }
 
   readonly passengers = computed(() => this.booking().passengerDetails ?? []);
 

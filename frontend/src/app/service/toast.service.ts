@@ -24,12 +24,12 @@ export class ToastService {
       ...toast,
       id,
       type: toast.type || 'info',
-      duration: toast.duration ?? 5000,
+      duration: toast.duration ?? 4000,
       createdAt: new Date(),
     };
 
-    // Add to stack (limit max 4 at a time to prevent overflow)
-    this.toasts.update((current) => [newToast, ...current].slice(0, 4));
+    // Limit max 2 toasts at a time to prevent stacking and screen obstruction
+    this.toasts.update((current) => [newToast, ...current].slice(0, 2));
 
     if (newToast.duration && newToast.duration > 0) {
       setTimeout(() => {

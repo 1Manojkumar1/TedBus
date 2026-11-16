@@ -1,38 +1,38 @@
-<aside class="fixed bottom-5 right-5 z-[99999] flex flex-col gap-3 max-w-sm w-[calc(100vw-40px)] pointer-events-none"
+<aside class="fixed top-4 left-3 right-3 sm:left-auto sm:right-5 sm:top-auto sm:bottom-5 z-[99999] flex flex-col gap-2 max-w-sm sm:w-[380px] pointer-events-none"
   aria-live="polite"
   aria-label="In-app notifications">
 
   @for (toast of toastService.toasts(); track toast.id) {
     <div
-      class="toast-card pointer-events-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-gray-200 dark:border-slate-800 rounded-2xl p-4 shadow-xl shadow-black/10 dark:shadow-black/40 flex items-start gap-3.5 transition-all duration-300 hover:shadow-2xl"
+      class="toast-card pointer-events-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-gray-200/90 dark:border-slate-800 rounded-2xl p-2.5 sm:p-3.5 shadow-lg shadow-black/10 dark:shadow-black/40 flex items-start gap-2.5 sm:gap-3 transition-all duration-300"
       role="alert">
 
       <!-- Icon -->
-      <div [class]="'w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-base ' + getIconColor(toast)">
+      <div [class]="'w-7 h-7 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center shrink-0 text-xs sm:text-sm ' + getIconColor(toast)">
         <i [class]="getIcon(toast)"></i>
       </div>
 
       <!-- Text content -->
       <div class="flex-1 min-w-0 pr-1">
-        <div class="flex items-center justify-between gap-2">
-          <h4 class="font-bold text-sm text-gray-900 dark:text-gray-100 truncate">
+        <div class="flex items-center justify-between gap-1.5">
+          <h4 class="font-bold text-xs sm:text-sm text-gray-900 dark:text-gray-100 truncate">
             {{ toast.title }}
           </h4>
-          <span class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">Just now</span>
+          <span class="text-[9px] sm:text-[10px] text-gray-400 font-semibold uppercase tracking-wider shrink-0">Just now</span>
         </div>
 
-        <p class="text-xs text-gray-600 dark:text-gray-300 mt-1 leading-relaxed line-clamp-2">
+        <p class="text-[11px] sm:text-xs text-gray-600 dark:text-gray-300 mt-0.5 leading-snug line-clamp-2">
           {{ toast.message }}
         </p>
 
         @if (toast.actionUrl) {
-          <div class="mt-2.5 pt-2 border-t border-gray-100 dark:border-slate-800/80 flex items-center justify-between">
+          <div class="mt-2 pt-1.5 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between">
             <button
               type="button"
               (click)="handleAction(toast)"
-              class="inline-flex items-center gap-1.5 text-xs font-bold text-[#5f4299] dark:text-purple-300 hover:underline">
+              class="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-[#5f4299] dark:text-purple-300 hover:underline">
               <span>{{ toast.actionLabel || 'View details' }}</span>
-              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+              <i class="fa-solid fa-arrow-right text-[9px]"></i>
             </button>
           </div>
         }
@@ -42,7 +42,7 @@
       <button
         type="button"
         (click)="dismiss(toast, $event)"
-        class="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-sm p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors shrink-0"
+        class="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-sm p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors shrink-0 leading-none"
         aria-label="Dismiss notification">
         &times;
       </button>
