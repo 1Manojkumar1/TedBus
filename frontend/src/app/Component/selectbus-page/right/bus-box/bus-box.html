@@ -1,47 +1,55 @@
 <div class="bus-box">
     <div class="busBoxSection1">
-        <div class="busBoxSection11">
-            <div>{{operatorname}}</div>
-            <div>{{bustypename}}</div>
-        </div>
-        <div class="busBoxSection12">
-            <div>{{departurelabel}}</div>
-            <div>{{routedetails?.departureLocation?.name}}</div>
-        </div>
-        <div class="busBoxSection13">
-            <div>{{routedetails?.duration}} &nbsp;h</div>
-        </div>
-        <div class="busBoxSection14">
-            <div>{{arrivallabel}}</div>
-            <div>{{routedetails?.arrivalLocation?.name}}</div>
-        </div>
-        <div class="busBoxSection15">
-            <div>
-                <i class="material-icons">star</i>
-                <div>{{avgrating || '-'}}</div>
+        <div class="bus-mobile-top">
+            <div class="busBoxSection11">
+                <div>{{operatorname}}</div>
+                <div>{{bustypename}}</div>
             </div>
-            <div>
-                <i class="material-icons">people</i>
-                <div>{{reviews}}</div>
+            <div class="busBoxSection15">
+                <div>
+                    <i class="material-icons">star</i>
+                    <div>{{avgrating || '-'}}</div>
+                </div>
+                <div>
+                    <i class="material-icons">people</i>
+                    <div>{{reviews}}</div>
+                </div>
             </div>
         </div>
-        <div class="busBoxSection16">
-            <div>
-                <div>INR</div>
-                <div>{{seatprice}}</div>
+
+        <div class="bus-mobile-timeline">
+            <div class="busBoxSection12">
+                <div>{{departurelabel}}</div>
+                <div>{{routedetails?.departureLocation?.name}}</div>
             </div>
-            <div><i class="material-icons">local_offer</i>
-                <div>TedBus Deal applied</div>
+            <div class="busBoxSection13">
+                <div>{{routedetails?.duration}} &nbsp;h</div>
+            </div>
+            <div class="busBoxSection14">
+                <div>{{arrivallabel}}</div>
+                <div>{{routedetails?.arrivalLocation?.name}}</div>
             </div>
         </div>
-        <div class="busBoxSection17">
-            <div></div>
-            <div>
-                <div>{{seatsavailable}}</div>
-                <div>{{ 'BUS.SEATS_AVAILABLE' | translate }}</div>
+
+        <div class="bus-mobile-bottom">
+            <div class="busBoxSection16">
+                <div>
+                    <div>INR</div>
+                    <div>{{seatprice}}</div>
+                </div>
+                <div><i class="material-icons">local_offer</i>
+                    <div>TedBus Deal applied</div>
+                </div>
             </div>
-            <div>20</div>
-            <div>{{ 'BUS.WINDOW' | translate }}</div>
+            <div class="busBoxSection17">
+                <div></div>
+                <div>
+                    <div>{{seatsavailable}}</div>
+                    <div>{{ 'BUS.SEATS_AVAILABLE' | translate }}</div>
+                </div>
+                <div>20</div>
+                <div>{{ 'BUS.WINDOW' | translate }}</div>
+            </div>
         </div>
     </div>
     <div class="busBoxSection2">

@@ -11,7 +11,7 @@
         <div class="h-6 w-px bg-gray-200 dark:bg-slate-700 hidden md:block"></div>
 
         <!-- Primary Navigation Links -->
-        <div class="flex items-center gap-1">
+        <div class="hidden md:flex items-center gap-1">
             <!-- Bus Tickets -->
             <a (click)="navigate('/')"
                 class="flex items-center gap-1.5 px-3 py-2 rounded-xl transition-all duration-200 cursor-pointer text-gray-700 dark:text-slate-200 hover:bg-[#f0edf7] dark:hover:bg-slate-800 hover:text-[#5F4299]">
@@ -167,5 +167,112 @@
                 </button>
             </mat-menu>
         </div>
+    </div>
+</nav>
+
+<!-- Mobile Bottom Navigation Dock (Viewports < 768px) -->
+<nav
+    class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-gray-200/90 dark:border-slate-800 shadow-[0_-4px_24px_rgba(0,0,0,0.08)] px-2 pt-1.5 transition-colors duration-200"
+    style="padding-bottom: max(0.6rem, env(safe-area-inset-bottom));"
+    aria-label="Mobile Navigation">
+    <div class="flex items-center justify-around max-w-lg mx-auto">
+        <!-- 1. Bus Tickets -->
+        <a (click)="navigate('/')"
+            class="flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition-all cursor-pointer select-none group min-h-[46px]"
+            [class.text-[#5F4299]]="isRouteActive('/')"
+            [class.dark:text-purple-400]="isRouteActive('/')"
+            [class.text-gray-500]="!isRouteActive('/')"
+            [class.dark:text-slate-400]="!isRouteActive('/')">
+            <div class="relative flex items-center justify-center w-7 h-7 rounded-full transition-transform group-active:scale-90"
+                [class.bg-[#f0edf7]]="isRouteActive('/')"
+                [class.dark:bg-slate-800]="isRouteActive('/')">
+                <i class="fa-solid fa-bus text-sm"></i>
+            </div>
+            <span class="text-[10px] tracking-tight transition-all font-semibold"
+                [class.font-extrabold]="isRouteActive('/')">
+                {{ 'NAV.BUS_TICKETS' | translate }}
+            </span>
+        </a>
+
+        <!-- 2. Route Planner -->
+        <a (click)="navigate('/route-planner')"
+            class="flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition-all cursor-pointer select-none group min-h-[46px]"
+            [class.text-[#5F4299]]="isRouteActive('/route-planner')"
+            [class.dark:text-purple-400]="isRouteActive('/route-planner')"
+            [class.text-gray-500]="!isRouteActive('/route-planner')"
+            [class.dark:text-slate-400]="!isRouteActive('/route-planner')">
+            <div class="relative flex items-center justify-center w-7 h-7 rounded-full transition-transform group-active:scale-90"
+                [class.bg-[#f0edf7]]="isRouteActive('/route-planner')"
+                [class.dark:bg-slate-800]="isRouteActive('/route-planner')">
+                <i class="fa-solid fa-map-location-dot text-sm"></i>
+            </div>
+            <span class="text-[10px] tracking-tight transition-all font-semibold"
+                [class.font-extrabold]="isRouteActive('/route-planner')">
+                {{ 'NAV.ROUTE_PLANNER' | translate }}
+            </span>
+        </a>
+
+        <!-- 3. Travel Community -->
+        <a (click)="navigate('/community')"
+            class="flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition-all cursor-pointer select-none group min-h-[46px]"
+            [class.text-[#5F4299]]="isRouteActive('/community')"
+            [class.dark:text-purple-400]="isRouteActive('/community')"
+            [class.text-gray-500]="!isRouteActive('/community')"
+            [class.dark:text-slate-400]="!isRouteActive('/community')">
+            <div class="relative flex items-center justify-center w-7 h-7 rounded-full transition-transform group-active:scale-90"
+                [class.bg-[#f0edf7]]="isRouteActive('/community')"
+                [class.dark:bg-slate-800]="isRouteActive('/community')">
+                <i class="fa-solid fa-comments text-sm"></i>
+                <span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-[#d84e55]"></span>
+            </div>
+            <span class="text-[10px] tracking-tight transition-all font-semibold"
+                [class.font-extrabold]="isRouteActive('/community')">
+                {{ 'NAV.COMMUNITY' | translate }}
+            </span>
+        </a>
+
+        <!-- 4. Notifications / Alerts -->
+        <a (click)="navigate('/notifications')"
+            class="flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition-all cursor-pointer select-none group min-h-[46px]"
+            [class.text-[#5F4299]]="isRouteActive('/notifications')"
+            [class.dark:text-purple-400]="isRouteActive('/notifications')"
+            [class.text-gray-500]="!isRouteActive('/notifications')"
+            [class.dark:text-slate-400]="!isRouteActive('/notifications')">
+            <div class="relative flex items-center justify-center w-7 h-7 rounded-full transition-transform group-active:scale-90"
+                [class.bg-[#f0edf7]]="isRouteActive('/notifications')"
+                [class.dark:bg-slate-800]="isRouteActive('/notifications')">
+                <i class="fa-regular fa-bell text-sm"></i>
+                <span *ngIf="notificationService.unreadCount() > 0"
+                    class="absolute -top-1 -right-1 w-4 h-4 bg-[#d84e55] text-white text-[9px] font-extrabold rounded-full flex items-center justify-center animate-pulse">
+                    {{ notificationService.unreadCount() > 9 ? '9+' : notificationService.unreadCount() }}
+                </span>
+            </div>
+            <span class="text-[10px] tracking-tight transition-all font-semibold"
+                [class.font-extrabold]="isRouteActive('/notifications')">
+                {{ 'NAV.NOTIFICATIONS' | translate }}
+            </span>
+        </a>
+
+        <!-- 5. User Profile / Trips -->
+        <a (click)="navigate('/profile')"
+            class="flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition-all cursor-pointer select-none group min-h-[46px]"
+            [class.text-[#5F4299]]="isRouteActive('/profile')"
+            [class.dark:text-purple-400]="isRouteActive('/profile')"
+            [class.text-gray-500]="!isRouteActive('/profile')"
+            [class.dark:text-slate-400]="!isRouteActive('/profile')">
+            <div class="relative flex items-center justify-center w-7 h-7 rounded-full transition-transform group-active:scale-90"
+                [class.bg-[#f0edf7]]="isRouteActive('/profile')"
+                [class.dark:bg-slate-800]="isRouteActive('/profile')">
+                <img *ngIf="auth.isloggedin() && auth.user()?.picture"
+                    [src]="auth.user()?.picture" alt="Account"
+                    class="w-5 h-5 rounded-full object-cover">
+                <i *ngIf="!auth.isloggedin() || !auth.user()?.picture"
+                    class="fa-regular fa-user text-sm"></i>
+            </div>
+            <span class="text-[10px] tracking-tight transition-all font-semibold"
+                [class.font-extrabold]="isRouteActive('/profile')">
+                {{ 'NAV.PROFILE' | translate }}
+            </span>
+        </a>
     </div>
 </nav>

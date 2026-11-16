@@ -83,6 +83,14 @@ export class RoutePlannerComponent implements OnInit, AfterViewInit, OnDestroy {
   saveTitle = signal<string>('');
 
   activeTab = signal<'plan' | 'saved'>('plan');
+  readonly isMapExpanded = signal(false);
+
+  toggleMapExpanded(): void {
+    this.isMapExpanded.update((v) => !v);
+    setTimeout(() => {
+      this.map?.invalidateSize();
+    }, 300);
+  }
 
   ngOnInit(): void {
     this.cities = this.routeService.getAvailableCities();

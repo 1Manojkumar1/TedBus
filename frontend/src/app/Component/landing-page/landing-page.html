@@ -10,7 +10,7 @@
             class="w-[92%] sm:w-[85%] lg:h-24 mt-2 bg-white dark:bg-slate-900 cursor-pointer relative flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl border border-gray-100 dark:border-slate-800 transition-all">
             
             <!-- travel search left side  -->
-            <div class="h-full flex flex-col sm:flex-row items-center justify-center lg:w-1/2">
+            <div class="h-full flex flex-col sm:flex-row items-center justify-center lg:w-1/2 relative">
                 <!-- Departure City -->
                 <div class="h-full border-b sm:border-r border-gray-200 dark:border-slate-800 w-full sm:w-1/2">
                     <div class="px-6 py-6 flex items-center h-full gap-3">
@@ -31,7 +31,7 @@
 
                 <!-- Swap Button -->
                 <button type="button" [attr.aria-label]="'SEARCH.SWAP' | translate" [title]="'SEARCH.SWAP' | translate" (click)="swapcities()"
-                    class="w-10 h-10 bg-white dark:bg-slate-800 rounded-full grid place-content-center absolute z-10 border border-gray-200 dark:border-slate-700 shadow-md hover:border-[#5F4299] hover:text-[#5F4299] transition-transform hover:scale-110 active:scale-95">
+                    class="w-10 h-10 bg-white dark:bg-slate-800 rounded-full grid place-content-center absolute z-10 border border-gray-200 dark:border-slate-700 shadow-md hover:border-[#5F4299] hover:text-[#5F4299] transition-transform hover:scale-110 active:scale-95 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer">
                     <i class="fa-solid fa-arrows-turn-to-dots text-[#5F4299] text-lg"></i>
                 </button>
 

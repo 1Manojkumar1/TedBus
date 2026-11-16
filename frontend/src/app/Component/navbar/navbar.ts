@@ -65,6 +65,14 @@ export class Navbar {
     this.router.navigate([path]);
   }
 
+  isRouteActive(path: string): boolean {
+    const currentUrl = this.router.url;
+    if (path === '/') {
+      return currentUrl === '/' || currentUrl.startsWith('/?');
+    }
+    return currentUrl.startsWith(path);
+  }
+
   toggleTheme() {
     this.themeService.toggleTheme();
     if (this.auth.isloggedin()) {

@@ -1,6 +1,18 @@
 <div class="view-seats-container">
   <!-- Left Side: Bus Seat Grid -->
   <div class="seats-layout-card">
+    <!-- Mobile Tap & Swipe Guidance -->
+    <div class="flex items-center justify-between text-[11px] text-gray-500 dark:text-slate-400 sm:hidden px-1 font-semibold">
+      <span class="flex items-center gap-1">
+        <i class="material-icons text-[14px] text-[#5f4299]">touch_app</i>
+        <span>Tap seats to select</span>
+      </span>
+      <span class="flex items-center gap-1">
+        <i class="material-icons text-[14px] text-[#5f4299]">swipe</i>
+        <span>Scroll bus layout &rarr;</span>
+      </span>
+    </div>
+
     <div class="bus-interior">
       <!-- Steering / Driver cabin indicator -->
       <div class="driver-cabin" title="Driver Cabin">
@@ -152,6 +164,7 @@
     <!-- Proceed to Book Button / Drawer trigger -->
     <div class="proceed-wrapper">
       <app-form-drawer
+        #drawerRef
         [selectedseat]="selectedseats"
         [seatprice]="seatprice"
         [routedetails]="routedetails"
@@ -166,4 +179,22 @@
       </app-form-drawer>
     </div>
   </div>
+
+  <!-- Mobile Sticky Bottom Checkout Bar (when seats are selected) -->
+  @if (selectedseats.length > 0) {
+    <div class="sm:hidden fixed bottom-14 left-0 right-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-gray-200 dark:border-slate-800 shadow-[0_-6px_24px_rgba(0,0,0,0.12)] p-3 px-4 flex items-center justify-between">
+      <div class="flex flex-col">
+        <span class="text-xs font-bold text-gray-900 dark:text-gray-100">
+          {{ selectedseats.length }} Seat{{ selectedseats.length > 1 ? 's' : '' }} ({{ selectedseats.join(', ') }})
+        </span>
+        <span class="text-xs text-gray-500 dark:text-gray-400">
+          Total: <strong class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">₹{{ selectedseats.length * seatprice }}</strong>
+        </span>
+      </div>
+      <button type="button" (click)="drawerRef.opendrawer()"
+        class="px-5 py-2.5 bg-[#d84e55] hover:bg-[#bf3e46] text-white text-xs font-extrabold uppercase tracking-wider rounded-xl shadow-md active:scale-95 transition-all cursor-pointer">
+        {{ 'SEATS.PROCEED_TO_BOOK' | translate }} &rarr;
+      </button>
+    </div>
+  }
 </div>

@@ -9,6 +9,7 @@
 @if (isdraweropen()) {
   <div class="drawer-backdrop" (click)="closedrawer()"></div>
   <aside class="drawer-panel" role="dialog" aria-modal="true" aria-label="Passenger details">
+    <div class="drawer-drag-handle sm:hidden"></div>
     <div class="drawer-header">
       <div class="drawer-title-group">
         <h3 class="drawer-title">{{ operatorname || 'Bus Booking' }}</h3>

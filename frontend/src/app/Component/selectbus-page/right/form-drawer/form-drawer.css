@@ -120,6 +120,10 @@
   background: var(--tb-surface-alt, #f8fafc);
 }
 
+.drawer-drag-handle {
+  display: none;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -128,4 +132,47 @@
 @keyframes slideIn {
   from { transform: translateX(100%); }
   to { transform: translateX(0); }
+}
+
+@media (max-width: 640px) {
+  .drawer-panel {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-height: 90vh;
+    border-radius: 24px 24px 0 0;
+    border-left: none;
+    border-top: 1px solid var(--tb-border, #e2e8f0);
+    box-shadow: 0 -8px 32px rgba(15, 23, 42, 0.25);
+    animation: slideUpBottom 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .drawer-drag-handle {
+    display: block;
+    width: 44px;
+    height: 4px;
+    background: var(--tb-border, #cbd5e1);
+    border-radius: 999px;
+    margin: 10px auto 2px;
+    flex-shrink: 0;
+  }
+
+  .drawer-header {
+    padding: 12px 18px;
+  }
+
+  .drawer-title {
+    font-size: 16px;
+  }
+}
+
+@keyframes slideUpBottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
