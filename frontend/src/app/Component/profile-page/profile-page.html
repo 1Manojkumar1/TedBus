@@ -14,32 +14,45 @@
     </header>
 
     <div class="grid grid-cols-1 md:grid-cols-[270px_1fr] gap-6 items-start">
-      <!-- sidebar -->
-      <aside class="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200/80 dark:border-slate-800 shadow-sm overflow-hidden sticky top-24">
-        <div class="p-5 flex items-center gap-3.5 border-b border-gray-100 dark:border-slate-800">
-          @if (currentcustomer()?.picture) {
-            <img class="w-12 h-12 rounded-full object-cover ring-2 ring-purple-100 dark:ring-purple-900" [src]="currentcustomer()?.picture" alt="Profile">
-          } @else {
-            <div class="w-12 h-12 rounded-full bg-[#f0edf7] dark:bg-purple-950 text-[#5F4299] dark:text-purple-300 grid place-content-center font-extrabold text-lg">
-              {{ initials() }}
+      <!-- sidebar / mobile top bar -->
+      <aside class="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200/80 dark:border-slate-800 shadow-sm overflow-hidden static md:sticky md:top-24 z-10 md:z-auto">
+        <div class="p-4 md:p-5 flex items-center justify-between border-b border-gray-100 dark:border-slate-800">
+          <div class="flex items-center gap-3.5 min-w-0">
+            @if (currentcustomer()?.picture) {
+              <img class="w-11 h-11 md:w-12 md:h-12 rounded-full object-cover ring-2 ring-purple-100 dark:ring-purple-900 shrink-0" [src]="currentcustomer()?.picture" alt="Profile">
+            } @else {
+              <div class="w-11 h-11 md:w-12 md:h-12 rounded-full bg-[#f0edf7] dark:bg-purple-950 text-[#5F4299] dark:text-purple-300 grid place-content-center font-extrabold text-base md:text-lg shrink-0">
+                {{ initials() }}
+              </div>
+            }
+            <div class="min-w-0">
+              <p class="font-bold text-gray-800 dark:text-gray-100 truncate text-sm">{{ currentcustomer()?.name || 'Guest user' }}</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ currentcustomer()?.email || 'Not signed in' }}</p>
             </div>
-          }
-          <div class="min-w-0">
-            <p class="font-bold text-gray-800 dark:text-gray-100 truncate text-sm">{{ currentcustomer()?.name || 'Guest user' }}</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ currentcustomer()?.email || 'Not signed in' }}</p>
           </div>
+
+          <!-- Mobile sign out quick button -->
+          @if (currentcustomer()) {
+            <button (click)="signout()"
+              class="md:hidden flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
+              title="Sign Out">
+              <mat-icon class="text-[16px] w-4 h-4 leading-4">logout</mat-icon>
+              <span>{{ 'NAV.SIGN_OUT' | translate }}</span>
+            </button>
+          }
         </div>
 
-        <nav class="p-2 space-y-1">
+        <!-- Navigation Tabs: Horizontal pill strip on mobile, Vertical stack on desktop -->
+        <nav class="p-2 flex md:flex-col gap-1.5 overflow-x-auto no-scrollbar scroll-smooth">
           <button
             (click)="handlelistitemclick('trips')"
             [class]="selecteditem() === 'trips'
-              ? 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold text-[#5F4299] dark:text-purple-300 bg-[#f0edf7] dark:bg-purple-950/60 shadow-xs'
-              : 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 transition-colors'">
-            <mat-icon class="text-[20px] w-5 h-5 leading-5">confirmation_number</mat-icon>
+              ? 'flex items-center gap-2 md:gap-3 px-3.5 md:px-4 py-2 md:py-3 rounded-2xl text-xs md:text-sm font-bold text-[#5F4299] dark:text-purple-300 bg-[#f0edf7] dark:bg-purple-950/60 shadow-xs whitespace-nowrap shrink-0 md:shrink md:w-full'
+              : 'flex items-center gap-2 md:gap-3 px-3.5 md:px-4 py-2 md:py-3 rounded-2xl text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 transition-colors whitespace-nowrap shrink-0 md:shrink md:w-full'">
+            <mat-icon class="text-[18px] md:text-[20px] w-4.5 md:w-5 h-4.5 md:h-5 leading-4.5 md:leading-5">confirmation_number</mat-icon>
             <span>{{ 'PROFILE.MY_TRIPS' | translate }}</span>
             @if (mytrip().length) {
-              <span class="ml-auto text-xs font-bold text-gray-600 dark:text-gray-300 bg-white/70 dark:bg-slate-800 px-2 py-0.5 rounded-full border border-gray-200 dark:border-slate-700">
+              <span class="ml-1 md:ml-auto text-[10px] md:text-xs font-bold text-gray-600 dark:text-gray-300 bg-white/70 dark:bg-slate-800 px-2 py-0.5 rounded-full border border-gray-200 dark:border-slate-700">
                 {{ mytrip().length }}
               </span>
             }
@@ -48,21 +61,21 @@
           <button
             (click)="handlelistitemclick('profile')"
             [class]="selecteditem() === 'profile'
-              ? 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold text-[#5F4299] dark:text-purple-300 bg-[#f0edf7] dark:bg-purple-950/60 shadow-xs'
-              : 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 transition-colors'">
-            <mat-icon class="text-[20px] w-5 h-5 leading-5">account_circle</mat-icon>
+              ? 'flex items-center gap-2 md:gap-3 px-3.5 md:px-4 py-2 md:py-3 rounded-2xl text-xs md:text-sm font-bold text-[#5F4299] dark:text-purple-300 bg-[#f0edf7] dark:bg-purple-950/60 shadow-xs whitespace-nowrap shrink-0 md:shrink md:w-full'
+              : 'flex items-center gap-2 md:gap-3 px-3.5 md:px-4 py-2 md:py-3 rounded-2xl text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 transition-colors whitespace-nowrap shrink-0 md:shrink md:w-full'">
+            <mat-icon class="text-[18px] md:text-[20px] w-4.5 md:w-5 h-4.5 md:h-5 leading-4.5 md:leading-5">account_circle</mat-icon>
             <span>{{ 'PROFILE.MY_PROFILE' | translate }}</span>
           </button>
 
           <button
             (click)="handlelistitemclick('community')"
             [class]="selecteditem() === 'community'
-              ? 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold text-[#5F4299] dark:text-purple-300 bg-[#f0edf7] dark:bg-purple-950/60 shadow-xs'
-              : 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 transition-colors'">
-            <mat-icon class="text-[20px] w-5 h-5 leading-5">forum</mat-icon>
+              ? 'flex items-center gap-2 md:gap-3 px-3.5 md:px-4 py-2 md:py-3 rounded-2xl text-xs md:text-sm font-bold text-[#5F4299] dark:text-purple-300 bg-[#f0edf7] dark:bg-purple-950/60 shadow-xs whitespace-nowrap shrink-0 md:shrink md:w-full'
+              : 'flex items-center gap-2 md:gap-3 px-3.5 md:px-4 py-2 md:py-3 rounded-2xl text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 transition-colors whitespace-nowrap shrink-0 md:shrink md:w-full'">
+            <mat-icon class="text-[18px] md:text-[20px] w-4.5 md:w-5 h-4.5 md:h-5 leading-4.5 md:leading-5">forum</mat-icon>
             <span>Community Stories</span>
             @if (userCommunityStats()?.postCount) {
-              <span class="ml-auto text-xs font-bold text-[#5f4299] dark:text-purple-300 bg-purple-100 dark:bg-purple-950 px-2 py-0.5 rounded-full border border-purple-200 dark:border-purple-800">
+              <span class="ml-1 md:ml-auto text-[10px] md:text-xs font-bold text-[#5f4299] dark:text-purple-300 bg-purple-100 dark:bg-purple-950 px-2 py-0.5 rounded-full border border-purple-200 dark:border-purple-800">
                 {{ userCommunityStats()?.postCount }}
               </span>
             }
@@ -71,15 +84,16 @@
           <button
             (click)="handlelistitemclick('wallet')"
             [class]="selecteditem() === 'wallet'
-              ? 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold text-[#5F4299] dark:text-purple-300 bg-[#f0edf7] dark:bg-purple-950/60 shadow-xs'
-              : 'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 transition-colors'">
-            <mat-icon class="text-[20px] w-5 h-5 leading-5">account_balance_wallet</mat-icon>
+              ? 'flex items-center gap-2 md:gap-3 px-3.5 md:px-4 py-2 md:py-3 rounded-2xl text-xs md:text-sm font-bold text-[#5F4299] dark:text-purple-300 bg-[#f0edf7] dark:bg-purple-950/60 shadow-xs whitespace-nowrap shrink-0 md:shrink md:w-full'
+              : 'flex items-center gap-2 md:gap-3 px-3.5 md:px-4 py-2 md:py-3 rounded-2xl text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800/60 transition-colors whitespace-nowrap shrink-0 md:shrink md:w-full'">
+            <mat-icon class="text-[18px] md:text-[20px] w-4.5 md:w-5 h-4.5 md:h-5 leading-4.5 md:leading-5">account_balance_wallet</mat-icon>
             <span>{{ 'NAV.WALLET' | translate }}</span>
           </button>
         </nav>
 
+        <!-- Desktop sign out footer -->
         @if (currentcustomer()) {
-          <div class="p-2 border-t border-gray-100 dark:border-slate-800">
+          <div class="hidden md:block p-2 border-t border-gray-100 dark:border-slate-800">
             <button (click)="signout()"
               class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors">
               <mat-icon class="text-[20px] w-5 h-5 leading-5">logout</mat-icon>

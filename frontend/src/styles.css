@@ -210,3 +210,12 @@ html.dark .mat-mdc-dialog-actions {
   min-height: 44px;
   min-width: 44px;
 }
+
+/* Hide scrollbar for clean horizontal strips */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
