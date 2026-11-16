@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -59,6 +59,16 @@ export class ProfilePage implements OnInit {
   loaderror = signal('');
   actionmessage = signal('');
   cancelling = signal<string | null>(null);
+
+  constructor() {
+    effect(() => {
+      const user = this.currentcustomer();
+      if (user?._id) {
+        this.loadtrips();
+        this.loadCommunityActivity();
+      }
+    });
+  }
 
   initials = computed(() => {
     const name = this.currentcustomer()?.name?.trim();

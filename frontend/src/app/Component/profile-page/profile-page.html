@@ -1,7 +1,7 @@
-<div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-200">
-  <div class="max-w-6xl mx-auto px-4 md:px-8 py-8">
-    <!-- page header -->
-    <header class="flex items-center justify-between mb-6">
+<div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-200 pb-24 md:pb-12">
+  <div class="max-w-6xl mx-auto px-3 sm:px-4 md:px-8 py-2 md:py-8">
+    <!-- Desktop-Only Header -->
+    <header class="hidden md:flex items-center justify-between mb-6">
       <a routerLink="/" class="flex items-center gap-3">
         <img class="w-14 h-auto" src="assets/red-bus-with-word-bus-it_600323-482.avif" alt="Tedbus Logo">
         <span class="hidden sm:block h-6 w-px bg-gray-300 dark:bg-slate-700"></span>
@@ -13,87 +13,104 @@
       </a>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-[270px_1fr] gap-6 items-start">
-      <!-- Mobile Profile Navigation Bar (Only on viewports < 768px, never sticky to avoid overlapping) -->
-      <div class="md:hidden space-y-3 mb-2">
-        <!-- Compact User Bar -->
-        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-3.5 flex items-center justify-between shadow-xs">
-          <div class="flex items-center gap-3 min-w-0">
-            @if (currentcustomer()?.picture) {
-              <img class="w-10 h-10 rounded-full object-cover ring-2 ring-purple-100 dark:ring-purple-900 shrink-0" [src]="currentcustomer()?.picture" alt="Profile">
-            } @else {
-              <div class="w-10 h-10 rounded-full bg-[#f0edf7] dark:bg-purple-950 text-[#5F4299] dark:text-purple-300 grid place-content-center font-extrabold text-sm shrink-0">
-                {{ initials() }}
-              </div>
-            }
-            <div class="min-w-0">
-              <p class="font-bold text-gray-800 dark:text-gray-100 truncate text-sm leading-tight">{{ currentcustomer()?.name || 'Guest user' }}</p>
-              <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ currentcustomer()?.email || 'Not signed in' }}</p>
-            </div>
+    <!-- Mobile-Only App Header: Compact, Integrated Identity & Zero Clutter -->
+    <div class="md:hidden flex items-center justify-between pb-2.5 mb-2.5 border-b border-gray-200/80 dark:border-slate-800">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <a routerLink="/" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-gray-700 dark:text-slate-200 active:scale-95 shrink-0" title="Back to Home">
+          <mat-icon class="text-[18px] w-4.5 h-4.5 leading-4.5">arrow_back</mat-icon>
+        </a>
+        @if (currentcustomer()?.picture) {
+          <img class="w-8 h-8 rounded-full object-cover ring-1 ring-purple-300 dark:ring-purple-700 shrink-0" [src]="currentcustomer()?.picture" alt="Profile">
+        } @else {
+          <div class="w-8 h-8 rounded-full bg-[#f0edf7] dark:bg-purple-950 text-[#5F4299] dark:text-purple-300 grid place-content-center font-extrabold text-xs shrink-0">
+            {{ initials() }}
           </div>
-
-          @if (currentcustomer()) {
-            <button (click)="signout()"
-              class="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors shrink-0">
-              <mat-icon class="text-[16px] w-4 h-4 leading-4">logout</mat-icon>
-              <span>{{ 'NAV.SIGN_OUT' | translate }}</span>
-            </button>
-          }
-        </div>
-
-        <!-- Horizontal Segmented Tabs -->
-        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
-          <button
-            (click)="handlelistitemclick('trips')"
-            [class]="selecteditem() === 'trips'
-              ? 'flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-[#5F4299] shadow-sm shrink-0'
-              : 'flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 shrink-0'">
-            <mat-icon class="text-[16px] w-4 h-4 leading-4">confirmation_number</mat-icon>
-            <span>{{ 'PROFILE.MY_TRIPS' | translate }}</span>
-            @if (mytrip().length) {
-              <span class="ml-1 text-[10px] font-extrabold px-1.5 py-0.2 rounded-full"
-                [class]="selecteditem() === 'trips' ? 'bg-white/20 text-white' : 'bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-200'">
-                {{ mytrip().length }}
-              </span>
-            }
-          </button>
-
-          <button
-            (click)="handlelistitemclick('profile')"
-            [class]="selecteditem() === 'profile'
-              ? 'flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-[#5F4299] shadow-sm shrink-0'
-              : 'flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 shrink-0'">
-            <mat-icon class="text-[16px] w-4 h-4 leading-4">account_circle</mat-icon>
-            <span>{{ 'PROFILE.MY_PROFILE' | translate }}</span>
-          </button>
-
-          <button
-            (click)="handlelistitemclick('community')"
-            [class]="selecteditem() === 'community'
-              ? 'flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-[#5F4299] shadow-sm shrink-0'
-              : 'flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 shrink-0'">
-            <mat-icon class="text-[16px] w-4 h-4 leading-4">forum</mat-icon>
-            <span>Community</span>
-            @if (userCommunityStats()?.postCount) {
-              <span class="ml-1 text-[10px] font-extrabold px-1.5 py-0.2 rounded-full"
-                [class]="selecteditem() === 'community' ? 'bg-white/20 text-white' : 'bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300'">
-                {{ userCommunityStats()?.postCount }}
-              </span>
-            }
-          </button>
-
-          <button
-            (click)="handlelistitemclick('wallet')"
-            [class]="selecteditem() === 'wallet'
-              ? 'flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-[#5F4299] shadow-sm shrink-0'
-              : 'flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 shrink-0'">
-            <mat-icon class="text-[16px] w-4 h-4 leading-4">account_balance_wallet</mat-icon>
-            <span>{{ 'NAV.WALLET' | translate }}</span>
-          </button>
+        }
+        <div class="min-w-0">
+          <div class="flex items-center gap-1.5">
+            <h1 class="font-extrabold text-sm text-gray-900 dark:text-gray-100 truncate leading-tight">{{ currentcustomer()?.name || 'My Account' }}</h1>
+            <span class="text-[9px] text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-50 dark:bg-emerald-950/60 px-1 py-0.5 rounded shrink-0">✓ Verified</span>
+          </div>
+          <p class="text-[10px] text-gray-400 dark:text-gray-500 truncate leading-tight">{{ currentcustomer()?.email || 'Guest' }}</p>
         </div>
       </div>
 
-      <!-- Desktop Sidebar (Only on viewports >= 768px) -->
+      @if (currentcustomer()) {
+        <button (click)="signout()"
+          class="flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-bold text-red-500 bg-red-50 dark:bg-red-950/30 hover:bg-red-100 active:scale-95 transition-all shrink-0"
+          title="Sign Out">
+          <mat-icon class="text-[14px] w-3.5 h-3.5 leading-3.5">logout</mat-icon>
+          <span class="text-[11px]">{{ 'NAV.SIGN_OUT' | translate }}</span>
+        </button>
+      }
+    </div>
+
+    <!-- Mobile-Only 4-Segment Grid Tabs: ZERO HORIZONTAL SCROLLING, FITS 100% WIDTH -->
+    <div class="md:hidden grid grid-cols-4 gap-1 p-1 bg-gray-200/80 dark:bg-slate-800/90 rounded-2xl mb-3 select-none">
+      <!-- 1. Trips Tab -->
+      <button
+        type="button"
+        (click)="handlelistitemclick('trips')"
+        [class]="selecteditem() === 'trips'
+          ? 'flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-center bg-[#5F4299] text-white font-extrabold shadow-sm transition-all'
+          : 'flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-center text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold transition-all'">
+        <div class="relative flex items-center justify-center">
+          <mat-icon class="text-[18px] w-4.5 h-4.5 leading-4.5">confirmation_number</mat-icon>
+          @if (mytrip().length) {
+            <span class="absolute -top-1 -right-2 text-[9px] font-black px-1 rounded-full leading-tight"
+              [class]="selecteditem() === 'trips' ? 'bg-white text-[#5F4299]' : 'bg-[#5F4299] text-white'">
+              {{ mytrip().length }}
+            </span>
+          }
+        </div>
+        <span class="text-[11px] mt-0.5 leading-tight">Trips</span>
+      </button>
+
+      <!-- 2. Profile Tab -->
+      <button
+        type="button"
+        (click)="handlelistitemclick('profile')"
+        [class]="selecteditem() === 'profile'
+          ? 'flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-center bg-[#5F4299] text-white font-extrabold shadow-sm transition-all'
+          : 'flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-center text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold transition-all'">
+        <mat-icon class="text-[18px] w-4.5 h-4.5 leading-4.5">account_circle</mat-icon>
+        <span class="text-[11px] mt-0.5 leading-tight">Profile</span>
+      </button>
+
+      <!-- 3. Stories Tab -->
+      <button
+        type="button"
+        (click)="handlelistitemclick('community')"
+        [class]="selecteditem() === 'community'
+          ? 'flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-center bg-[#5F4299] text-white font-extrabold shadow-sm transition-all'
+          : 'flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-center text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold transition-all'">
+        <div class="relative flex items-center justify-center">
+          <mat-icon class="text-[18px] w-4.5 h-4.5 leading-4.5">forum</mat-icon>
+          @if (userCommunityStats()?.postCount) {
+            <span class="absolute -top-1 -right-2 text-[9px] font-black px-1 rounded-full leading-tight"
+              [class]="selecteditem() === 'community' ? 'bg-white text-[#5F4299]' : 'bg-[#5F4299] text-white'">
+              {{ userCommunityStats()?.postCount }}
+            </span>
+          }
+        </div>
+        <span class="text-[11px] mt-0.5 leading-tight">Stories</span>
+      </button>
+
+      <!-- 4. Wallet Tab -->
+      <button
+        type="button"
+        (click)="handlelistitemclick('wallet')"
+        [class]="selecteditem() === 'wallet'
+          ? 'flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-center bg-[#5F4299] text-white font-extrabold shadow-sm transition-all'
+          : 'flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-center text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold transition-all'">
+        <mat-icon class="text-[18px] w-4.5 h-4.5 leading-4.5">account_balance_wallet</mat-icon>
+        <span class="text-[11px] mt-0.5 leading-tight">Wallet</span>
+      </button>
+    </div>
+
+    <!-- Main Layout (Desktop: sidebar + content, Mobile: 100% full width, zero overlap) -->
+    <div class="grid grid-cols-1 md:grid-cols-[270px_1fr] gap-6 items-start">
+      <!-- Desktop Sidebar (Strictly hidden on mobile to eliminate overlap) -->
       <aside class="hidden md:block bg-white dark:bg-slate-900 rounded-3xl border border-gray-200/80 dark:border-slate-800 shadow-sm overflow-hidden sticky top-24">
         <div class="p-5 flex items-center gap-3.5 border-b border-gray-100 dark:border-slate-800">
           @if (currentcustomer()?.picture) {
@@ -168,7 +185,7 @@
         }
       </aside>
 
-      <!-- content -->
+      <!-- Main Content Area -->
       <main class="min-w-0">
         @if (!currentcustomer()) {
           <section class="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200/80 dark:border-slate-800 shadow-sm p-8 md:p-12 text-center">
@@ -187,7 +204,8 @@
           </section>
         } @else if (selecteditem() === 'trips') {
           <section>
-            <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+            <!-- Desktop Header: Hidden on mobile to maximize viewport -->
+            <div class="hidden md:flex items-center justify-between gap-3 mb-5">
               <div>
                 <h1 class="text-2xl font-extrabold text-gray-900 dark:text-gray-100">My Trips</h1>
                 <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400">All the bus bookings made with this account.</p>
@@ -198,30 +216,31 @@
               </a>
             </div>
 
+            <!-- KPI Metric Chips (Compact row on both mobile and desktop) -->
             @if (mytrip().length && !loading()) {
-              <div class="grid grid-cols-3 gap-2 sm:gap-3 mb-5">
-                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-2.5 sm:p-4 shadow-xs text-center sm:text-left">
-                  <p class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Total trips</p>
-                  <p class="text-base sm:text-2xl font-black text-gray-900 dark:text-gray-100 mt-0.5 sm:mt-1">{{ mytrip().length }}</p>
+              <div class="grid grid-cols-3 gap-2 sm:gap-3 mb-3">
+                <div class="bg-white dark:bg-slate-900 rounded-xl border border-gray-200/80 dark:border-slate-800 p-2 sm:p-3 shadow-xs text-center">
+                  <p class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Total Trips</p>
+                  <p class="text-sm sm:text-xl font-black text-gray-900 dark:text-gray-100 mt-0.5">{{ mytrip().length }}</p>
                 </div>
-                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-2.5 sm:p-4 shadow-xs text-center sm:text-left">
+                <div class="bg-white dark:bg-slate-900 rounded-xl border border-gray-200/80 dark:border-slate-800 p-2 sm:p-3 shadow-xs text-center">
                   <p class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Upcoming</p>
-                  <p class="text-base sm:text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-0.5 sm:mt-1">{{ upcomingcount() }}</p>
+                  <p class="text-sm sm:text-xl font-black text-emerald-600 dark:text-emerald-400 mt-0.5">{{ upcomingcount() }}</p>
                 </div>
-                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-2.5 sm:p-4 shadow-xs text-center sm:text-left">
-                  <p class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Total spent</p>
-                  <p class="text-base sm:text-2xl font-black text-[#5f4299] dark:text-purple-300 mt-0.5 sm:mt-1">&#8377;{{ totalspend() }}</p>
+                <div class="bg-white dark:bg-slate-900 rounded-xl border border-gray-200/80 dark:border-slate-800 p-2 sm:p-3 shadow-xs text-center">
+                  <p class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Total Spent</p>
+                  <p class="text-sm sm:text-xl font-black text-[#5f4299] dark:text-purple-300 mt-0.5">&#8377;{{ totalspend() }}</p>
                 </div>
               </div>
             }
 
             @if (loading()) {
-              <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-12 grid place-content-center gap-3 text-center shadow-xs">
+              <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-10 grid place-content-center gap-3 text-center shadow-xs">
                 <mat-icon class="text-[#5f4299] animate-spin justify-self-center text-3xl">progress_activity</mat-icon>
                 <p class="text-sm font-semibold text-gray-500 dark:text-gray-400">Loading your trips...</p>
               </div>
             } @else if (loaderror()) {
-              <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-10 text-center shadow-xs">
+              <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-8 text-center shadow-xs">
                 <mat-icon class="text-red-500 text-3xl">error_outline</mat-icon>
                 <p class="mt-2 text-sm text-gray-600 dark:text-gray-300 font-semibold">{{ loaderror() }}</p>
                 <button (click)="loadtrips()"
@@ -230,7 +249,7 @@
                 </button>
               </div>
             } @else if (!mytrip().length) {
-              <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-12 text-center shadow-xs">
+              <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-10 text-center shadow-xs">
                 <mat-icon class="text-gray-300 dark:text-gray-600 text-4xl">luggage</mat-icon>
                 <h2 class="mt-3 text-lg font-bold text-gray-800 dark:text-gray-100">No trips yet</h2>
                 <p class="mt-1 text-xs md:text-sm text-gray-500 dark:text-gray-400">When you book a bus, your ticket and journey details will show up here.</p>
@@ -240,11 +259,11 @@
                 </a>
               </div>
             } @else {
-              <div class="flex flex-col gap-4">
+              <div class="flex flex-col gap-3">
                 @if (actionmessage()) {
-                  <div class="rounded-xl border border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-950/40 px-4 py-3 text-xs md:text-sm font-semibold text-blue-800 dark:text-blue-300 flex items-center justify-between">
+                  <div class="rounded-xl border border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-950/40 px-3.5 py-2.5 text-xs font-semibold text-blue-800 dark:text-blue-300 flex items-center justify-between">
                     <span>{{ actionmessage() }}</span>
-                    <button type="button" (click)="actionmessage.set('')" class="text-blue-400 hover:text-blue-600 text-base">&times;</button>
+                    <button type="button" (click)="actionmessage.set('')" class="text-blue-400 hover:text-blue-600 text-base leading-none">&times;</button>
                   </div>
                 }
                 @for (trip of mytrip(); track trip._id) {
@@ -259,116 +278,127 @@
           </section>
         } @else if (selecteditem() === 'profile') {
           <section>
-            <h1 class="text-2xl font-extrabold text-gray-900 dark:text-gray-100">My Profile</h1>
-            <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mb-5">Personal details linked to your verified Tedbus account.</p>
+            <div class="hidden md:block mb-5">
+              <h1 class="text-2xl font-extrabold text-gray-900 dark:text-gray-100">My Profile</h1>
+              <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400">Personal details linked to your verified Tedbus account.</p>
+            </div>
 
-            <div class="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200/80 dark:border-slate-800 shadow-sm p-6 md:p-8 space-y-6">
-              <div class="flex items-center gap-4 pb-6 border-b border-gray-100 dark:border-slate-800">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200/80 dark:border-slate-800 shadow-sm p-4 sm:p-6 md:p-8 space-y-5">
+              <div class="flex items-center gap-3.5 pb-4 border-b border-gray-100 dark:border-slate-800">
                 @if (currentcustomer()?.picture) {
-                  <img class="w-16 h-16 rounded-full object-cover ring-2 ring-purple-100 dark:ring-purple-900" [src]="currentcustomer()?.picture" alt="Profile">
+                  <img class="w-14 h-14 rounded-full object-cover ring-2 ring-purple-100 dark:ring-purple-900" [src]="currentcustomer()?.picture" alt="Profile">
                 } @else {
-                  <div class="w-16 h-16 rounded-full bg-[#f0edf7] dark:bg-purple-950 text-[#5F4299] dark:text-purple-300 grid place-content-center font-black text-xl">
+                  <div class="w-14 h-14 rounded-full bg-[#f0edf7] dark:bg-purple-950 text-[#5F4299] dark:text-purple-300 grid place-content-center font-black text-lg">
                     {{ initials() }}
                   </div>
                 }
                 <div class="min-w-0">
-                  <p class="text-lg font-bold text-gray-900 dark:text-gray-100 truncate">{{ currentcustomer()?.name || 'User' }}</p>
-                  <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 truncate">{{ currentcustomer()?.email || '-' }}</p>
+                  <p class="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100 truncate">{{ currentcustomer()?.name || 'User' }}</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ currentcustomer()?.email || '-' }}</p>
                 </div>
               </div>
 
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
-                <div class="p-4 rounded-2xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800">
-                  <p class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Full Name</p>
-                  <p class="mt-1 font-semibold text-gray-800 dark:text-gray-100 text-sm">{{ currentcustomer()?.name || '-' }}</p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div class="p-3.5 rounded-2xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800">
+                  <p class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Full Name</p>
+                  <p class="mt-0.5 font-semibold text-gray-800 dark:text-gray-100 text-sm">{{ currentcustomer()?.name || '-' }}</p>
                 </div>
-                <div class="p-4 rounded-2xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800">
-                  <p class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Date of Birth</p>
-                  <p class="mt-1 font-semibold text-gray-800 dark:text-gray-100 text-sm">{{ currentcustomer()?.dob || '-' }}</p>
+                <div class="p-3.5 rounded-2xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800">
+                  <p class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Date of Birth</p>
+                  <p class="mt-0.5 font-semibold text-gray-800 dark:text-gray-100 text-sm">{{ currentcustomer()?.dob || '-' }}</p>
                 </div>
-                <div class="p-4 rounded-2xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800">
-                  <p class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Gender</p>
-                  <p class="mt-1 font-semibold text-gray-800 dark:text-gray-100 text-sm">{{ currentcustomer()?.gender || '-' }}</p>
+                <div class="p-3.5 rounded-2xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800">
+                  <p class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Gender</p>
+                  <p class="mt-0.5 font-semibold text-gray-800 dark:text-gray-100 text-sm">{{ currentcustomer()?.gender || '-' }}</p>
                 </div>
-                <div class="p-4 rounded-2xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800">
-                  <p class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Mobile Phone</p>
-                  <p class="mt-1 font-semibold text-gray-800 dark:text-gray-100 text-sm">{{ currentcustomer()?.phoneNumber || '-' }}</p>
+                <div class="p-3.5 rounded-2xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800">
+                  <p class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Mobile Phone</p>
+                  <p class="mt-0.5 font-semibold text-gray-800 dark:text-gray-100 text-sm">{{ currentcustomer()?.phoneNumber || '-' }}</p>
                 </div>
               </div>
 
-              <div class="pt-4 border-t border-gray-100 dark:border-slate-800">
-                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-3">Linked Email Address</p>
-                <div class="p-4 rounded-2xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800 flex items-center justify-between">
-                  <div class="flex items-center gap-3">
-                    <mat-icon class="text-[#5f4299] text-xl">mark_email_read</mat-icon>
-                    <div>
-                      <p class="font-semibold text-sm text-gray-800 dark:text-gray-100">{{ currentcustomer()?.email }}</p>
-                      <p class="text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">✓ Verified via Google OAuth</p>
+              <div class="pt-3 border-t border-gray-100 dark:border-slate-800">
+                <p class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-2">Linked Email Address</p>
+                <div class="p-3.5 rounded-2xl bg-gray-50 dark:bg-slate-800/50 border border-gray-100 dark:border-slate-800 flex items-center justify-between">
+                  <div class="flex items-center gap-2.5 min-w-0">
+                    <mat-icon class="text-[#5f4299] text-xl shrink-0">mark_email_read</mat-icon>
+                    <div class="min-w-0">
+                      <p class="font-semibold text-xs sm:text-sm text-gray-800 dark:text-gray-100 truncate">{{ currentcustomer()?.email }}</p>
+                      <p class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">✓ Verified via Google OAuth</p>
                     </div>
                   </div>
                 </div>
               </div>
+
+              <!-- Mobile-Only Sign Out button in Profile tab -->
+              <div class="md:hidden pt-3 border-t border-gray-100 dark:border-slate-800">
+                <button (click)="signout()"
+                  class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-red-200 dark:border-red-900/60 bg-red-50/60 dark:bg-red-950/20 text-red-600 dark:text-red-400 font-bold text-xs hover:bg-red-100 active:scale-98 transition-all">
+                  <mat-icon class="text-[16px] w-4 h-4 leading-4">logout</mat-icon>
+                  <span>Sign Out of Account</span>
+                </button>
+              </div>
             </div>
           </section>
         } @else if (selecteditem() === 'community') {
-          <section class="space-y-6">
+          <section class="space-y-4">
             <div class="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <h1 class="text-2xl font-extrabold text-gray-900 dark:text-gray-100">Community Stories & Activity</h1>
-                <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400">Your published travel posts, tips, contributor status, and interactions.</p>
+                <h1 class="text-lg sm:text-2xl font-extrabold text-gray-900 dark:text-gray-100">Community Stories & Activity</h1>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Your published travel posts, tips, contributor status, and interactions.</p>
               </div>
               <a routerLink="/community"
-                class="px-4 py-2 bg-[#5f4299] text-white rounded-xl text-xs font-bold hover:bg-[#4b337e] transition-colors shadow-xs flex items-center gap-2 cursor-pointer">
-                <mat-icon class="text-sm w-4 h-4 leading-4">add_circle</mat-icon>
+                class="px-3.5 py-1.5 bg-[#5f4299] text-white rounded-xl text-xs font-bold hover:bg-[#4b337e] transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer">
+                <mat-icon class="text-xs w-3.5 h-3.5 leading-3.5">add_circle</mat-icon>
                 <span>Share a Story</span>
               </a>
             </div>
 
             <!-- Contributor Trust Badge Card -->
-            <div class="bg-gradient-to-r from-purple-900 to-[#5f4299] text-white rounded-3xl p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="bg-gradient-to-r from-purple-900 to-[#5f4299] text-white rounded-2xl p-4 sm:p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
               <div>
                 <div class="flex items-center gap-2">
-                  <span class="text-xs font-bold uppercase tracking-wider text-purple-200">Traveler Credibility Status</span>
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-purple-200">Traveler Credibility Status</span>
                   @if (userCommunityStats()?.badge) {
-                    <span [class]="'text-[10px] font-bold px-2 py-0.5 rounded-full border ' + getBadgeColor(userCommunityStats()?.badge)">
+                    <span [class]="'text-[9px] font-bold px-2 py-0.5 rounded-full border ' + getBadgeColor(userCommunityStats()?.badge)">
                       {{ userCommunityStats()?.badge }}
                     </span>
                   }
                 </div>
-                <h2 class="text-xl font-black mt-1">Verified Community Voice</h2>
-                <p class="text-xs text-purple-100 mt-1 max-w-xl leading-relaxed">
+                <h2 class="text-base sm:text-xl font-black mt-1">Verified Community Voice</h2>
+                <p class="text-[11px] sm:text-xs text-purple-100 mt-0.5 max-w-xl leading-relaxed">
                   Earn traveler trust by sharing authentic road reviews, safety tips, and hygiene recommendations.
                 </p>
               </div>
-              <div class="bg-white/10 border border-white/20 rounded-2xl p-4 flex items-center gap-3 shrink-0">
-                <mat-icon class="text-3xl text-amber-300">verified</mat-icon>
+              <div class="bg-white/10 border border-white/20 rounded-xl p-3 flex items-center gap-2.5 shrink-0">
+                <mat-icon class="text-2xl text-amber-300">verified</mat-icon>
                 <div>
                   <p class="text-xs font-bold text-white">Google Verified</p>
-                  <p class="text-[11px] text-purple-200">Authentic Traveler Identity</p>
+                  <p class="text-[10px] text-purple-200">Authentic Traveler Identity</p>
                 </div>
               </div>
             </div>
 
             <!-- Activity Stats (3 columns) -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-4 shadow-xs">
-                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Stories Published</p>
-                <p class="text-2xl font-black text-gray-900 dark:text-gray-100 mt-1">{{ userCommunityStats()?.postCount || userCommunityPosts().length || 0 }}</p>
+            <div class="grid grid-cols-3 gap-2">
+              <div class="bg-white dark:bg-slate-900 rounded-xl border border-gray-200/80 dark:border-slate-800 p-2.5 sm:p-4 shadow-xs text-center">
+                <p class="text-[9px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Stories</p>
+                <p class="text-base sm:text-2xl font-black text-gray-900 dark:text-gray-100 mt-0.5">{{ userCommunityStats()?.postCount || userCommunityPosts().length || 0 }}</p>
               </div>
-              <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-4 shadow-xs">
-                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Comments Posted</p>
-                <p class="text-2xl font-black text-[#5f4299] dark:text-purple-300 mt-1">{{ userCommunityStats()?.commentCount || 0 }}</p>
+              <div class="bg-white dark:bg-slate-900 rounded-xl border border-gray-200/80 dark:border-slate-800 p-2.5 sm:p-4 shadow-xs text-center">
+                <p class="text-[9px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Comments</p>
+                <p class="text-base sm:text-2xl font-black text-[#5f4299] dark:text-purple-300 mt-0.5">{{ userCommunityStats()?.commentCount || 0 }}</p>
               </div>
-              <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-4 shadow-xs">
-                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Likes Received</p>
-                <p class="text-2xl font-black text-red-500 mt-1">{{ userCommunityStats()?.totalLikesReceived || 0 }}</p>
+              <div class="bg-white dark:bg-slate-900 rounded-xl border border-gray-200/80 dark:border-slate-800 p-2.5 sm:p-4 shadow-xs text-center">
+                <p class="text-[9px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Likes</p>
+                <p class="text-base sm:text-2xl font-black text-red-500 mt-0.5">{{ userCommunityStats()?.totalLikesReceived || 0 }}</p>
               </div>
             </div>
 
             <!-- Published Stories List -->
             <div class="space-y-3">
-              <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100 flex items-center gap-2">
-                <mat-icon class="text-[#5f4299]">rate_review</mat-icon>
+              <h3 class="font-bold text-xs sm:text-sm text-gray-900 dark:text-gray-100 flex items-center gap-1.5">
+                <mat-icon class="text-[#5f4299] text-base w-4 h-4 leading-4">rate_review</mat-icon>
                 <span>Your Published Travel Stories</span>
               </h3>
 
@@ -378,29 +408,29 @@
                   <p class="text-xs font-semibold text-gray-500 mt-2">Loading your community posts...</p>
                 </div>
               } @else if (userCommunityPosts().length === 0) {
-                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-10 text-center shadow-xs space-y-3">
-                  <mat-icon class="text-gray-300 dark:text-gray-600 text-4xl mx-auto">forum</mat-icon>
-                  <h4 class="font-bold text-sm text-gray-700 dark:text-gray-300">No Stories Published Yet</h4>
-                  <p class="text-xs text-gray-400 max-w-sm mx-auto">
+                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-8 text-center shadow-xs space-y-2.5">
+                  <mat-icon class="text-gray-300 dark:text-gray-600 text-3xl mx-auto">forum</mat-icon>
+                  <h4 class="font-bold text-xs sm:text-sm text-gray-700 dark:text-gray-300">No Stories Published Yet</h4>
+                  <p class="text-[11px] text-gray-400 max-w-sm mx-auto">
                     Share your intercity bus experiences, boarding advice, and hidden rest stop gems with other travelers!
                   </p>
-                  <a routerLink="/community" class="inline-flex items-center gap-2 px-4 py-2 bg-[#5f4299] text-white rounded-xl text-xs font-bold hover:bg-[#4b337e]">
+                  <a routerLink="/community" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#5f4299] text-white rounded-xl text-xs font-bold hover:bg-[#4b337e]">
                     <span>Explore Community & Share</span>
                     <mat-icon class="text-xs w-3 h-3 leading-3">arrow_forward</mat-icon>
                   </a>
                 </div>
               } @else {
-                <div class="grid grid-cols-1 gap-3">
+                <div class="grid grid-cols-1 gap-2.5">
                   @for (post of userCommunityPosts(); track post._id) {
-                    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-5 shadow-xs hover:border-[#5f4299]/50 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4">
-                      <div class="space-y-1.5 flex-1 min-w-0">
-                        <div class="flex items-center gap-2 flex-wrap">
-                          <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950 text-[#5f4299] dark:text-purple-300">
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-4 shadow-xs hover:border-[#5f4299]/50 transition-all flex flex-col md:flex-row md:items-center justify-between gap-3">
+                      <div class="space-y-1 flex-1 min-w-0">
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                          <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950 text-[#5f4299] dark:text-purple-300">
                             {{ post.category }}
                           </span>
                           @if (post.routeTag) {
-                            <span class="text-[10px] font-medium text-gray-500 flex items-center gap-1">
-                              <mat-icon class="text-[12px] w-3 h-3 leading-3">route</mat-icon>
+                            <span class="text-[10px] font-medium text-gray-500 flex items-center gap-0.5">
+                              <mat-icon class="text-[11px] w-2.5 h-2.5 leading-2.5">route</mat-icon>
                               {{ post.routeTag.from }} ➔ {{ post.routeTag.to }}
                             </span>
                           }
@@ -408,28 +438,28 @@
                             {{ post.createdAt | date:'mediumDate' }}
                           </span>
                         </div>
-                        <h4 class="font-bold text-sm text-gray-900 dark:text-gray-100 truncate">
+                        <h4 class="font-bold text-xs sm:text-sm text-gray-900 dark:text-gray-100 truncate">
                           {{ post.title }}
                         </h4>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed">
+                        <p class="text-[11px] text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed">
                           {{ post.content }}
                         </p>
                       </div>
 
-                      <div class="flex items-center gap-4 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-gray-100 dark:border-slate-800">
-                        <div class="flex items-center gap-3 text-xs text-gray-500 font-semibold">
+                      <div class="flex items-center gap-3 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-gray-100 dark:border-slate-800">
+                        <div class="flex items-center gap-2.5 text-xs text-gray-500 font-semibold">
                           <span class="flex items-center gap-1 text-red-500">
-                            <mat-icon class="text-sm w-4 h-4 leading-4">favorite</mat-icon>
+                            <mat-icon class="text-xs w-3.5 h-3.5 leading-3.5">favorite</mat-icon>
                             {{ post.likesCount || 0 }}
                           </span>
                           <span class="flex items-center gap-1 text-blue-500">
-                            <mat-icon class="text-sm w-4 h-4 leading-4">chat_bubble</mat-icon>
+                            <mat-icon class="text-xs w-3.5 h-3.5 leading-3.5">chat_bubble</mat-icon>
                             {{ post.commentsCount || 0 }}
                           </span>
                         </div>
 
                         <a [routerLink]="['/community']" [queryParams]="{ postId: post._id }"
-                          class="px-3.5 py-1.5 rounded-xl border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-950/40 text-[#5f4299] dark:text-purple-300 text-xs font-bold hover:bg-purple-100 transition-colors flex items-center gap-1">
+                          class="px-2.5 py-1 rounded-xl border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-950/40 text-[#5f4299] dark:text-purple-300 text-[11px] font-bold hover:bg-purple-100 transition-colors flex items-center gap-0.5">
                           <span>View Story</span>
                           <mat-icon class="text-xs w-3 h-3 leading-3">open_in_new</mat-icon>
                         </a>
@@ -442,30 +472,32 @@
           </section>
         } @else {
           <section>
-            <h1 class="text-2xl font-extrabold text-gray-900 dark:text-gray-100">Wallet & Refunds</h1>
-            <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mb-5">Refund balance and spending summary for this account.</p>
+            <div class="hidden md:block mb-5">
+              <h1 class="text-2xl font-extrabold text-gray-900 dark:text-gray-100">Wallet & Refunds</h1>
+              <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400">Refund balance and spending summary for this account.</p>
+            </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
-              <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-4 shadow-xs">
-                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Total Spent</p>
-                <p class="text-2xl font-black text-gray-900 dark:text-gray-100 mt-1">&#8377;{{ totalspend() }}</p>
+            <div class="grid grid-cols-3 gap-2 mb-3">
+              <div class="bg-white dark:bg-slate-900 rounded-xl border border-gray-200/80 dark:border-slate-800 p-2.5 sm:p-4 shadow-xs text-center">
+                <p class="text-[9px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Total Spent</p>
+                <p class="text-sm sm:text-2xl font-black text-gray-900 dark:text-gray-100 mt-0.5">&#8377;{{ totalspend() }}</p>
               </div>
-              <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-4 shadow-xs">
-                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Refunded to Wallet</p>
-                <p class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1">&#8377;{{ refundtotal() }}</p>
+              <div class="bg-white dark:bg-slate-900 rounded-xl border border-gray-200/80 dark:border-slate-800 p-2.5 sm:p-4 shadow-xs text-center">
+                <p class="text-[9px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Refunds</p>
+                <p class="text-sm sm:text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-0.5">&#8377;{{ refundtotal() }}</p>
               </div>
-              <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 p-4 shadow-xs">
-                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Net Paid</p>
-                <p class="text-2xl font-black text-[#5f4299] dark:text-purple-300 mt-1">&#8377;{{ totalspend() - refundtotal() }}</p>
+              <div class="bg-white dark:bg-slate-900 rounded-xl border border-gray-200/80 dark:border-slate-800 p-2.5 sm:p-4 shadow-xs text-center">
+                <p class="text-[9px] sm:text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">Net Paid</p>
+                <p class="text-sm sm:text-2xl font-black text-[#5f4299] dark:text-purple-300 mt-0.5">&#8377;{{ totalspend() - refundtotal() }}</p>
               </div>
             </div>
 
-            <div class="bg-white dark:bg-slate-900 rounded-3xl border border-gray-200/80 dark:border-slate-800 shadow-sm p-6 space-y-3">
-              <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100 flex items-center gap-2">
-                <mat-icon class="text-emerald-500">verified</mat-icon>
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200/80 dark:border-slate-800 shadow-sm p-4 sm:p-6 space-y-2.5">
+              <h3 class="font-bold text-xs sm:text-sm text-gray-900 dark:text-gray-100 flex items-center gap-1.5">
+                <mat-icon class="text-emerald-500 text-base">verified</mat-icon>
                 <span>Automated Cancellation & Instant Refund Policy</span>
               </h3>
-              <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+              <p class="text-[11px] sm:text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
                 Cancelled trips are refunded according to the operator cancellation policy:
                 <strong>90% refund</strong> when cancelled more than 24 hours prior to scheduled departure,
                 <strong>50% refund</strong> between 6 and 24 hours, and <strong>0%</strong> within 6 hours of departure.
@@ -480,40 +512,40 @@
 
   <!-- Rate & Review Modal -->
   @if (showReviewModal()) {
-    <div class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-      <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-        <div class="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-slate-800">
+    <div class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4">
+      <div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl max-w-lg w-full p-4 sm:p-6 shadow-2xl space-y-3.5 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-2.5 border-b border-gray-100 dark:border-slate-800">
           <div>
-            <h3 class="font-extrabold text-lg text-gray-900 dark:text-gray-100 flex items-center gap-2">
-              <mat-icon class="text-amber-500">star</mat-icon>
+            <h3 class="font-extrabold text-base sm:text-lg text-gray-900 dark:text-gray-100 flex items-center gap-1.5">
+              <mat-icon class="text-amber-500 text-lg">star</mat-icon>
               <span>{{ isEditingReview() ? 'Edit Your Journey Review' : 'Rate Your Journey' }}</span>
             </h3>
-            <p class="text-xs text-gray-500 dark:text-gray-400">
+            <p class="text-[11px] text-gray-500 dark:text-gray-400">
               Trip: {{ reviewingBooking()?.departureDetails?.city }} ➔ {{ reviewingBooking()?.arrivalDetails?.city }}
             </p>
           </div>
-          <button (click)="showReviewModal.set(false)" class="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 font-bold text-lg">&times;</button>
+          <button (click)="showReviewModal.set(false)" class="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 font-bold text-lg leading-none">&times;</button>
         </div>
 
-        <div class="space-y-4 text-xs">
+        <div class="space-y-3.5 text-xs">
           <!-- Overall Rating -->
           <div>
-            <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1.5">Overall Rating *</label>
-            <div class="flex items-center gap-2">
+            <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">Overall Rating *</label>
+            <div class="flex items-center gap-1.5">
               @for (star of [1, 2, 3, 4, 5]; track star) {
                 <button type="button" (click)="reviewForm.rating = star" class="text-2xl transition-transform hover:scale-125 focus:outline-none">
                   <span [class.text-amber-400]="reviewForm.rating >= star" [class.text-gray-300]="reviewForm.rating < star">★</span>
                 </button>
               }
-              <span class="ml-2 font-bold text-sm text-[#5f4299] dark:text-purple-300">{{ reviewForm.rating }} / 5 Stars</span>
+              <span class="ml-2 font-bold text-xs sm:text-sm text-[#5f4299] dark:text-purple-300">{{ reviewForm.rating }} / 5 Stars</span>
             </div>
           </div>
 
           <!-- Aspect Ratings -->
-          <div class="grid grid-cols-2 gap-3 p-3 bg-gray-50 dark:bg-slate-800/60 rounded-2xl border border-gray-100 dark:border-slate-800">
+          <div class="grid grid-cols-2 gap-2 p-2.5 bg-gray-50 dark:bg-slate-800/60 rounded-2xl border border-gray-100 dark:border-slate-800">
             <div>
-              <label class="block font-semibold text-gray-600 dark:text-gray-400 mb-1">Punctuality</label>
-              <select [(ngModel)]="reviewForm.punctuality" class="w-full px-2 py-1.5 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-800 dark:text-gray-100 font-medium">
+              <label class="block font-semibold text-gray-600 dark:text-gray-400 mb-1 text-[11px]">Punctuality</label>
+              <select [(ngModel)]="reviewForm.punctuality" class="w-full px-2 py-1 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-800 dark:text-gray-100 font-medium text-xs">
                 <option [value]="5">5 - On Time</option>
                 <option [value]="4">4 - Minor Delay</option>
                 <option [value]="3">3 - Moderate Delay</option>
@@ -522,8 +554,8 @@
               </select>
             </div>
             <div>
-              <label class="block font-semibold text-gray-600 dark:text-gray-400 mb-1">Cleanliness</label>
-              <select [(ngModel)]="reviewForm.cleanliness" class="w-full px-2 py-1.5 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-800 dark:text-gray-100 font-medium">
+              <label class="block font-semibold text-gray-600 dark:text-gray-400 mb-1 text-[11px]">Cleanliness</label>
+              <select [(ngModel)]="reviewForm.cleanliness" class="w-full px-2 py-1 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-800 dark:text-gray-100 font-medium text-xs">
                 <option [value]="5">5 - Spotless</option>
                 <option [value]="4">4 - Clean</option>
                 <option [value]="3">3 - Acceptable</option>
@@ -532,8 +564,8 @@
               </select>
             </div>
             <div>
-              <label class="block font-semibold text-gray-600 dark:text-gray-400 mb-1">Bus Comfort</label>
-              <select [(ngModel)]="reviewForm.comfort" class="w-full px-2 py-1.5 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-800 dark:text-gray-100 font-medium">
+              <label class="block font-semibold text-gray-600 dark:text-gray-400 mb-1 text-[11px]">Bus Comfort</label>
+              <select [(ngModel)]="reviewForm.comfort" class="w-full px-2 py-1 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-800 dark:text-gray-100 font-medium text-xs">
                 <option [value]="5">5 - Very Comfortable</option>
                 <option [value]="4">4 - Comfortable</option>
                 <option [value]="3">3 - Decent</option>
@@ -542,8 +574,8 @@
               </select>
             </div>
             <div>
-              <label class="block font-semibold text-gray-600 dark:text-gray-400 mb-1">Staff Behaviour</label>
-              <select [(ngModel)]="reviewForm.staff" class="w-full px-2 py-1.5 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-800 dark:text-gray-100 font-medium">
+              <label class="block font-semibold text-gray-600 dark:text-gray-400 mb-1 text-[11px]">Staff Behaviour</label>
+              <select [(ngModel)]="reviewForm.staff" class="w-full px-2 py-1 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-gray-800 dark:text-gray-100 font-medium text-xs">
                 <option [value]="5">5 - Polite & Helpful</option>
                 <option [value]="4">4 - Good</option>
                 <option [value]="3">3 - Average</option>
@@ -555,40 +587,40 @@
 
           <!-- Headline -->
           <div>
-            <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">Review Headline</label>
+            <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1 text-[11px]">Review Headline</label>
             <input type="text" [(ngModel)]="reviewForm.headline" placeholder="e.g. Smooth sleeper journey with on-time arrival"
-              class="w-full px-3 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-gray-800 dark:text-gray-100 outline-none focus:border-[#5f4299]" />
+              class="w-full px-3 py-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-gray-800 dark:text-gray-100 outline-none focus:border-[#5f4299] text-xs" />
           </div>
 
           <!-- Written Review -->
           <div>
             <div class="flex items-center justify-between mb-1">
-              <label class="block font-bold text-gray-700 dark:text-gray-300">Your Detailed Feedback *</label>
-              <span class="text-[11px]" [class.text-red-500]="commentLength < 15" [class.text-emerald-600]="commentLength >= 15">
+              <label class="block font-bold text-gray-700 dark:text-gray-300 text-[11px]">Your Detailed Feedback *</label>
+              <span class="text-[10px]" [class.text-red-500]="commentLength < 15" [class.text-emerald-600]="commentLength >= 15">
                 {{ commentLength }} / 15 chars min
               </span>
             </div>
-            <textarea [(ngModel)]="reviewForm.comment" rows="4" placeholder="How was your journey? Mention driving quality, AC temperature, rest stops, etc..."
-              class="w-full px-3 py-2 bg-gray-50 dark:bg-slate-800 border rounded-xl text-gray-800 dark:text-gray-100 outline-none focus:border-[#5f4299]"
+            <textarea [(ngModel)]="reviewForm.comment" rows="3" placeholder="How was your journey? Mention driving quality, AC temperature, rest stops, etc..."
+              class="w-full px-3 py-1.5 bg-gray-50 dark:bg-slate-800 border rounded-xl text-gray-800 dark:text-gray-100 outline-none focus:border-[#5f4299] text-xs"
               [class.border-red-300]="commentLength > 0 && commentLength < 15"
               [class.border-gray-200]="commentLength === 0 || commentLength >= 15"
               [class.dark:border-slate-700]="commentLength === 0 || commentLength >= 15"></textarea>
             @if (commentLength > 0 && commentLength < 15) {
-              <p class="text-[11px] text-red-500 mt-1">Please write at least 15 characters to avoid low-effort feedback.</p>
+              <p class="text-[10px] text-red-500 mt-0.5">Please write at least 15 characters to avoid low-effort feedback.</p>
             }
           </div>
 
-          <p class="text-[11px] text-gray-400 dark:text-gray-500">
-            ✓ Your review carries a <strong>Verified Passenger</strong> badge based on your confirmed ticket. You can edit your review within <strong>24 hours</strong> of submission; after 24 hours ratings cannot be changed.
+          <p class="text-[10px] text-gray-400 dark:text-gray-500">
+            ✓ Your review carries a <strong>Verified Passenger</strong> badge based on your confirmed ticket. You can edit your review within <strong>24 hours</strong> of submission.
           </p>
         </div>
 
-        <div class="flex justify-end gap-2 pt-3 border-t border-gray-100 dark:border-slate-800">
-          <button (click)="showReviewModal.set(false)" class="px-4 py-2 border border-gray-200 dark:border-slate-700 rounded-xl text-xs font-semibold hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-300">
+        <div class="flex justify-end gap-2 pt-2.5 border-t border-gray-100 dark:border-slate-800">
+          <button (click)="showReviewModal.set(false)" class="px-3.5 py-1.5 border border-gray-200 dark:border-slate-700 rounded-xl text-xs font-semibold hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-300">
             Cancel
           </button>
           <button (click)="submitReview()" [disabled]="isSubmittingReview() || commentLength < 15"
-            class="px-5 py-2 bg-[#5f4299] text-white rounded-xl text-xs font-bold hover:bg-[#4b337e] disabled:opacity-50 shadow-sm cursor-pointer">
+            class="px-4 py-1.5 bg-[#5F4299] text-white rounded-xl text-xs font-bold hover:bg-[#4b337e] disabled:opacity-50 shadow-sm cursor-pointer">
             {{ isSubmittingReview() ? 'Saving...' : (isEditingReview() ? 'Update Review' : 'Post Verified Review') }}
           </button>
         </div>
