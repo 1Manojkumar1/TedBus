@@ -16,17 +16,15 @@
       <!-- Quick Tab Switcher -->
       <div class="flex items-center gap-2 bg-white/10 p-1 rounded-xl">
         <button (click)="activeTab.set('notifications')"
-          [class.bg-white]="activeTab() === 'notifications'"
-          [class.text-[#5f4299]]="activeTab() === 'notifications'"
-          [class.text-white]="activeTab() !== 'notifications'"
-          class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer">
+          [class]="activeTab() === 'notifications'
+            ? 'px-4 py-1.5 rounded-lg text-xs font-bold bg-white text-[#5f4299] shadow-xs transition-all cursor-pointer'
+            : 'px-4 py-1.5 rounded-lg text-xs font-bold text-white hover:bg-white/10 transition-all cursor-pointer'">
           {{ 'NOTIF.TAB_NOTIFS' | translate }} ({{ notificationService.unreadCount() }})
         </button>
         <button (click)="activeTab.set('preferences')"
-          [class.bg-white]="activeTab() === 'preferences'"
-          [class.text-[#5f4299]]="activeTab() === 'preferences'"
-          [class.text-white]="activeTab() !== 'preferences'"
-          class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer">
+          [class]="activeTab() === 'preferences'
+            ? 'px-4 py-1.5 rounded-lg text-xs font-bold bg-white text-[#5f4299] shadow-xs transition-all cursor-pointer'
+            : 'px-4 py-1.5 rounded-lg text-xs font-bold text-white hover:bg-white/10 transition-all cursor-pointer'">
           {{ 'NOTIF.TAB_PREFS' | translate }}
         </button>
       </div>
@@ -54,9 +52,9 @@
       <div class="flex flex-col sm:flex-row gap-3 items-center justify-between">
         <div class="flex gap-1.5 overflow-x-auto w-full sm:w-auto pb-1">
           <button *ngFor="let cat of categories" (click)="filterCategory(cat.id)"
-            [class.bg-[#5f4299]]="selectedCategory() === cat.id"
-            [class.text-white]="selectedCategory() === cat.id"
-            class="px-3 py-1.5 rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-semibold whitespace-nowrap shadow-xs hover:border-[#5f4299] transition-colors cursor-pointer">
+            [class]="selectedCategory() === cat.id
+              ? 'px-3 py-1.5 rounded-xl border border-[#5f4299] bg-[#5f4299] text-white text-xs font-bold whitespace-nowrap shadow-sm transition-colors cursor-pointer'
+              : 'px-3 py-1.5 rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-700 dark:text-gray-300 text-xs font-semibold whitespace-nowrap shadow-xs hover:border-[#5f4299] transition-colors cursor-pointer'">
             <i [class]="cat.icon + ' mr-1.5'"></i>
             <span>{{ cat.label }}</span>
           </button>
