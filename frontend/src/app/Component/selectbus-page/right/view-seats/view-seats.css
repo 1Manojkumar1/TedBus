@@ -30,6 +30,7 @@
   border-radius: 12px;
   padding: 14px;
   background: var(--tb-surface-alt, #f8fafc);
+  overflow-x: auto;
 }
 
 .driver-cabin {
