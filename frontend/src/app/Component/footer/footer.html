@@ -1,115 +1,228 @@
-<footer class="flex flex-col bg-gray-900 pt-16 pb-24 md:pb-8 items-center" (click)="handleclick($event)">
-    <div class="flex flex-col-reverse md:text-sm text-xs md:flex-col w-full px-6 md:px-0 md:w-[80%] max-w-[1300px]">
+<!-- 1. CHECKOUT / PAYMENT MODE: Distraction-Free Trust & Security Bar -->
+@if (footerMode() === 'payment') {
+  <footer class="bg-slate-900 border-t border-slate-800 text-slate-400 py-3.5 pb-20 md:pb-4 transition-colors">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
+      <!-- 256-Bit SSL badge -->
+      <div class="flex items-center gap-2 text-emerald-400 font-semibold text-xs">
+        <mat-icon class="text-[17px] w-4.5 h-4.5 leading-4.5">lock</mat-icon>
+        <span>256-Bit Bank-Grade SSL Encrypted Checkout</span>
+      </div>
 
-        <div class="flex justify-between flex-col md:flex-row gap-8 flex-wrap">
-            <ul class="flex flex-col gap-1.5 min-w-[140px]">
-                <li class="text-white font-bold text-base mb-2">{{ 'FOOTER.TOP_RTCS' | translate }}</li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">APSRTC</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">GSRTC</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">MSRTC</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">TNSTC</a></li>
-                <li><a class="text-[#5F4299] hover:text-[#7b5fbb] transition-colors duration-200 font-medium" href="">{{ 'FOOTER.VIEW_ALL' | translate }}</a></li>
-            </ul>
+      <!-- Payment Badges -->
+      <div class="flex items-center gap-2 text-slate-300 font-semibold text-[10px] sm:text-[11px] flex-wrap justify-center">
+        <span class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700">UPI / QR</span>
+        <span class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700">RuPay</span>
+        <span class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700">Visa</span>
+        <span class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700">Mastercard</span>
+        <span class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700">NetBanking</span>
+      </div>
 
-            <ul class="flex flex-col gap-1.5 min-w-[140px]">
-                <li class="text-white font-bold text-base mb-2">{{ 'FOOTER.OTHERS' | translate }}</li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">TSRTC</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">SBSTC</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">RSRTC</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Kerala RTC</a></li>
-                <li><a class="text-[#5F4299] hover:text-[#7b5fbb] transition-colors duration-200 font-medium" href="">{{ 'FOOTER.VIEW_ALL' | translate }}</a></li>
-            </ul>
+      <!-- Quick Trust Links -->
+      <div class="flex items-center gap-3 text-slate-400 text-[11px]">
+        <a routerLink="/cancellation" class="hover:text-purple-300 transition-colors">Refund Policy</a>
+        <span>·</span>
+        <a routerLink="/help" class="hover:text-purple-300 transition-colors">24/7 Support</a>
+        <span>·</span>
+        <span>&copy; 2026 Tedbus</span>
+      </div>
+    </div>
+  </footer>
+}
 
-            <ul class="flex flex-col gap-1.5 min-w-[160px]">
-                <li class="text-white font-bold text-base mb-2">{{ 'FOOTER.TOP_ROUTES' | translate }}</li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Hyderabad to Bangalore Bus</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Bangalore to Chennai Bus</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Pune to Bangalore Bus</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Mumbai to Bangalore Bus</a></li>
-                <li><a class="text-[#5F4299] hover:text-[#7b5fbb] transition-colors duration-200 font-medium" href="">{{ 'FOOTER.VIEW_ALL' | translate }}</a></li>
-            </ul>
+<!-- 2. APP / WORKFLOW PAGES MODE: Sleek 1-Line Utility Footer -->
+@else if (footerMode() === 'minimal') {
+  <footer class="bg-white dark:bg-slate-950 border-t border-gray-200/80 dark:border-slate-800/80 text-gray-500 dark:text-slate-400 py-3 pb-20 md:pb-3.5 transition-colors">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs">
+      <!-- Brand & Copyright -->
+      <div class="flex items-center gap-2.5">
+        <a routerLink="/" class="flex items-center gap-2 group">
+          <img class="w-6 h-auto" src="assets/red-bus-with-word-bus-it_600323-482.avif" alt="Tedbus">
+          <span class="font-extrabold text-sm text-gray-900 dark:text-gray-100 group-hover:text-[#5F4299] dark:group-hover:text-purple-300 transition-colors">Tedbus</span>
+        </a>
+        <span class="text-gray-300 dark:text-slate-700">|</span>
+        <span class="text-[11px] text-gray-400 dark:text-slate-500">&copy; 2026 Tedbus India Pvt. Ltd.</span>
+      </div>
 
-            <ul class="flex flex-col gap-1.5 min-w-[140px]">
-                <li class="text-white font-bold text-base mb-2">{{ 'FOOTER.TOP_CITIES' | translate }}</li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Hyderabad Bus Tickets</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Bangalore Bus Tickets</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Chennai Bus Tickets</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Pune Bus Tickets</a></li>
-                <li><a class="text-[#5F4299] hover:text-[#7b5fbb] transition-colors duration-200 font-medium" href="">{{ 'FOOTER.VIEW_ALL' | translate }}</a></li>
-            </ul>
+      <!-- App Quick Links -->
+      <div class="flex items-center gap-3.5 text-[11px] flex-wrap justify-center font-medium">
+        <a routerLink="/route-planner" class="hover:text-[#5F4299] dark:hover:text-purple-300 transition-colors">Route Planner</a>
+        <a routerLink="/community" class="hover:text-[#5F4299] dark:hover:text-purple-300 transition-colors">Community</a>
+        <a routerLink="/cancellation" class="hover:text-[#5F4299] dark:hover:text-purple-300 transition-colors">Refunds</a>
+        <a routerLink="/help" class="hover:text-[#5F4299] dark:hover:text-purple-300 transition-colors">Help</a>
+        <div class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 text-[11px] font-semibold pl-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="hidden md:inline">Operational</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+}
 
-            <ul class="flex flex-col gap-1.5 min-w-[140px]">
-                <li class="text-white font-bold text-base mb-2">TedRail</li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Book Train Tickets</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">PNR Status</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Live Train Status</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Train Seat Availability</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Trains between Stations</a></li>
-            </ul>
+<!-- 3. LANDING PAGE MODE: Modern 4-Column Footer with Mobile Collapsible Accordions -->
+@else {
+  <footer class="bg-slate-900 text-slate-300 pt-12 pb-24 md:pb-10 transition-colors" (click)="handleclick($event)">
+    <div class="max-w-6xl mx-auto px-4 md:px-8">
+
+      <!-- DESKTOP 4-COLUMN GRID (Hidden on mobile) -->
+      <div class="hidden md:grid md:grid-cols-4 gap-8 pb-10 border-b border-slate-800 text-xs">
+        <!-- Col 1: Brand & Value Prop -->
+        <div class="space-y-3.5">
+          <div class="flex items-center gap-2.5">
+            <img class="w-10 h-auto" src="assets/red-bus-with-word-bus-it_600323-482.avif" alt="Tedbus">
+            <span class="font-black text-xl text-white tracking-tight">Tedbus</span>
+          </div>
+          <p class="text-slate-400 text-xs leading-relaxed">
+            India's premier smart bus booking network connecting 180+ intercity routes. Verified operators, live GPS tracking, instant refunds, and 24/7 traveler care.
+          </p>
+          <div class="flex items-center gap-2 text-[11px] text-emerald-400 font-semibold pt-1">
+            <mat-icon class="text-[16px] w-4 h-4 leading-4 text-emerald-400">verified</mat-icon>
+            <span>Verified Fleet & Operator Safety</span>
+          </div>
         </div>
 
-        <hr class="my-10 border-gray-700">
-
-        <div class="flex justify-between flex-col md:flex-row gap-8">
-            <div class="flex flex-col gap-3 md:w-[25%]">
-                <div>
-                    <img class="w-28" src="assets/red-bus-with-word-bus-it_600323-482.avif" alt="">
-                </div>
-                <p class="text-gray-400 leading-relaxed">TedBus is an advanced online bus ticket booking platform connecting travelers across 180+ intercity routes in India. Enjoy verified operator ratings, real-time seat selection, authentic passenger reviews, and secure digital payments.</p>
-            </div>
-
-            <ul class="flex flex-col gap-1.5 min-w-[140px]">
-                <li class="text-white font-bold text-base mb-2">About tedbus</li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">About us</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Investor Relations</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Contact us</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Mobile version</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">tedbus on mobile</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Sitemap</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Offers</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Careers</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Values</a></li>
-            </ul>
-
-            <ul class="flex flex-col gap-1.5 min-w-[140px]">
-                <li class="text-white font-bold text-base mb-2">Info</li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">T&C</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Privacy policy</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">FAQ</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Blog</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Bus operator registration</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Agent registration</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Insurance partner</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">User agreement</a></li>
-            </ul>
-
-            <ul class="flex flex-col gap-1.5 min-w-[140px]">
-                <li class="text-white font-bold text-base mb-2">Global Sites</li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">India</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Singapore</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Malaysia</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Indonesia</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Peru</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Colombia</a></li>
-            </ul>
-
-            <ul class="flex flex-col gap-1.5 min-w-[140px]">
-                <li class="text-white font-bold text-base mb-2">Our Partners</li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Goibibo Bus</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Goibibo Hotels</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Makemytrip Bus</a></li>
-                <li><a class="text-gray-400 hover:text-white transition-colors duration-200" href="">Makemytrip Hotels</a></li>
-            </ul>
+        <!-- Col 2: Popular Bus Routes (Clickable) -->
+        <div class="space-y-3">
+          <h4 class="text-white font-extrabold text-sm uppercase tracking-wider">Top Routes</h4>
+          <ul class="space-y-2">
+            @for (route of popularRoutes; track route.from + route.to) {
+              <li>
+                <a href="#" (click)="searchRoute(route.from, route.to, $event)"
+                  class="text-slate-400 hover:text-white transition-colors flex items-center gap-1 group">
+                  <mat-icon class="text-[13px] w-3 h-3 leading-3 text-purple-400 group-hover:translate-x-0.5 transition-transform">arrow_forward</mat-icon>
+                  <span>{{ route.from }} to {{ route.to }} Bus</span>
+                </a>
+              </li>
+            }
+          </ul>
         </div>
 
-        <div class="border-t border-gray-700 mt-10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-gray-500 text-xs">
-            <p>&copy; 2025 Tedbus India Private Limited. All rights reserved.</p>
-            <div class="flex items-center gap-4">
-                <a class="hover:text-white transition-colors duration-200" href="">Privacy</a>
-                <a class="hover:text-white transition-colors duration-200" href="">Terms</a>
-                <a class="hover:text-white transition-colors duration-200" href="">Security</a>
-            </div>
+        <!-- Col 3: Discovery & Features -->
+        <div class="space-y-3">
+          <h4 class="text-white font-extrabold text-sm uppercase tracking-wider">Platform</h4>
+          <ul class="space-y-2 text-slate-400">
+            <li><a routerLink="/route-planner" class="hover:text-white transition-colors">Interactive Route Planner</a></li>
+            <li><a routerLink="/community" class="hover:text-white transition-colors">Traveler Community & Stories</a></li>
+            <li><a routerLink="/selectbus" class="hover:text-white transition-colors">Real-time Seat Selection</a></li>
+            <li><a routerLink="/cancellation" class="hover:text-white transition-colors">Instant Refund Guarantee</a></li>
+            <li><a routerLink="/help" class="hover:text-white transition-colors">Verified Operator Onboarding</a></li>
+          </ul>
         </div>
+
+        <!-- Col 4: Support & Legal -->
+        <div class="space-y-3">
+          <h4 class="text-white font-extrabold text-sm uppercase tracking-wider">Support & Trust</h4>
+          <ul class="space-y-2 text-slate-400">
+            <li><a routerLink="/help" class="hover:text-white transition-colors">24/7 Passenger Help Desk</a></li>
+            <li><a routerLink="/cancellation" class="hover:text-white transition-colors">Cancellation & Refund Policy</a></li>
+            <li><a routerLink="/help" class="hover:text-white transition-colors">Privacy & Data Security</a></li>
+            <li><a routerLink="/help" class="hover:text-white transition-colors">Passenger Terms of Service</a></li>
+            <li class="pt-1">
+              <span class="inline-flex items-center gap-1 text-[11px] text-purple-300 bg-purple-950/60 border border-purple-800/80 px-2.5 py-1 rounded-lg">
+                <mat-icon class="text-[14px] w-3.5 h-3.5 leading-3.5 text-amber-400">shield</mat-icon>
+                <span>Google OAuth Secured</span>
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- MOBILE ACCORDION TREATMENT (md:hidden: Collapsible, eliminates infinite scroll) -->
+      <div class="md:hidden space-y-3 pb-6 border-b border-slate-800 text-xs">
+        <!-- Compact Mobile Brand Summary -->
+        <div class="flex items-center gap-2.5 pb-2">
+          <img class="w-8 h-auto" src="assets/red-bus-with-word-bus-it_600323-482.avif" alt="Tedbus">
+          <div>
+            <span class="font-extrabold text-base text-white">Tedbus</span>
+            <p class="text-[11px] text-slate-400">Smart bus booking across 180+ Indian routes</p>
+          </div>
+        </div>
+
+        <!-- Accordion 1: Top Routes -->
+        <div class="rounded-xl bg-slate-800/50 border border-slate-800 overflow-hidden">
+          <button type="button" (click)="toggleSection('routes')"
+            class="w-full flex items-center justify-between p-3 text-left font-bold text-white hover:bg-slate-800/80 transition-colors">
+            <span class="flex items-center gap-2">
+              <mat-icon class="text-[16px] w-4 h-4 leading-4 text-purple-400">directions_bus</mat-icon>
+              <span>Popular Bus Routes</span>
+            </span>
+            <mat-icon class="text-[18px] w-4.5 h-4.5 leading-4.5 text-slate-400 transition-transform"
+              [class.rotate-180]="isRoutesOpen()">expand_more</mat-icon>
+          </button>
+          @if (isRoutesOpen()) {
+            <ul class="px-3 pb-3 pt-1 space-y-2 border-t border-slate-800/60 bg-slate-900/40">
+              @for (route of popularRoutes; track route.from + route.to) {
+                <li>
+                  <a href="#" (click)="searchRoute(route.from, route.to, $event)"
+                    class="text-slate-300 hover:text-white transition-colors text-[11px] flex items-center gap-1.5 py-0.5">
+                    <mat-icon class="text-[12px] w-3 h-3 leading-3 text-purple-400">arrow_forward</mat-icon>
+                    <span>{{ route.from }} to {{ route.to }} Bus</span>
+                  </a>
+                </li>
+              }
+            </ul>
+          }
+        </div>
+
+        <!-- Accordion 2: Platform Features -->
+        <div class="rounded-xl bg-slate-800/50 border border-slate-800 overflow-hidden">
+          <button type="button" (click)="toggleSection('company')"
+            class="w-full flex items-center justify-between p-3 text-left font-bold text-white hover:bg-slate-800/80 transition-colors">
+            <span class="flex items-center gap-2">
+              <mat-icon class="text-[16px] w-4 h-4 leading-4 text-purple-400">layers</mat-icon>
+              <span>Platform & Features</span>
+            </span>
+            <mat-icon class="text-[18px] w-4.5 h-4.5 leading-4.5 text-slate-400 transition-transform"
+              [class.rotate-180]="isCompanyOpen()">expand_more</mat-icon>
+          </button>
+          @if (isCompanyOpen()) {
+            <ul class="px-3 pb-3 pt-1 space-y-2 text-[11px] text-slate-300 border-t border-slate-800/60 bg-slate-900/40">
+              <li><a routerLink="/route-planner" class="hover:text-white block py-0.5">Interactive Route Planner</a></li>
+              <li><a routerLink="/community" class="hover:text-white block py-0.5">Traveler Community & Stories</a></li>
+              <li><a routerLink="/selectbus" class="hover:text-white block py-0.5">Live Bus Seat Selection</a></li>
+              <li><a routerLink="/cancellation" class="hover:text-white block py-0.5">Instant Refund Guarantee</a></li>
+            </ul>
+          }
+        </div>
+
+        <!-- Accordion 3: Support & Policies -->
+        <div class="rounded-xl bg-slate-800/50 border border-slate-800 overflow-hidden">
+          <button type="button" (click)="toggleSection('legal')"
+            class="w-full flex items-center justify-between p-3 text-left font-bold text-white hover:bg-slate-800/80 transition-colors">
+            <span class="flex items-center gap-2">
+              <mat-icon class="text-[16px] w-4 h-4 leading-4 text-purple-400">help_outline</mat-icon>
+              <span>Support & Policies</span>
+            </span>
+            <mat-icon class="text-[18px] w-4.5 h-4.5 leading-4.5 text-slate-400 transition-transform"
+              [class.rotate-180]="isLegalOpen()">expand_more</mat-icon>
+          </button>
+          @if (isLegalOpen()) {
+            <ul class="px-3 pb-3 pt-1 space-y-2 text-[11px] text-slate-300 border-t border-slate-800/60 bg-slate-900/40">
+              <li><a routerLink="/help" class="hover:text-white block py-0.5">24/7 Passenger Help Desk</a></li>
+              <li><a routerLink="/cancellation" class="hover:text-white block py-0.5">Cancellation & Refund Policy</a></li>
+              <li><a routerLink="/help" class="hover:text-white block py-0.5">Privacy & Security Policies</a></li>
+              <li><a routerLink="/help" class="hover:text-white block py-0.5">Passenger Terms of Service</a></li>
+            </ul>
+          }
+        </div>
+      </div>
+
+      <!-- BOTTOM BAR: Clean, Minimal Copyright & Policy Badges -->
+      <div class="pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-slate-400 text-xs">
+        <p class="text-center md:text-left text-[11px]">
+          &copy; 2026 Tedbus India Private Limited. All rights reserved.
+        </p>
+
+        <div class="flex items-center gap-4 text-[11px]">
+          <a routerLink="/help" class="hover:text-white transition-colors">Privacy</a>
+          <span>·</span>
+          <a routerLink="/help" class="hover:text-white transition-colors">Terms</a>
+          <span>·</span>
+          <a routerLink="/cancellation" class="hover:text-white transition-colors">Refunds</a>
+          <span>·</span>
+          <a routerLink="/help" class="hover:text-white transition-colors">Security</a>
+        </div>
+      </div>
 
     </div>
-</footer>
+  </footer>
+}
